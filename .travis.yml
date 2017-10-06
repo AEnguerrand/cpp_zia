@@ -1,1 +1,3 @@
 language: cpp
+notifications:
+  slack: epitechnexus:d2r6E6WILWBRPXxvRWkVAepy
