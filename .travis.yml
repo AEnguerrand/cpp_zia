@@ -1,5 +1,5 @@
 language: cpp
 compiler: g++
-script: ce build && cmake .. && cmake --build . && ./nexusZiaApi
+script: cd build && cmake .. && cmake --build . && ./nexusZiaApi
 notifications:
   slack: epitechnexus:d2r6E6WILWBRPXxvRWkVAepy
