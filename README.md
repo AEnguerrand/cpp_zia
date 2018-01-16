@@ -24,4 +24,4 @@ We have collected notes on how to contribute to this project in [CONTRIBUTING.md
 
 ## License
 
-NexusZiaApi is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+Zia is released under the [MIT License](http://www.opensource.org/licenses/MIT).
