@@ -1,9 +1,8 @@
 # Zia
 *More informations about us here: [Nexus-Software](https://nexus-software.fr)*
 
-![CPP](https://img.shields.io/badge/C++-11-blue.svg)
-[![Build Status](https://travis-ci.org/Nexus-Software/NexusZiaApi.svg?branch=master)](https://travis-ci.org/Nexus-Software/NexusZiaApi)
-[![Build status](https://ci.appveyor.com/api/projects/status/493qgqfqck1iqeyx/branch/master?svg=true)](https://ci.appveyor.com/project/aenguerrand/nexusziaapi/branch/master)
+![CPP](https://img.shields.io/badge/C++-17-blue.svg)
+[![Build Status](https://travis-ci.com/AEnguerrand/cpp_zia.svg?token=1CjdU7DJomHzizNJ8Tfv&branch=master)](https://travis-ci.com/AEnguerrand/cpp_zia)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Welcome to the Github project of Zia by Nexus-Software.
