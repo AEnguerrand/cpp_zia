@@ -8,9 +8,11 @@
 ** Last update Wed Oct 04 17:01:02 2017 Enguerrand Allamel
 */
 
-#include <iostream>
+#include "zia.hh"
 
 int main(int, char **) {
-  std::cout << "Hello word" << std::endl;
+  nz::zia	zia;
+
+  zia.start();
   return (0);
 }
