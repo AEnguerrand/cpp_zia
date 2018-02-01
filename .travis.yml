@@ -1,5 +1,13 @@
 language: cpp
-compiler: g++
+compiler: gcc
+dist: trusty
+before_install:
+- sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+- sudo apt-get update -qq
+install:
+- sudo apt-get install -qq g++-6
+- sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
 script: cd build && cmake .. && cmake --build . && ./cpp_zia
 notifications:
-  slack: epitechnexus:d2r6E6WILWBRPXxvRWkVAepy
+  slack:
+    secure: ZJ60XKvjkY0fyL8FmkWhJEICSs2+rLvn7s8EDRUIYDMEvNod017q3SnnerT5/nMKtJKZhxIRroEfYV9yh5Dnukzqo7VjiH2JRAuOxeQCxWlbjBj9lUJISWWjHIztus7twGaAXgfX6ctbaeg5/iG5bXNFIp5o18ysnsr6di91D3ExNRCtZhe93VBsU4MJ0ZZofw5tUBgCvVPyRqeiCxJ+5fpMCXXg8+6Crk2NB9ob9C7DTnBPRBokgCkJVCKLJlxAzGLZDdHHRKxJc5bXVXuDlISsVwDqLs/cRneSeThOXWaH0ysMccfEeerQunOcLg236ZFp0yGptK+Zp54WSfKZs6TdNIgKwAw2uvliNn4EjH57LDIOJzItai/PjHLxeKIXPVuPRxZMKmv9xn+w7sLXD/v9ObvPwe+aSzB+tt5KA/LpxIcoMtVcBGVrgb4oFOOQGqOXy1DKErQ1ZGzlk/SFJD4OZ1tRhRw55YrTo0E8b5UF9vZ0wc3RDsauLwbjwnDjWQf2ekQFnfiyN0EJphvkeIfUT5RkAf/DSUETOW5myqIvdy72SNoI/1GPIwgp/BYgr5ri+TnmFJtn+8ub5SYF7+CUBUlnvmLPo/jsHpAyUZQY6qM0AGXqsBLXfTG7CEJOkxjqdU+Tf/BTZ+Z7+T6Ye2bOp16R+qjulse4j3v012k=
