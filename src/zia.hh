@@ -7,13 +7,15 @@
 
 #include "Log/Log.hpp"
 
+#include "ModuleLoader/ModuleLoader.hh"
+
 namespace nz {
   class zia
   {
    private:
     bool 				_isStart;
 
-    std::map<unsigned int, ::zia::api::Module &>	_modules;
+    ModuleLoader	_modulesLoader;
 
    public:
     zia();
