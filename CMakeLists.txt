@@ -13,3 +13,4 @@ set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-lin
 
 add_executable(cpp_zia ${SOURCE_FILES})
 target_link_libraries(cpp_zia stdc++fs)
+target_link_libraries(cpp_zia ${CMAKE_DL_LIBS})

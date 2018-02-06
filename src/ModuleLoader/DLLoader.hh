@@ -161,7 +161,7 @@ namespace nz
       if (this->noise)
 	std::cerr << "_> Creating new instance of [" << path << "] in (" << this->name << ")..." << std::endl;
 
-      if ((symbol = (T *(*)())dlsym(handler, "CObject")) == nullptr)
+      if ((symbol = (T *(*)())dlsym(handler, "create")) == nullptr)
 	{
 	  this->handlers.erase(path);
 	  std::cerr << dlerror() << std::endl;

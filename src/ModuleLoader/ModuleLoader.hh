@@ -13,7 +13,7 @@ namespace nz {
   class ModuleLoader
   {
    private:
-    std::unordered_map<std::string, zia::api::Module *>	_modules;
+    DLLoader<zia::api::Module>	dlLoader;
 
    public:
     ModuleLoader();
