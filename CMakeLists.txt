@@ -16,6 +16,7 @@ target_link_libraries(cpp_zia stdc++fs)
 target_link_libraries(cpp_zia ${CMAKE_DL_LIBS})
 
 # Build Modules
+add_subdirectory(SrcModules/Network)
 
 # Copie Modules
 file(COPY Modules DESTINATION .)
