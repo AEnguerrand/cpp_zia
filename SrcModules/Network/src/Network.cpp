@@ -1,5 +1,4 @@
 #include "Network.hh"
-#include "../../../src/Log/Log.hpp"
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
@@ -8,6 +7,7 @@ bool nzm::Network::config(const zia::api::Conf &conf)
 
 bool nzm::Network::run(zia::api::Net::Callback cb)
 {
+
   return false;
 }
 
@@ -29,4 +29,11 @@ nzm::Network::Network()
 nzm::Network::~Network()
 {
   nz::Log::inform("[Module Network]: Stop");
+}
+
+void nzm::Network::runAccept(ServerTcp serverTcp)
+{
+  Socket socketServer;
+
+  socketServer.initServer(serverTcp._port);
 }
