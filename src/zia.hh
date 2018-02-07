@@ -5,7 +5,7 @@
 
 #include "api.h"
 
-#include "Log/Log.hpp"
+#include "Log.hpp"
 
 #include "ModuleLoader/ModuleLoader.hh"
 

@@ -2,14 +2,14 @@ language: cpp
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - gcc-7
-      - g++-7
+    - gcc-7
+    - g++-7
 before_install:
-  - export CC=/usr/bin/gcc-7
-  - export CXX=/usr/bin/g++-7
+- export CC=/usr/bin/gcc-7
+- export CXX=/usr/bin/g++-7
 script: cd build && cmake .. && cmake --build . && ./cpp_zia
 notifications:
   slack:
-    secure: ZJ60XKvjkY0fyL8FmkWhJEICSs2+rLvn7s8EDRUIYDMEvNod017q3SnnerT5/nMKtJKZhxIRroEfYV9yh5Dnukzqo7VjiH2JRAuOxeQCxWlbjBj9lUJISWWjHIztus7twGaAXgfX6ctbaeg5/iG5bXNFIp5o18ysnsr6di91D3ExNRCtZhe93VBsU4MJ0ZZofw5tUBgCvVPyRqeiCxJ+5fpMCXXg8+6Crk2NB9ob9C7DTnBPRBokgCkJVCKLJlxAzGLZDdHHRKxJc5bXVXuDlISsVwDqLs/cRneSeThOXWaH0ysMccfEeerQunOcLg236ZFp0yGptK+Zp54WSfKZs6TdNIgKwAw2uvliNn4EjH57LDIOJzItai/PjHLxeKIXPVuPRxZMKmv9xn+w7sLXD/v9ObvPwe+aSzB+tt5KA/LpxIcoMtVcBGVrgb4oFOOQGqOXy1DKErQ1ZGzlk/SFJD4OZ1tRhRw55YrTo0E8b5UF9vZ0wc3RDsauLwbjwnDjWQf2ekQFnfiyN0EJphvkeIfUT5RkAf/DSUETOW5myqIvdy72SNoI/1GPIwgp/BYgr5ri+TnmFJtn+8ub5SYF7+CUBUlnvmLPo/jsHpAyUZQY6qM0AGXqsBLXfTG7CEJOkxjqdU+Tf/BTZ+Z7+T6Ye2bOp16R+qjulse4j3v012k=
+    secure: ASo4+UJjTp9spkVWtanj8Cj7ukYbUJhiUlD15jchsrULa4NoOM6mQB4x77iH1+5HX1kGyDCCpAkpwoQjpAa0awzi3AJQ23IRbHvhzq09ckimcEn9AS79fvRALththotRz6ku4oXrn6y1JszmvmJMGmwfMCsrsYqGYUhvbiJ3wUyo3sOS+F3jRBbMd4zUkM5AyWBMr2J2laPALk7KMxH9DLv84q543xFEFuU92PcxO2b6Fecce7MXxc5iKjUqnlHBXmyx6gr1eFeWtSYABLoyHF6K9geJTNVElDpp3Ctj4yOfxT+pO4RAJtK6A/D19AsZD1XleAQ4otp2TZHJEFyhSanRR9tUkr69991VAN0MsFL2vk7U7jof0iHzmj9E0GoIekEHHGAi8Nk7JbaVvcknpxwk3qIJ761nsgK0WO3KmPuGCQIOyfzE1es+Q63s1o36QWu6TWozUnUNZD6y5wNySo6IgTRDbmXN1rgZts9CUgdZaE33h4CGinha8DgEJefXyPR8QU9sJSRDBdoWzUXexJPNWYTaVoUDcSbDYC67z1370GOASQH3SdGceSs8a5L5CKTHLN/XInInSCkxYZPGdbRJDoWDvJUcVZgVIVaGleorKjkUw1n/0HPb8Y+r4wmrfnSMkforSJD9NLLTDYo9Xqa/k78N8La4VSUBZxEQWJU=
