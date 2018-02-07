@@ -1,4 +1,5 @@
 #include "Network.hh"
+#include "../../../src/Log/Log.hpp"
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
@@ -21,4 +22,11 @@ bool nzm::Network::stop()
 }
 
 nzm::Network::Network()
-{}
+{
+  nz::Log::inform("[Module Network]: Run");
+}
+
+nzm::Network::~Network()
+{
+  nz::Log::inform("[Module Network]: Stop");
+}

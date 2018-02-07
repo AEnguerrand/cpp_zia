@@ -9,6 +9,8 @@ namespace nzm {
    public:
     Network();
 
+    virtual ~Network();
+
    private:
     virtual bool config(const zia::api::Conf &conf);
 
