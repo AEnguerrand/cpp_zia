@@ -8,6 +8,7 @@
 #include "Log.hpp"
 
 #include "ModuleLoader/ModuleLoader.hh"
+#include "Process/Process.hh"
 
 namespace nz {
   class zia
@@ -16,6 +17,7 @@ namespace nz {
     bool 				_isStart;
 
     ModuleLoader	_modulesLoader;
+    Process		_process;
 
    public:
     zia();

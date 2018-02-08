@@ -1,6 +1,7 @@
 #include "zia.hh"
 
-nz::zia::zia()
+nz::zia::zia():
+	_process(_modulesLoader)
 {
 }
 
@@ -12,7 +13,9 @@ nz::zia::~zia()
 void nz::zia::start()
 {
   Log::inform("Server booting ...");
+  // Load module and Config
   this->_modulesLoader.loadAll();
+  // Run network
 }
 
 void nz::zia::stop()
