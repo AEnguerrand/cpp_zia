@@ -9,6 +9,7 @@
 
 #include "ModuleLoader/ModuleLoader.hh"
 #include "Process/Process.hh"
+#include "Parser/Parser.hh"
 
 namespace nz {
   class zia
