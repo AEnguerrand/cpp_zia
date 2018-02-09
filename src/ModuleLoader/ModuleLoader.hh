@@ -13,7 +13,7 @@ namespace nz {
   class ModuleLoader
   {
    private:
-    DLLoader<zia::api::Module>	dlLoader;
+    DLLoader<::zia::api::Module>	dlLoader;
 
    public:
     ModuleLoader();
@@ -21,6 +21,9 @@ namespace nz {
 
     void loadAll();
     void unloadAll();
+
+    const DLLoader<zia::api::Module> &getDlLoader() const;
+    DLLoader<zia::api::Module> &getDlLoader();
   };
 }
 

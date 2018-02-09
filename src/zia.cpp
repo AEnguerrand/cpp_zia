@@ -1,7 +1,8 @@
 #include "zia.hh"
 
 nz::zia::zia():
-	_process(_modulesLoader)
+	_process(_modulesLoader),
+	_dlLoaderNet("moduleNet", true)
 {
 }
 
@@ -13,11 +14,22 @@ nz::zia::~zia()
 void nz::zia::start()
 {
   Log::inform("Server booting ...");
-  // Load module and Config
+  // Load server config
+  // Load module
   this->_modulesLoader.loadAll();
+  // Load config of each module
+  // Load network
+  this->_dlLoaderNet.addLib("./Modules/cpp_zia_module_network.so");
+  this->_dlLoaderNet.dump();
+  ::zia::api::Net *net = this->_dlLoaderNet.getInstance("./Modules/cpp_zia_module_network.so");
+  if (net == nullptr) {
+      nz::Log::error("Fail load net module", "Zia Core", 1);
+    }
+  // Config network
+  ::zia::api::Conf confNetwork;
+  net->config(confNetwork);
   // Run network
 }
-
 void nz::zia::stop()
 {
   Log::inform("Server halt ...");

@@ -29,3 +29,13 @@ void nz::ModuleLoader::unloadAll()
       this->dlLoader.resetLib(lib);
     }
 }
+
+const nz::DLLoader<zia::api::Module> &nz::ModuleLoader::getDlLoader() const
+{
+  return dlLoader;
+}
+
+nz::DLLoader<zia::api::Module> &nz::ModuleLoader::getDlLoader()
+{
+  return dlLoader;
+}

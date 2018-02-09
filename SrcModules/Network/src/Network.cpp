@@ -2,12 +2,12 @@
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
+  nz::Log::debug("CONFIG NETWORK LOADING");
   return false;
 }
 
 bool nzm::Network::run(zia::api::Net::Callback cb)
 {
-
   return false;
 }
 

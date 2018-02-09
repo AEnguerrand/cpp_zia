@@ -19,6 +19,8 @@ namespace nz {
     ModuleLoader	_modulesLoader;
     Process		_process;
 
+    // Module Net
+    DLLoader<::zia::api::Net>		_dlLoaderNet;
    public:
     zia();
     virtual ~zia();
