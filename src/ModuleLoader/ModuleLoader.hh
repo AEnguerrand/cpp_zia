@@ -9,11 +9,13 @@
 #include "api.h"
 #include "DLLoader.hh"
 
+// Todo: Order modules of defined in config went is getModules() is call
+
 namespace nz {
   class ModuleLoader
   {
    private:
-    DLLoader<::zia::api::Module>	dlLoader;
+    DLLoader<::zia::api::Module>	_dlLoader;
 
    public:
     ModuleLoader();
@@ -24,6 +26,8 @@ namespace nz {
 
     const DLLoader<zia::api::Module> &getDlLoader() const;
     DLLoader<zia::api::Module> &getDlLoader();
+
+    std::unordered_map<std::string, ::zia::api::Module *> getModules();
   };
 }
 
