@@ -29,6 +29,9 @@ void nz::zia::start()
   ::zia::api::Conf confNetwork;
   net->config(confNetwork);
   // Run network
+  ::zia::api::Net::Callback funcCallback = std::bind(&nz::Parser::callbackRequestReceived, this->_parser, std::placeholders::_1,
+						     std::placeholders::_2);
+  net->run(funcCallback);
 }
 void nz::zia::stop()
 {

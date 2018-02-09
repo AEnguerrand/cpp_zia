@@ -19,6 +19,7 @@ namespace nz {
 
     ModuleLoader	_modulesLoader;
     Process		_process;
+    Parser		_parser;
 
     // Module Net
     DLLoader<::zia::api::Net>		_dlLoaderNet;
