@@ -8,6 +8,8 @@
 #include "Log.hpp"
 
 #include "ModuleLoader/ModuleLoader.hh"
+#include "Process/Process.hh"
+#include "Parser/Parser.hh"
 
 namespace nz {
   class zia
@@ -16,7 +18,11 @@ namespace nz {
     bool 				_isStart;
 
     ModuleLoader	_modulesLoader;
+    Process		_process;
+    Parser		_parser;
 
+    // Module Net
+    DLLoader<::zia::api::Net>		_dlLoaderNet;
    public:
     zia();
     virtual ~zia();
