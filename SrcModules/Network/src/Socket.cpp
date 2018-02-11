@@ -1,7 +1,8 @@
 #include "Socket.hh"
 
 nzm::Socket::Socket():
-	_isInit(false)
+	_isInit(false),
+	_fd(-1)
 {
 
 }
@@ -32,10 +33,11 @@ int nzm::Socket::initServer(short port)
     throw ModuleNetworkException("Socket fail set options");
   if (bind(this->_fd, (struct sockaddr*)&sin, sizeof(sin)) < 0 || listen(this->_fd, 100) < 0)
     throw ModuleNetworkException("Fail bind and listen");
+  this->_isServer = true;
   return this->_fd;
 }
 
-int nzm::Socket::initClient(int fdServer)
+int nzm::Socket::initClient(Socket socketServer)
 {
   struct sockaddr_in 	client_sin;
   socklen_t 		client_sin_len;
@@ -44,11 +46,21 @@ int nzm::Socket::initClient(int fdServer)
     throw ModuleNetworkException("Socket already init");
 
   client_sin_len = sizeof(client_sin);
-  if ((this->_fd = accept(fdServer, (struct sockaddr *)&client_sin,
+  if ((this->_fd = accept(socketServer.getFd(), (struct sockaddr *)&client_sin,
 		   &client_sin_len)) < 0)
     throw ModuleNetworkException("Fail accept");
 
   this->_isInit = true;
-
+  this->_isServer = false;
   return this->_fd;
+}
+
+bool nzm::Socket::is_isServer() const
+{
+  return _isServer;
+}
+
+bool nzm::Socket::operator==(const nzm::Socket &rhs) const
+{
+  return this->getFd() == rhs.getFd();
 }

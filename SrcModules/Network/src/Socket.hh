@@ -18,15 +18,20 @@ namespace nzm {
    private:
     bool 	_isInit;
     int 	_fd;
+    bool 	_isServer;
 
    public:
     Socket();
 
     int getFd() const;
 
+    bool is_isServer() const;
+
 
     int initServer(short port);
-    int initClient(int fdServer);
+    int initClient(Socket socketServer);
+
+    bool operator==(const Socket & rhs) const;
   };
 }
 
