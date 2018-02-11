@@ -32,6 +32,8 @@ void nz::zia::start()
   ::zia::api::Net::Callback funcCallback = std::bind(&nz::Parser::callbackRequestReceived, this->_parser, std::placeholders::_1,
 						     std::placeholders::_2);
   net->run(funcCallback);
+
+  while (1);
 }
 void nz::zia::stop()
 {

@@ -33,7 +33,7 @@ namespace nzm {
 
     void run();
 
-    void addListentTunnels(Socket socket);
+    void addListenTunnels(Socket socket);
 
     void addTunnel(Socket socket);
     void removeTunnel(Socket socket);
