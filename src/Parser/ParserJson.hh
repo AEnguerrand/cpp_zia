@@ -2,6 +2,7 @@
 #define CPP_ZIA_PARSERJSON_HH
 
 #include <fstream>
+#include <iostream>
 
 #include "api.h"
 #include "json.hpp"
