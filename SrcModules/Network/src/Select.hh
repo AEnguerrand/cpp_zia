@@ -16,7 +16,7 @@
 
 #include "Errors.hpp"
 #include "Log.hpp"
-
+#include "api.h"
 #include "Socket.hh"
 
 namespace nzm {

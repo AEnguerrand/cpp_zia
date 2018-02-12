@@ -85,5 +85,10 @@ int nzm::Socket::read()
 
 int nzm::Socket::write(std::vector<char> raw)
 {
+  int len = send(this->getFd(), raw.data(), raw.size(), 0);
+  if (len <= 0) {
+      throw ModuleNetworkException("Socket is close");
+    }
+  std::cout << "WRITE:" << raw.data() << std::endl;
   return 0;
 }

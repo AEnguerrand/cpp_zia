@@ -27,6 +27,14 @@ void nzm::Select::run()
 	      nz::Log::debug("SELECT DATA READ");
 	      try {
 		  it->read();
+		  nz::Log::debug("START TEST WRITE");
+		  // FOR TEST
+		  std::string reponse;
+		  std::string content = "<h1>Hello Word</h1>";
+
+		  reponse = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(content.length()) +  "\r\n\r\n" + content;
+		  std::vector<char> raw (reponse.begin(), reponse.end());
+		  it->write(raw);
 		}
 	      catch (ModuleNetworkException &e) {
 		  this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), it));
