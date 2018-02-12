@@ -50,6 +50,9 @@ if (test)
     ##############
     file(GLOB_RECURSE TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
 
+    set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+    set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
+
     add_executable(runUnitTests ${TEST_SOURCE_FILES} ${SOURCE_FILES})
 
     target_link_libraries(runUnitTests stdc++fs)
