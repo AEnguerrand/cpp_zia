@@ -79,11 +79,14 @@ int nzm::Socket::read()
   if (len <= 0) {
       throw ModuleNetworkException("Socket is close");
     }
+  for (auto i = 0; i < len ; i++) {
+      this->_bufferIn.push(buf[i]);
+    }
   std::cout << "READ: " << buf << std::endl;
   return len;
 }
 
-int nzm::Socket::write(std::vector<char> raw)
+int nzm::Socket::write(zia::api::Net::Raw raw)
 {
   int len = send(this->getFd(), raw.data(), raw.size(), 0);
   if (len <= 0) {
@@ -95,5 +98,27 @@ int nzm::Socket::write(std::vector<char> raw)
 
 void nzm::Socket::checkWrite()
 {
+  if (this->_bufferOut.hasHTTPResponse()) {
+      this->write(this->_bufferOut.getHttpResponse());
+    }
+}
 
+const nzm::Buffer &nzm::Socket::getBufferIn() const
+{
+  return this->_bufferIn;
+}
+
+const nzm::Buffer &nzm::Socket::getBufferOut() const
+{
+  return this->_bufferOut;
+}
+
+nzm::Buffer &nzm::Socket::getBufferIn()
+{
+  return this->_bufferIn;
+}
+
+nzm::Buffer &nzm::Socket::getBufferOut()
+{
+  return this->_bufferOut;
 }

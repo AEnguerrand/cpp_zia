@@ -8,9 +8,9 @@ bool nzm::Network::config(const zia::api::Conf &conf)
 
 bool nzm::Network::run(zia::api::Net::Callback cb)
 {
-  auto funcRunSelect = std::bind(&nzm::Network::runSelect, this, std::placeholders::_1);
+  auto funcRunSelect = std::bind(&nzm::Network::runSelect, this, std::placeholders::_1, std::placeholders::_2);
 
-  this->_thListen.insert(std::pair<short, std::shared_ptr<std::thread>>(7000, std::make_shared<std::thread>(funcRunSelect, 7000)));
+  this->_thListen.insert(std::pair<short, std::shared_ptr<std::thread>>(7000, std::make_shared<std::thread>(funcRunSelect, 7000, cb)));
 
   return false;
 }
@@ -35,11 +35,10 @@ nzm::Network::~Network()
   nz::Log::inform("[Module Network]: Stop");
 }
 
-void nzm::Network::runSelect(short port)
+void nzm::Network::runSelect(short port, zia::api::Net::Callback cb)
 {
-  nz::Log::debug("AFTER CTOR");
-  auto socketServer = std::make_shared<Socket>();
-  Select select;
+  std::shared_ptr<Socket> socketServer = std::make_shared<Socket>();
+  Select select(cb);
 
   socketServer->initServer(port);
   select.addListenTunnels(socketServer);

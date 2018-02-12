@@ -4,6 +4,8 @@
 #include <list>
 #include <vector>
 
+#include "api.h"
+
 namespace nzm {
   class Buffer
   {
@@ -16,9 +18,11 @@ namespace nzm {
     void push(char data);
     char pop();
 
-    bool hasHTTPRequest();
+    bool hasHTTPRequest() const;
+    zia::api::Net::Raw getHttpRequest();
 
-    std::vector<char> getHttpRequest();
+    bool hasHTTPResponse() const;
+    zia::api::Net::Raw getHttpResponse();
   };
 }
 

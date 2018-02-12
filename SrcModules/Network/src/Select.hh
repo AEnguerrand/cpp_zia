@@ -30,8 +30,9 @@ namespace nzm {
     std::vector<std::shared_ptr<Socket>>	_tunnels;
     std::vector<std::shared_ptr<Socket>>	_listenTunnels;
 
+    zia::api::Net::Callback 			_callback;
    public:
-    Select();
+    Select(zia::api::Net::Callback cb);
 
     void run();
 

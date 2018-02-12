@@ -33,7 +33,7 @@ namespace nzm {
     virtual bool stop();
 
    private:
-    void runSelect(short port);
+    void runSelect(short port, zia::api::Net::Callback cb);
   };
 }
 

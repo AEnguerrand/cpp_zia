@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <functional>
 
+#include "api.h"
 #include "Errors.hpp"
 #include "Log.hpp"
 #include "Buffer.hh"
@@ -41,9 +42,15 @@ namespace nzm {
     int initClient(Socket & socketServer);
 
     int read();
-    int write(std::vector<char> raw);
+    int write(zia::api::Net::Raw raw);
 
     void checkWrite();
+
+    const Buffer &getBufferIn() const;
+    Buffer &getBufferIn();
+
+    const Buffer &getBufferOut() const;
+    Buffer &getBufferOut();
 
     bool operator==(const Socket & rhs) const;
   };
