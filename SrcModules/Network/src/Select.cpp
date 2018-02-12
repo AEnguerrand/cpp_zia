@@ -38,6 +38,7 @@ void nzm::Select::run()
 		}
 	      catch (ModuleNetworkException &e) {
 		  this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), it));
+		  continue ;
 		}
 	    }
 	  if (FD_ISSET(it->getFd(), &this->_fdsWrite)) {
@@ -47,6 +48,7 @@ void nzm::Select::run()
 		}
 	      catch (ModuleNetworkException &e) {
 		  this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), it));
+		  continue ;
 		}
 	    }
 	}

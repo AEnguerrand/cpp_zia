@@ -27,10 +27,25 @@ zia::api::Net::Raw nzm::Buffer::getHttpRequest()
 
 bool nzm::Buffer::hasHTTPResponse() const
 {
-  return false;
+  return true;
 }
 
 zia::api::Net::Raw nzm::Buffer::getHttpResponse()
 {
-  return zia::api::Net::Raw();
+  // FOR TEST
+  std::string reponse;
+  std::string content = "<h1>Hello Word</h1>";
+
+  reponse = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: " + std::to_string(content.length()) +  "\r\n\r\n" + content;
+
+  for (char i : reponse) {
+      this->push(i);
+    }
+  // FOR TEST - END
+  zia::api::Net::Raw ret;
+
+  for (char i : this->_buffer) {
+      ret.push_back(std::byte(i));
+    }
+  return ret;
 }
