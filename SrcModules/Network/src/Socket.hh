@@ -9,8 +9,13 @@
 #include <arpa/inet.h>
 #endif
 
+#include <vector>
+#include <unistd.h>
+#include <functional>
+
 #include "Errors.hpp"
 #include "Log.hpp"
+#include "Buffer.hh"
 
 namespace nzm {
   class Socket
@@ -20,16 +25,23 @@ namespace nzm {
     int 	_fd;
     bool 	_isServer;
 
+    Buffer	_bufferIn;
+    Buffer	_bufferOut;
+
    public:
     Socket();
+    virtual ~Socket();
 
     int getFd() const;
 
-    bool is_isServer() const;
+    bool isServer() const;
 
 
     int initServer(short port);
-    int initClient(Socket socketServer);
+    int initClient(Socket & socketServer);
+
+    int read();
+    int write(std::vector<char> raw);
 
     bool operator==(const Socket & rhs) const;
   };

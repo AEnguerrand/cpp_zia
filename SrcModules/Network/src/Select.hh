@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <functional>
+#include <memory>
 
 #ifdef _WIN32
 #include <ws2tcpip.h>
@@ -25,18 +26,18 @@ namespace nzm {
     fd_set _fdsRead;
 
    private:
-    std::vector<Socket>	_tunnels;
-    std::vector<Socket>	_listenTunnels;
+    std::vector<std::shared_ptr<Socket>>	_tunnels;
+    std::vector<std::shared_ptr<Socket>>	_listenTunnels;
 
    public:
     Select();
 
     void run();
 
-    void addListenTunnels(Socket socket);
+    void addListenTunnels(std::shared_ptr<Socket> socket);
 
-    void addTunnel(Socket socket);
-    void removeTunnel(Socket socket);
+    void addTunnel(std::shared_ptr<Socket>  socket);
+    void removeTunnel(std::shared_ptr<Socket> socket);
 
    private:
     int getMaxFd();

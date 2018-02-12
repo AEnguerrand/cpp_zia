@@ -37,10 +37,11 @@ nzm::Network::~Network()
 
 void nzm::Network::runSelect(short port)
 {
-  Socket socketServer;
+  nz::Log::debug("AFTER CTOR");
+  auto socketServer = std::make_shared<Socket>();
   Select select;
 
-  socketServer.initServer(port);
+  socketServer->initServer(port);
   select.addListenTunnels(socketServer);
   while (1) {
       select.run();

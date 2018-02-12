@@ -4,7 +4,14 @@ nzm::Socket::Socket():
 	_isInit(false),
 	_fd(-1)
 {
+  nz::Log::debug("Socket CTOR");
+}
 
+nzm::Socket::~Socket()
+{
+  shutdown(this->getFd(), SHUT_RDWR);
+  close(this->getFd());
+  nz::Log::debug("Socket DTOR");
 }
 
 int nzm::Socket::getFd() const
@@ -37,7 +44,7 @@ int nzm::Socket::initServer(short port)
   return this->_fd;
 }
 
-int nzm::Socket::initClient(Socket socketServer)
+int nzm::Socket::initClient(Socket & socketServer)
 {
   struct sockaddr_in 	client_sin;
   socklen_t 		client_sin_len;
@@ -55,7 +62,7 @@ int nzm::Socket::initClient(Socket socketServer)
   return this->_fd;
 }
 
-bool nzm::Socket::is_isServer() const
+bool nzm::Socket::isServer() const
 {
   return _isServer;
 }
@@ -63,4 +70,20 @@ bool nzm::Socket::is_isServer() const
 bool nzm::Socket::operator==(const nzm::Socket &rhs) const
 {
   return this->getFd() == rhs.getFd();
+}
+
+int nzm::Socket::read()
+{
+  char buf[1000];
+  int len = recv(this->getFd(), buf, sizeof(buf), 0);
+  if (len <= 0) {
+      throw ModuleNetworkException("Socket is close");
+    }
+  std::cout << "READ: " << buf << std::endl;
+  return len;
+}
+
+int nzm::Socket::write(std::vector<char> raw)
+{
+  return 0;
 }
