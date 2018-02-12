@@ -24,6 +24,7 @@ namespace nzm {
   {
    private:
     fd_set _fdsRead;
+    fd_set _fdsWrite;
 
    private:
     std::vector<std::shared_ptr<Socket>>	_tunnels;
@@ -36,7 +37,7 @@ namespace nzm {
 
     void addListenTunnels(std::shared_ptr<Socket> socket);
 
-    void addTunnel(std::shared_ptr<Socket>  socket);
+    void addTunnel(std::shared_ptr<Socket> socket);
     void removeTunnel(std::shared_ptr<Socket> socket);
 
    private:

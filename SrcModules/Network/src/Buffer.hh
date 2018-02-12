@@ -2,14 +2,12 @@
 #define CPP_ZIA_BUFFER_HH
 
 #include <list>
+#include <vector>
 
 namespace nzm {
   class Buffer
   {
    private:
-    unsigned int	_size;
-    unsigned int	_head;
-    unsigned int 	_tail;
 
     std::list<char>	_buffer;
    public:
@@ -17,6 +15,10 @@ namespace nzm {
 
     void push(char data);
     char pop();
+
+    bool hasHTTPRequest();
+
+    std::vector<char> getHttpRequest();
   };
 }
 

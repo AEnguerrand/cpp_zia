@@ -8,12 +8,15 @@ nzm::Select::Select()
 void nzm::Select::run()
 {
   FD_ZERO(&this->_fdsRead);
+  FD_ZERO(&this->_fdsWrite);
 
   for (auto &it : this->_tunnels) {
       FD_SET(it->getFd(), &this->_fdsRead);
+      FD_SET(it->getFd(), &this->_fdsWrite);
     }
   for (auto &it : this->_listenTunnels) {
       FD_SET(it->getFd(), &this->_fdsRead);
+      FD_SET(it->getFd(), &this->_fdsWrite);
     }
   if (select(this->getMaxFd() + 1, &this->_fdsRead, NULL, NULL, NULL) > 0) {
       for (auto &it : this->_listenTunnels) {
@@ -32,9 +35,18 @@ void nzm::Select::run()
 		  std::string reponse;
 		  std::string content = "<h1>Hello Word</h1>";
 
-		  reponse = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(content.length()) +  "\r\n\r\n" + content;
+		  reponse = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(content.length()) +  "\r\nContent-Type: text/html\r\n\r\n" + content;
 		  std::vector<char> raw (reponse.begin(), reponse.end());
 		  it->write(raw);
+		}
+	      catch (ModuleNetworkException &e) {
+		  this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), it));
+		}
+	    }
+	  if (FD_ISSET(it->getFd(), &this->_fdsWrite)) {
+	      nz::Log::debug("SELECT DATA WRITE");
+	      try {
+
 		}
 	      catch (ModuleNetworkException &e) {
 		  this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), it));

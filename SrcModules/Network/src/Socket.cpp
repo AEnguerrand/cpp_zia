@@ -92,3 +92,8 @@ int nzm::Socket::write(std::vector<char> raw)
   std::cout << "WRITE:" << raw.data() << std::endl;
   return 0;
 }
+
+void nzm::Socket::checkWrite()
+{
+
+}

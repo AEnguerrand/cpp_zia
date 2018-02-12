@@ -43,6 +43,8 @@ namespace nzm {
     int read();
     int write(std::vector<char> raw);
 
+    void checkWrite();
+
     bool operator==(const Socket & rhs) const;
   };
 }
