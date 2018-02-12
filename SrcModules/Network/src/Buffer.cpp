@@ -34,7 +34,7 @@ zia::api::Net::Raw nzm::Buffer::getHttpResponse()
 {
   // FOR TEST
   std::string reponse;
-  std::string content = "<h1>Hello Word</h1>";
+  std::string content = "<h1>Hello World</h1>";
 
   reponse = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: " + std::to_string(content.length()) +  "\r\n\r\n" + content;
 
