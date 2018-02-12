@@ -16,7 +16,7 @@ void nzm::Select::run()
       FD_SET(it->getFd(), &this->_fdsRead);
     }
   if (select(this->getMaxFd() + 1, &this->_fdsRead, NULL, NULL, NULL) > 0) {
-      for (auto it : this->_listenTunnels) {
+      for (auto &it : this->_listenTunnels) {
 	  if (FD_ISSET(it->getFd(), &this->_fdsRead)) {
 	      nz::Log::debug("SELECT ADD");
 	      this->addTunnel(it);
