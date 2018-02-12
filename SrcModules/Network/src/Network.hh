@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <thread>
+#include <memory>
 
 #include "Errors.hpp"
 #include "Log.hpp"
@@ -15,13 +16,8 @@
 namespace nzm {
   class Network : public zia::api::Net
   {
-   protected:
-    struct ServerTcp {
-      short		_port;
-      Select		_select;
-    };
-
-    std::unordered_map<short, std::thread>	_thListen;
+   private:
+    std::unordered_map<short, std::shared_ptr<std::thread>>	_thListen;
    public:
     Network();
 
@@ -37,7 +33,7 @@ namespace nzm {
     virtual bool stop();
 
    private:
-    void runAccept(ServerTcp serverTcp);
+    void runSelect(short port, zia::api::Net::Callback cb);
   };
 }
 

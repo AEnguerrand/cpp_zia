@@ -2,6 +2,7 @@
 #define CPP_ZIA_PARSER_HH
 
 #include "api.h"
+#include "Log.hpp"
 
 namespace nz {
   class Parser
