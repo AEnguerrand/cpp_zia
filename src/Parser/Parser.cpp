@@ -1,4 +1,3 @@
-#include <Log.hpp>
 #include "Parser.hh"
 
 nz::Parser::Parser()
