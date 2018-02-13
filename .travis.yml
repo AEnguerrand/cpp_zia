@@ -15,7 +15,7 @@ script:
   - cmake -Dtest=ON ..
   - cmake --build .
   - GTEST_COLOR=1 ctest
-  - mv ../get_code_cov.sh . && ./get_code_cov.sh
+  - mv ../get_code_cov.sh . && bash get_code_cov.sh
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 notifications:
