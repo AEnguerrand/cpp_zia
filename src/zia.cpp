@@ -2,6 +2,7 @@
 
 nz::zia::zia():
 	_process(_modulesLoader),
+	_parser(_process),
 	_dlLoaderNet("moduleNet", true)
 {
 }
