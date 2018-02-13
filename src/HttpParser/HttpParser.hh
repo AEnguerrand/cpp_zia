@@ -22,7 +22,7 @@ namespace nz
 		HttpParser();
 		virtual ~HttpParser();
 
-	private:
+	public:
 		zia::api::HttpRequest	GetRequest(const std::vector<std::string> & input);
 		zia::api::HttpResponse	GetResponse(const std::vector<std::string> & input);
 
