@@ -38,13 +38,17 @@ if (test)
         add_definitions(-D__GLIBCXX__)
     endif (APPLE)
 
-    include(ExternalProject)
-    ExternalProject_Add(googletest
-            GIT_REPOSITORY https://github.com/google/googletest
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION})
+    file(COPY CMakeLists.txt.in DESTINATION .)
+    configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+    execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
 
-    include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
-    link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+    add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+            "${CMAKE_BINARY_DIR}/googletest-build")
     ##############
     # Unit Tests
     ##############
@@ -58,7 +62,6 @@ if (test)
     target_link_libraries(runUnitTests stdc++fs)
     target_link_libraries(runUnitTests ${CMAKE_DL_LIBS})
 
-    add_dependencies(runUnitTests googletest)
     target_link_libraries(runUnitTests gtest gtest_main pthread)
 
     enable_testing()
