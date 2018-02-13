@@ -13,7 +13,7 @@ before_install:
 script:
   - cd build
   - cmake -Dtest=ON ..
-  - cmake --build .
+  - sudo cmake --build .
   - GTEST_COLOR=1 ctest
   - ./get_code_cov.sh
 after_success:
