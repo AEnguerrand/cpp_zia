@@ -9,11 +9,11 @@
 #include "Log.hpp"
 #include "api.h"
 
-#include "Select.hh"
 #include "Socket.hh"
 #include "Buffer.hh"
 
 namespace nzm {
+  class Select;
   class Network : public zia::api::Net
   {
    private:
@@ -34,14 +34,10 @@ namespace nzm {
 
    private:
     void runSelect(short port, zia::api::Net::Callback cb);
+
+   public:
+    std::vector<zia::api::ImplSocket *>				_sockets;
   };
-}
-
-// Create instance
-
-extern "C" zia::api::Net * create()
-{
-  return new(nzm::Network);
 }
 
 #endif //CPP_ZIA_NETWORK_HH

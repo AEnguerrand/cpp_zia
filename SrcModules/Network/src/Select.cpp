@@ -1,7 +1,9 @@
 #include "Select.hh"
+#include "Network.hh"
 
-nzm::Select::Select(zia::api::Net::Callback cb):
-	_callback(cb)
+nzm::Select::Select(zia::api::Net::Callback cb, Network & network):
+	_callback(cb),
+	_network(network)
 {
 }
 
@@ -61,11 +63,14 @@ void nzm::Select::addTunnel(std::shared_ptr<Socket> socket)
 
   socketAccept->initClient(*socket);
   this->_tunnels.push_back(socketAccept);
+  this->_network._sockets.push_back(reinterpret_cast<zia::api::ImplSocket *>(socketAccept.get()));
+
 }
 
 void nzm::Select::removeTunnel(std::shared_ptr<Socket> socket)
 {
   this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), socket));
+  this->_network._sockets.erase(std::find(this->_network._sockets.begin(), this->_network._sockets.end(), reinterpret_cast<zia::api::ImplSocket *>(socket.get())));
 }
 
 void nzm::Select::addListenTunnels(std::shared_ptr<Socket> socket)

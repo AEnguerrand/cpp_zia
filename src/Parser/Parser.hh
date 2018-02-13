@@ -9,11 +9,14 @@ namespace nz {
   class Parser
   {
    private:
-    Process &_process;
+    Process 		&_process;
+    ::zia::api::Net 	*_net;
    public:
-    Parser(Process & process);
+    Parser(Process & process, ::zia::api::Net *net);
 
     void callbackRequestReceived(::zia::api::Net::Raw raw, ::zia::api::NetInfo netInfo);
+
+    void setNet(zia::api::Net *net);
   };
 }
 
