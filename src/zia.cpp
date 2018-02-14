@@ -2,6 +2,7 @@
 
 nz::zia::zia():
 	_process(_modulesLoader),
+	_parser(_process, nullptr),
 	_dlLoaderNet("moduleNet", true)
 {
 }
@@ -21,17 +22,20 @@ void nz::zia::start()
   // Load network
   this->_dlLoaderNet.addLib("./Modules/cpp_zia_module_network.so");
   this->_dlLoaderNet.dump();
-  ::zia::api::Net *net = this->_dlLoaderNet.getInstance("./Modules/cpp_zia_module_network.so");
-  if (net == nullptr) {
+  this->_net = this->_dlLoaderNet.getInstance("./Modules/cpp_zia_module_network.so");
+  if (this->_net == nullptr) {
       nz::Log::error("Fail load net module", "Zia Core", 1);
     }
+  this->_parser.setNet(this->_net);
   // Config network
   ::zia::api::Conf confNetwork;
-  net->config(confNetwork);
+  this->_net->config(confNetwork);
   // Run network
   ::zia::api::Net::Callback funcCallback = std::bind(&nz::Parser::callbackRequestReceived, this->_parser, std::placeholders::_1,
 						     std::placeholders::_2);
-  net->run(funcCallback);
+  this->_net->run(funcCallback);
+
+  while (1);
 }
 void nz::zia::stop()
 {

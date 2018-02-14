@@ -1,4 +1,12 @@
 #include "Network.hh"
+#include "Select.hh"
+
+// Create instance
+
+extern "C" zia::api::Net * create()
+{
+  return new(nzm::Network);
+}
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
@@ -8,12 +16,21 @@ bool nzm::Network::config(const zia::api::Conf &conf)
 
 bool nzm::Network::run(zia::api::Net::Callback cb)
 {
+  auto funcRunSelect = std::bind(&nzm::Network::runSelect, this, std::placeholders::_1, std::placeholders::_2);
+
+  this->_thListen.insert(std::pair<short, std::shared_ptr<std::thread>>(7000, std::make_shared<std::thread>(funcRunSelect, 7000, cb)));
+
   return false;
 }
 
 bool nzm::Network::send(zia::api::ImplSocket *sock, const zia::api::Net::Raw &resp)
 {
-  return false;
+  // Todo: use buffer for write
+  nz::Log::debug("SEND");
+  auto socket = reinterpret_cast<Socket *>(sock);
+  socket->getBufferOut().pushRaw(resp);
+  std::cout << "DATA W S:" << socket->getBufferOut().getHttpResponse().data() << std::endl;
+  return true;
 }
 
 bool nzm::Network::stop()
@@ -31,9 +48,14 @@ nzm::Network::~Network()
   nz::Log::inform("[Module Network]: Stop");
 }
 
-void nzm::Network::runAccept(ServerTcp serverTcp)
+void nzm::Network::runSelect(short port, zia::api::Net::Callback cb)
 {
-  Socket socketServer;
+  std::shared_ptr<Socket> socketServer = std::make_shared<Socket>();
+  Select select(cb, *this);
 
-  socketServer.initServer(serverTcp._port);
+  socketServer->initServer(port);
+  select.addListenTunnels(socketServer);
+  while (1) {
+      select.run();
+    }
 }

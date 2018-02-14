@@ -10,12 +10,24 @@ nz::Process::Process(nz::ModuleLoader &moduleLoader):
  * Function is call in Async (if paser HTTP is not call in Async)
  * @param duplex
  */
-void nz::Process::startProcess(zia::api::HttpDuplex duplex)
+void nz::Process::startProcess(zia::api::HttpDuplex & duplex)
 {
   auto Modules = this->_moduleLoader.getModules();
 
   for (auto it : Modules) {
       it.second->exec(duplex);
     }
-  // Order to send parser ZIA HTTP and at end network module
+
+  // Fake Module HTTP
+  // FOR TEST
+  std::string reponse;
+  std::string content = "<h1>Hello World</h1>";
+
+  reponse = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: " + std::to_string(content.length()) +  "\r\n\r\n" + content;
+
+  // Todo: Emplace back
+  for (char i : reponse) {
+      duplex.raw_resp.push_back(std::byte(i));
+    }
+  // FOR TEST - END
 }

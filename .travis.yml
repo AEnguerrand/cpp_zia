@@ -7,9 +7,17 @@ addons:
     - gcc-7
     - g++-7
 before_install:
-- export CC=/usr/bin/gcc-7
-- export CXX=/usr/bin/g++-7
-script: cd build && cmake .. && cmake --build . && ./cpp_zia
+  - export CC=/usr/bin/gcc-7
+  - export CXX=/usr/bin/g++-7
+  - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-7 90
+script:
+  - cd build
+  - cmake -Dtest=ON ..
+  - cmake --build .
+  - GTEST_COLOR=1 ctest
+  - mv ../get_code_cov.sh . && bash get_code_cov.sh
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 notifications:
   slack:
     secure: ASo4+UJjTp9spkVWtanj8Cj7ukYbUJhiUlD15jchsrULa4NoOM6mQB4x77iH1+5HX1kGyDCCpAkpwoQjpAa0awzi3AJQ23IRbHvhzq09ckimcEn9AS79fvRALththotRz6ku4oXrn6y1JszmvmJMGmwfMCsrsYqGYUhvbiJ3wUyo3sOS+F3jRBbMd4zUkM5AyWBMr2J2laPALk7KMxH9DLv84q543xFEFuU92PcxO2b6Fecce7MXxc5iKjUqnlHBXmyx6gr1eFeWtSYABLoyHF6K9geJTNVElDpp3Ctj4yOfxT+pO4RAJtK6A/D19AsZD1XleAQ4otp2TZHJEFyhSanRR9tUkr69991VAN0MsFL2vk7U7jof0iHzmj9E0GoIekEHHGAi8Nk7JbaVvcknpxwk3qIJ761nsgK0WO3KmPuGCQIOyfzE1es+Q63s1o36QWu6TWozUnUNZD6y5wNySo6IgTRDbmXN1rgZts9CUgdZaE33h4CGinha8DgEJefXyPR8QU9sJSRDBdoWzUXexJPNWYTaVoUDcSbDYC67z1370GOASQH3SdGceSs8a5L5CKTHLN/XInInSCkxYZPGdbRJDoWDvJUcVZgVIVaGleorKjkUw1n/0HPb8Y+r4wmrfnSMkforSJD9NLLTDYo9Xqa/k78N8La4VSUBZxEQWJU=

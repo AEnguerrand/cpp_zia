@@ -1,4 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
+
+################################
+# Build Zia Core
+################################
 project(cpp_zia)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -11,12 +15,59 @@ file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_library(stdc++fs UNKNOWN IMPORTED)
 set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-linux-gnu/7/libstdc++fs.a")
 
+find_package (Threads)
+
+
 add_executable(cpp_zia ${SOURCE_FILES})
 target_link_libraries(cpp_zia stdc++fs)
 target_link_libraries(cpp_zia ${CMAKE_DL_LIBS})
+target_link_libraries (cpp_zia ${CMAKE_THREAD_LIBS_INIT})
 
+################################
 # Build Modules
+################################
 add_subdirectory(SrcModules/Network)
 
-# Copie Modules
+################################
+# Copy Modules
+################################
 file(COPY Modules DESTINATION .)
+
+################################
+# Testing
+################################
+if (test)
+    if (APPLE)
+        add_definitions(-DGTEST_USE_OWN_TR1_TUPLE)
+        add_definitions(-D__GLIBCXX__)
+    endif (APPLE)
+
+    file(COPY CMakeLists.txt.in DESTINATION .)
+    configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+    execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+    add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+            "${CMAKE_BINARY_DIR}/googletest-build")
+    ##############
+    # Unit Tests
+    ##############
+    file(GLOB_RECURSE TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
+
+    set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+    set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
+
+    add_executable(runUnitTests ${TEST_SOURCE_FILES})
+
+    target_link_libraries(runUnitTests stdc++fs)
+    target_link_libraries(runUnitTests ${CMAKE_DL_LIBS})
+
+    target_link_libraries(runUnitTests gtest gtest_main pthread)
+
+    enable_testing()
+    add_test(NAME runUnitTests COMMAND runUnitTests)
+endif()
