@@ -12,7 +12,7 @@ namespace nz {
    public:
     Process(ModuleLoader &moduleLoader);
 
-    void startProcess(zia::api::HttpDuplex duplex);
+    void startProcess(zia::api::HttpDuplex & duplex);
   };
 }
 

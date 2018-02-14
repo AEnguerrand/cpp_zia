@@ -23,6 +23,7 @@ namespace nz {
 
     // Module Net
     DLLoader<::zia::api::Net>		_dlLoaderNet;
+    ::zia::api::Net 			*_net;
    public:
     zia();
     virtual ~zia();

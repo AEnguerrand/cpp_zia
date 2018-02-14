@@ -3,6 +3,7 @@
 
 #include <list>
 #include <vector>
+#include <cstddef>
 
 #include "api.h"
 
@@ -11,7 +12,7 @@ namespace nzm {
   {
    private:
 
-    std::list<char>	_buffer;
+    std::list<std::byte>	_buffer;
    public:
     Buffer();
 
@@ -23,6 +24,8 @@ namespace nzm {
 
     bool hasHTTPResponse() const;
     zia::api::Net::Raw getHttpResponse();
+
+    void pushRaw(const zia::api::Net::Raw &resp);
   };
 }
 

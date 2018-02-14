@@ -20,6 +20,7 @@
 #include "Socket.hh"
 
 namespace nzm {
+  class Network;
   class Select
   {
    private:
@@ -31,8 +32,9 @@ namespace nzm {
     std::vector<std::shared_ptr<Socket>>	_listenTunnels;
 
     zia::api::Net::Callback 			_callback;
+    Network &					_network;
    public:
-    Select(zia::api::Net::Callback cb);
+    Select(zia::api::Net::Callback cb, Network &network);
 
     void run();
 

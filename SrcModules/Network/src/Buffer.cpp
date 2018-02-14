@@ -5,13 +5,14 @@ nzm::Buffer::Buffer()
 
 void nzm::Buffer::push(char data)
 {
-  this->_buffer.push_back(data);
+  this->_buffer.push_back(std::byte(data));
 }
 
 char nzm::Buffer::pop()
 {
-  char data = this->_buffer.front();
-  this->_buffer.pop_front();
+  //Todo: Fix this function and remove char for all
+  //char data = this->_buffer.front();
+  //this->_buffer.pop_front();
   return 0;
 }
 
@@ -32,20 +33,17 @@ bool nzm::Buffer::hasHTTPResponse() const
 
 zia::api::Net::Raw nzm::Buffer::getHttpResponse()
 {
-  // FOR TEST
-  std::string reponse;
-  std::string content = "<h1>Hello World</h1>";
-
-  reponse = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: " + std::to_string(content.length()) +  "\r\n\r\n" + content;
-
-  for (char i : reponse) {
-      this->push(i);
-    }
-  // FOR TEST - END
   zia::api::Net::Raw ret;
 
-  for (char i : this->_buffer) {
-      ret.push_back(std::byte(i));
+  for (auto i : this->_buffer) {
+      ret.push_back(i);
     }
   return ret;
+}
+
+void nzm::Buffer::pushRaw(const zia::api::Net::Raw &resp)
+{
+  for (auto & u : resp) {
+      this->_buffer.push_back(u);
+    }
 }
