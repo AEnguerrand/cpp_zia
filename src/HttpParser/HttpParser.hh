@@ -22,17 +22,19 @@ namespace nz
 		HttpParser();
 		virtual ~HttpParser();
 
-	public:
+	private:
 		zia::api::HttpRequest	GetRequest(const std::vector<std::string> & input);
 		zia::api::HttpResponse	GetResponse(const std::vector<std::string> & input);
 
 	private:
 		zia::api::http::Method	GetMethodFromString(const std::string & input);
 		zia::api::http::Version GetVersionFromString(const std::string & input);
+		void					CheckValidity(zia::api::HttpRequest);
 
 	public:
-		zia::api::HttpDuplex	Parse(zia::api::Net::Raw request);
-		void					CheckValidity(zia::api::HttpRequest);
+		zia::api::HttpDuplex	Parse(const zia::api::Net::Raw & request);
+		zia::api::HttpResponse	GetResponse(const std::string & input);
+		zia::api::HttpResponse	GetResponse(const zia::api::Net::Raw & input);
 	};
 }
 

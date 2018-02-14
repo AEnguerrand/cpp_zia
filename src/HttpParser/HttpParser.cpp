@@ -81,7 +81,7 @@ zia::api::HttpRequest nz::HttpParser::GetRequest(const std::vector<std::string> 
 		while ((pos = fLine.find(SP)) != std::string::npos)
 		{
 			tokens.push_back(fLine.substr(0, pos));
-			fLine = fLine.substr(pos + strlen(SP));
+			fLine = fLine.substr(pos + std::strlen(SP));
 		}
 		tokens.push_back(fLine.substr(0, pos));
 
@@ -111,20 +111,28 @@ zia::api::HttpRequest nz::HttpParser::GetRequest(const std::vector<std::string> 
 	}
 
 	// Find the body
-	if (data.size())
+	std::string body;
+	while (data.size())
 	{
-		// Remove the empty line
+		body += data.at(0) + CRLF;
 		data.erase(data.begin());
-		std::string body;
-		while (data.size())
-		{
-			body += data.at(0) + CRLF;
-			data.erase(data.begin());
-		}
-		output.body = transform::StringToRaw(transform::EpurStr(body));
 	}
+	output.body = transform::StringToRaw(transform::EpurStr(body));
+
 	return output;
 }
+
+zia::api::HttpResponse	nz::HttpParser::GetResponse(const zia::api::Net::Raw & input)
+{
+	return GetResponse(transform::RawToString(input));
+}
+
+zia::api::HttpResponse	nz::HttpParser::GetResponse(const std::string & input)
+{
+	std::vector<std::string> row = transform::Split(transform::EpurStr(input, "\r\n"), CRLF);
+	return GetResponse(row);
+}
+
 
 zia::api::HttpResponse nz::HttpParser::GetResponse(const std::vector<std::string> & input)
 {
@@ -152,7 +160,7 @@ zia::api::HttpResponse nz::HttpParser::GetResponse(const std::vector<std::string
 		while ((pos = fLine.find(SP)) != std::string::npos)
 		{
 			tokens.push_back(fLine.substr(0, pos));
-			fLine = fLine.substr(pos + strlen(SP));
+			fLine = fLine.substr(pos + std::strlen(SP));
 		}
 		tokens.push_back(fLine.substr(0, pos));
 
@@ -182,29 +190,25 @@ zia::api::HttpResponse nz::HttpParser::GetResponse(const std::vector<std::string
 	}
 
 	// Find the body
-	if (data.size())
+	std::string body;
+	while (data.size())
 	{
-		// Remove the empty line
+		body += data.at(0) + CRLF;
 		data.erase(data.begin());
-		std::string body;
-		while (data.size())
-		{
-			body += data.at(0) + "\n";
-			data.erase(data.begin());
-		}
-		output.body = transform::StringToRaw(transform::EpurStr(body));
 	}
+	output.body = transform::StringToRaw(transform::EpurStr(body));
+
 	return output;
 }
 
-zia::api::HttpDuplex	nz::HttpParser::Parse(zia::api::Net::Raw raw)
+zia::api::HttpDuplex	nz::HttpParser::Parse(const zia::api::Net::Raw & raw)
 {
 	zia::api::HttpDuplex back;
 	std::string request = transform::RawToString(raw);
-	std::vector<std::string> lines = transform::Split(transform::EpurStr(request), CRLF);
+	std::vector<std::string> row = transform::Split(transform::EpurStr(request, "\r\n"), CRLF);
 
 	back.raw_req = raw;
-	back.req = GetRequest(lines);
+	back.req = GetRequest(row);
 
 	CheckValidity(back.req);
 
