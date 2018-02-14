@@ -61,7 +61,7 @@ if (test)
     set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
     set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 
-    add_executable(runUnitTests ${TEST_SOURCE_FILES} ${SOURCE_FILES})
+    add_executable(runUnitTests ${TEST_SOURCE_FILES})
 
     target_link_libraries(runUnitTests stdc++fs)
     target_link_libraries(runUnitTests ${CMAKE_DL_LIBS})
