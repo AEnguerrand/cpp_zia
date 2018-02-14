@@ -25,6 +25,7 @@ void nz::Process::startProcess(zia::api::HttpDuplex & duplex)
 
   reponse = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: " + std::to_string(content.length()) +  "\r\n\r\n" + content;
 
+  // Todo: Emplace back
   for (char i : reponse) {
       duplex.raw_resp.push_back(std::byte(i));
     }
