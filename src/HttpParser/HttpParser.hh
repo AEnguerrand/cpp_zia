@@ -5,8 +5,8 @@
 #ifndef HTTP_PARSER_HPP_
 # define HTTP_PARSER_HPP_
 
-#include <string.h>
 #include <iostream>
+#include <cstring>
 #include <vector>
 #include "HttpParserException.hpp"
 #include "Transform.hpp"
