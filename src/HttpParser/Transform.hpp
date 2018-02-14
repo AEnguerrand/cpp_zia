@@ -35,12 +35,13 @@ namespace transform
 		std::string token;
 		size_t pos = 0;
 
-		while ((pos = tmp.find("\n")) != std::string::npos)
+		while ((pos = tmp.find(delimiter)) != std::string::npos)
 		{
 			token = tmp.substr(0, pos);
 			output.push_back(token);
 			tmp.erase(0, pos + delimiter.length());
 		}
+		output.push_back(tmp);
 		return output;
 	}
 
@@ -48,17 +49,22 @@ namespace transform
 	{
 		std::string tmp;
 		std::string output;
+		std::istringstream iss(input);
 
-		auto data = Split(input, "\n");
+		if (iss >> tmp)
+			output += tmp;
+		while (iss >> tmp)
+			output += ' ' + tmp;
+		return output;
+	}
+
+	static std::string	EpurStr(const std::string & input, const std::string & save)
+	{
+		auto data = Split(input, save);
+		std::string output;
+
 		for (auto it : data)
-		{
-			std::istringstream iss(it);
-			if (iss >> tmp)
-				output += tmp;
-			while (iss >> tmp)
-				output += ' ' + tmp;
-			output += "\n";
-		}
+			output += EpurStr(it) + save;
 		return output;
 	}
 
