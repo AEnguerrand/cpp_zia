@@ -6,12 +6,12 @@ addons:
     packages:
     - gcc-7
     - g++-7
+    - lcov
 before_install:
   - export CC=/usr/bin/gcc-7
   - export CXX=/usr/bin/g++-7
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-7 90
 script:
-  - ./configure.sh
   - cd build
   - cmake -Dtest=ON ..
   - cmake --build .
