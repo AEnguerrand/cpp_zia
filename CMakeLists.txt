@@ -53,13 +53,14 @@ if (BUILD_TESTS)
 
     add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
             "${CMAKE_BINARY_DIR}/googletest-build")
+
     ##############
     # Unit Tests
     ##############
     file(GLOB_RECURSE TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
-    file(GLOB_RECURSE T_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
+    file(GLOB_RECURSE T_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
-    list(REMOVE_ITEM T_SOURCE_FILES "*/main.cpp")
+    list(REMOVE_ITEM T_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 
     set(CMAKE_CXX_FLAGS "-g --coverage -O0 -Wall -fprofile-arcs -ftest-coverage")
     set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
