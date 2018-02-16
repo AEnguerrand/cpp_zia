@@ -36,7 +36,7 @@ file(COPY Modules DESTINATION .)
 ################################
 # Testing
 ################################
-if (test)
+if (BUILD_TESTS)
     if (APPLE)
         add_definitions(-DGTEST_USE_OWN_TR1_TUPLE)
         add_definitions(-D__GLIBCXX__)
@@ -57,11 +57,14 @@ if (test)
     # Unit Tests
     ##############
     file(GLOB_RECURSE TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
+    file(GLOB_RECURSE T_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
 
-    set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+    list(REMOVE_ITEM T_SOURCE_FILES "*/main.cpp")
+
+    set(CMAKE_CXX_FLAGS "-g --coverage -O0 -Wall -fprofile-arcs -ftest-coverage")
     set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 
-    add_executable(runUnitTests ${TEST_SOURCE_FILES})
+    add_executable(runUnitTests ${TEST_SOURCE_FILES} ${T_SOURCE_FILES})
 
     target_link_libraries(runUnitTests stdc++fs)
     target_link_libraries(runUnitTests ${CMAKE_DL_LIBS})
