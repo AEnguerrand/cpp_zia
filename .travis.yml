@@ -13,7 +13,7 @@ before_install:
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-7 90
 script:
   - cd build
-  - cmake -Dtest=ON ..
+  - cmake -DBUILD_TESTS=ON ..
   - cmake --build .
   - GTEST_COLOR=1 ctest
   - mv ../get_code_cov.sh . && bash get_code_cov.sh
