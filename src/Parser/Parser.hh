@@ -1,6 +1,8 @@
 #ifndef CPP_ZIA_PARSER_HH
 #define CPP_ZIA_PARSER_HH
 
+#include <future>
+
 #include "api.h"
 #include "Log.hpp"
 
