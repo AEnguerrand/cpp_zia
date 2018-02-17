@@ -10,10 +10,21 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw raw, ::zia::api::N
   // Async process HTTP
   nz::Log::debug("CALLBACK READ TRIGGER");
   // Parser
-  zia::api::HttpDuplex httpDuplex;
+
+  std::cout << "DATA CALLBACK: ";
+  for (auto i : raw) {
+   std::cout << static_cast<char>(i);
+  }
+  std::cout << std::endl;
+
+  zia::api::HttpDuplex httpDuplex = this->_httpParser.Parse(raw);
+
+  httpDuplex.info = netInfo;
+  httpDuplex.raw_req = raw;
 
   this->_process.startProcess(httpDuplex);
   // Order to send parser ZIA HTTP and at end network module
+  // Todo: Tranform httpDuplex to raw
   this->_net->send(netInfo.sock, httpDuplex.raw_resp);
 }
 

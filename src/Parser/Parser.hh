@@ -3,7 +3,9 @@
 
 #include "api.h"
 #include "Log.hpp"
+
 #include "../Process/Process.hh"
+#include "../HttpParser/HttpParser.hh"
 
 namespace nz {
   class Parser
@@ -11,6 +13,8 @@ namespace nz {
    private:
     Process 		&_process;
     ::zia::api::Net 	*_net;
+
+    HttpParser		_httpParser;
    public:
     Parser(Process & process, ::zia::api::Net *net);
 
