@@ -14,7 +14,6 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw raw, ::zia::api::N
     zia::api::HttpDuplex httpDuplex = this->_httpParser.Parse(raw);
 
     httpDuplex.info = netInfo;
-    httpDuplex.raw_req = raw;
 
     this->_process.startProcess(httpDuplex);
     // Order to send parser ZIA HTTP and at end network module
