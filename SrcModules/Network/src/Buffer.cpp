@@ -23,7 +23,13 @@ bool nzm::Buffer::hasHTTPRequest() const
 
 zia::api::Net::Raw nzm::Buffer::getHttpRequest()
 {
-  return zia::api::Net::Raw();
+    zia::api::Net::Raw ret;
+
+  for (auto i : this->_buffer) {
+      ret.push_back(i);
+    }
+
+  return ret;
 }
 
 bool nzm::Buffer::hasHTTPResponse() const
