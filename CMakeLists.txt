@@ -8,6 +8,10 @@ project(cpp_zia)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(MSVC)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+endif(MSVC)
+
 include_directories(includes api lib)
 
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
@@ -26,7 +30,7 @@ target_link_libraries (cpp_zia ${CMAKE_THREAD_LIBS_INIT})
 ################################
 # Build Modules
 ################################
-add_subdirectory(SrcModules/Network)
+#add_subdirectory(SrcModules/Network)
 
 ################################
 # Copy Modules

@@ -1,15 +1,15 @@
 #ifndef CPP_ZIA_DLLOADER_HH
 #define CPP_ZIA_DLLOADER_HH
 
-#ifndef WIN32
+#ifdef WIN32
 
 #include <string>
 #include <memory>
 #include <iomanip>
 #include <iostream>
-#include <dlfcn.h>
 #include <unordered_map>
 #include <vector>
+#include <windows.h>
 #include <string>
 #include <algorithm>
 
@@ -20,7 +20,7 @@ namespace nz
   {
    private:
     std::vector<std::string> libs;
-    std::unordered_map<std::string, void *> handlers;
+    std::unordered_map<std::string, HMODULE> handlers;
     std::unordered_map<std::string, T *> instances;
     std::string name;
     bool noise;
@@ -39,7 +39,7 @@ namespace nz
 
     void addLib(const std::string &path)
     {
-      void *handler;
+		HMODULE handler;
 
       if (std::find(this->libs.begin(), this->libs.end(), path) != this->libs.end())
 	{
@@ -54,10 +54,9 @@ namespace nz
 	{
 	  std::cerr << "_> Adding new lib in (" << this->name << ") [" << path << "]" << std::endl;
 	}
-
-      if ((handler = dlopen(path.c_str(), RTLD_LAZY)) == nullptr)
+	  if ((handler = LoadLibrary(path.c_str())) == nullptr)
 	{
-	  std::cerr << dlerror() << std::endl;
+		  std::cerr << "Error when loading " << path.c_str() << std::endl;
 	}
       else
 	{
@@ -148,7 +147,7 @@ namespace nz
 
     T *getInstance(const std::string &path)
     {
-      void *handler;
+      HMODULE handler;
       T *(*symbol)();
 
       // If there is already an instance of $path, then return it
@@ -163,12 +162,12 @@ namespace nz
       if (this->noise)
 	std::cerr << "_> Creating new instance of [" << path << "] in (" << this->name << ")..." << std::endl;
 
-      if ((symbol = (T *(*)())dlsym(handler, "create")) == nullptr)
-	{
-	  this->handlers.erase(path);
-	  std::cerr << dlerror() << std::endl;
-	  return nullptr;
-	}
+	  if ((symbol = reinterpret_cast<T*(*)()>(GetProcAddress(handler, "CObject"))) == nullptr)
+	  {
+		  this->handlers.erase(path);
+		  std::cerr << "Error when loading CObject from dll file " << path.c_str() << std::endl;
+		  return (nullptr);
+	  }
 
       this->instances[path] = symbol();
 
@@ -181,7 +180,7 @@ namespace nz
 
     void deleteInstance(const std::string &path)
     {
-      void *handler;
+      HMODULE handler;
       T *(*symbol)(T *);
 
       if (noise)
@@ -209,12 +208,11 @@ namespace nz
 
 	  return;
 	}
-
-      if ((symbol = (T *(*)(T *))dlsym(handler, "DObject")) == nullptr)
-	{
-	  std::cerr << dlerror() << std::endl;
-	  return;
-	}
+	  if ((symbol = reinterpret_cast<T*(*)(T*)>(GetProcAddress(handler, "DObject"))) == nullptr)
+	  {
+		  std::cerr << "Error when loading DObject from dll file " << path.c_str() << std::endl;
+		  return;
+	  }
 
       symbol(this->instances[path]);
       this->instances[path] = nullptr;
@@ -236,10 +234,8 @@ namespace nz
 	}
       else
 	{
-	  if (dlclose(this->handlers[path]))
-	    {
-	      std::cerr << dlerror() << std::endl;
-	    }
+		  if (FreeLibrary(this->handlers.at(path)))
+			  std::cerr << "Error when using FreeLibrary." << std::endl;
 	}
     }
 
@@ -260,10 +256,8 @@ namespace nz
 	    }
 	  else
 	    {
-	      if (dlclose(this->handlers[(*it)]))
-		{
-		  std::cerr << dlerror() << std::endl;
-		}
+		  if (FreeLibrary(this->handlers.at((*it))))
+			  std::cerr << "Error when using FreeLibrary." << std::endl;
 	    }
 	}
 
@@ -274,7 +268,6 @@ namespace nz
     }
   };
 }
-
 #endif
 
 #endif //CPP_ZIA_DLLOADER_HH
