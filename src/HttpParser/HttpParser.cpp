@@ -158,7 +158,7 @@ zia::api::Net::Raw		nz::HttpParser::ResponseToRaw(const zia ::api::HttpResponse 
 	std::string			tmp;
 
 	tmp += GetStringFromVersion(input.version) + SP;
-	tmp += input.status + SP;
+	tmp += std::to_string(input.status) + SP;
 	tmp += input.reason + CRLF;
 	for (auto it : input.headers)
 		tmp += it.first + ":" + SP + it.second + CRLF;

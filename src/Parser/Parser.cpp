@@ -14,12 +14,17 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
 
     httpDuplex.info = netInfo;
 
-    this->_process.startProcess(httpDuplex);
     // Order to send parser ZIA HTTP and at end network module
-    // Todo: Tranform httpDuplex to raw
+    this->_process.startProcess(httpDuplex);
+
+    // Convert http response into raw
+    httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
+
+    // Send network
     this->_net->send(netInfo.sock, httpDuplex.raw_resp);
   }, cRaw, cNetInfo));
 
+  // Todo: List for queue of async (because now wait end of async, is useless now)
   processStart.get();
 }
 
