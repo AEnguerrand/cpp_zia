@@ -17,6 +17,7 @@ namespace nz {
     ::zia::api::Net 	*_net;
 
     HttpParser		_httpParser;
+
    public:
     Parser(Process & process, ::zia::api::Net *net);
 

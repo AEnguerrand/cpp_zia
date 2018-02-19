@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <thread>
 #include <memory>
+#include <future>
 
 #include "Errors.hpp"
 #include "Log.hpp"
@@ -17,7 +18,7 @@ namespace nzm {
   class Network : public zia::api::Net
   {
    private:
-    std::unordered_map<short, std::shared_ptr<std::thread>>	_thListen;
+    std::shared_ptr<std::thread>	_select;
    public:
     Network();
 
@@ -34,9 +35,6 @@ namespace nzm {
 
    private:
     void runSelect(short port, zia::api::Net::Callback cb);
-
-   public:
-    std::vector<zia::api::ImplSocket *>				_sockets;
   };
 }
 
