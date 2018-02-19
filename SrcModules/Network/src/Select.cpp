@@ -20,16 +20,9 @@ void nzm::Select::run()
       FD_SET(it->getFd(), &this->_fdsRead);
       FD_SET(it->getFd(), &this->_fdsWrite);
     }
-  if (select(this->getMaxFd() + 1, &this->_fdsRead, NULL, NULL, NULL) > 0) {
-      for (auto &it : this->_listenTunnels) {
-	  if (FD_ISSET(it->getFd(), &this->_fdsRead)) {
-	      nz::Log::debug("SELECT ADD");
-	      this->addTunnel(it);
-	    }
-	}
+  if (select(this->getMaxFd() + 1, &this->_fdsRead, &this->_fdsWrite, NULL, NULL) > 0) {
       for (auto &it : this->_tunnels) {
 	  if (FD_ISSET(it->getFd(), &this->_fdsRead)) {
-	      nz::Log::debug("SELECT DATA READ");
 	      try {
 		  it->read();
 		  if (it->getBufferIn().hasHTTPRequest()) {
@@ -39,19 +32,23 @@ void nzm::Select::run()
 		    }
 		}
 	      catch (ModuleNetworkException &e) {
-		  this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), it));
-		  continue ;
+		  this->removeTunnel(it);
+		  break ;
 		}
 	    }
 	  if (FD_ISSET(it->getFd(), &this->_fdsWrite)) {
-	      nz::Log::debug("SELECT DATA WRITE");
 	      try {
 		  it->checkWrite();
 		}
 	      catch (ModuleNetworkException &e) {
-		  this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), it));
-		  continue ;
+		  this->removeTunnel(it);
+		  break ;
 		}
+	    }
+	}
+      for (auto &it : this->_listenTunnels) {
+	  if (FD_ISSET(it->getFd(), &this->_fdsRead)) {
+	      this->addTunnel(it);
 	    }
 	}
     }
@@ -59,18 +56,21 @@ void nzm::Select::run()
 
 void nzm::Select::addTunnel(std::shared_ptr<Socket> socket)
 {
-  auto 	socketAccept = std::make_shared<Socket>();
+  std::shared_ptr<Socket> socketAccept = std::make_shared<Socket>();
 
-  socketAccept->initClient(*socket);
-  this->_tunnels.push_back(socketAccept);
-  this->_network._sockets.push_back(reinterpret_cast<zia::api::ImplSocket *>(socketAccept.get()));
+  socketAccept->initClient(*socket.get());
+  this->_tunnels.push_back(std::move(socketAccept));
 
 }
 
 void nzm::Select::removeTunnel(std::shared_ptr<Socket> socket)
 {
-  this->_tunnels.erase(std::find(this->_tunnels.begin(), this->_tunnels.end(), socket));
-  this->_network._sockets.erase(std::find(this->_network._sockets.begin(), this->_network._sockets.end(), reinterpret_cast<zia::api::ImplSocket *>(socket.get())));
+  for (unsigned int i = 0 ; i < this->_tunnels.size() ; i++) {
+      if (this->_tunnels.at(i) == socket) {
+	  this->_tunnels.erase(this->_tunnels.begin() + i);
+	  break ;
+	}
+    }
 }
 
 void nzm::Select::addListenTunnels(std::shared_ptr<Socket> socket)
@@ -90,4 +90,14 @@ int nzm::Select::getMaxFd()
 	maxFd = it->getFd();
     }
   return maxFd;
+}
+
+void nzm::Select::printTunnels()
+{
+  std::cerr << "Tunnels list" << std::endl;
+  std::cerr << "[---------------------------]" << std::endl;
+  for (auto &i : this->_tunnels) {
+      std::cerr << std::setw(4) << i->getFd() << std::endl;
+    }
+  std::cerr << "[---------------------------]" << std::endl;
 }
