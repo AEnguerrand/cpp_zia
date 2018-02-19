@@ -4,6 +4,7 @@
 #include <vector>
 #include <functional>
 #include <memory>
+#include <iomanip>
 
 #ifdef _WIN32
 #include <ws2tcpip.h>
@@ -45,6 +46,8 @@ namespace nzm {
 
    private:
     int getMaxFd();
+
+    void printTunnels();
   };
 }
 

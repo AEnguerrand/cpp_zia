@@ -4,19 +4,23 @@ nzm::Socket::Socket():
 	_isInit(false),
 	_fd(-1)
 {
-  nz::Log::debug("Socket CTOR");
 }
 
 nzm::Socket::~Socket()
 {
+  this->_isInit = false;
   shutdown(this->getFd(), SHUT_RDWR);
   close(this->getFd());
-  nz::Log::debug("Socket DTOR");
 }
 
 int nzm::Socket::getFd() const
 {
   return this->_fd;
+}
+
+bool nzm::Socket::isInit() const
+{
+  return this->_isInit;
 }
 
 int nzm::Socket::initServer(short port)
@@ -82,7 +86,6 @@ int nzm::Socket::read()
   for (auto i = 0; i < len ; i++) {
       this->_bufferIn.push(buf[i]);
     }
-  std::cout << "READ: " << buf << std::endl;
   return len;
 }
 
@@ -92,7 +95,6 @@ int nzm::Socket::write(zia::api::Net::Raw raw)
   if (len <= 0) {
       throw ModuleNetworkException("Socket is close");
     }
-  std::cout << "WRITE:" << raw.data() << std::endl;
   return 0;
 }
 
