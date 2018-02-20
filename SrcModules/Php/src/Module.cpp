@@ -16,6 +16,6 @@ bool Module::config(const zia::api::Conf& conf){
 }
 
 bool Module::exec(zia::api::HttpDuplex& http){
-    std::cout << "PHP HERE" << std::endl;
+    std::cout << "PHP exec" << std::endl;
     return true;
 }
