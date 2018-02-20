@@ -18,7 +18,7 @@ void nz::ModuleLoader::loadAll()
       if (std::experimental::filesystem::is_regular_file(p) && std::experimental::filesystem::path(p).extension() == ".so")
 	{
 	  if (std::experimental::filesystem::path(p).filename() != "cpp_zia_module_network.so") {
-	      this->_dlLoader.addLib(std::experimental::filesystem::path(p));
+	      this->_dlLoader.addLib(std::experimental::filesystem::path(p).string());
 	    }
 	}
     }
