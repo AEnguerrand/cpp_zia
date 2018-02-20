@@ -16,8 +16,11 @@ char nzm::Buffer::pop()
   return 0;
 }
 
+// Todo: change the way of check this
 bool nzm::Buffer::hasHTTPRequest() const
 {
+  if (this->_buffer.empty())
+      return false;
   return true;
 }
 
@@ -34,6 +37,8 @@ zia::api::Net::Raw nzm::Buffer::getHttpRequest()
 
 bool nzm::Buffer::hasHTTPResponse() const
 {
+  if (this->_buffer.empty())
+      return false;
   return true;
 }
 

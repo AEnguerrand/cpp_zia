@@ -32,18 +32,20 @@ void nzm::Select::run()
 		    }
 		}
 	      catch (ModuleNetworkException &e) {
-		  this->removeTunnel(it);
-		  break ;
-		}
+          std::cerr << "ModuleNetwork read error: " << e.what() << std::endl;
+		      this->removeTunnel(it);
+		      break ;
+		    }
 	    }
 	  if (FD_ISSET(it->getFd(), &this->_fdsWrite)) {
 	      try {
-		  it->checkWrite();
-		}
+		      it->checkWrite();
+		    }
 	      catch (ModuleNetworkException &e) {
-		  this->removeTunnel(it);
-		  break ;
-		}
+          std::cerr << "ModuleNetwork write error: " << e.what() << std::endl;
+          this->removeTunnel(it);
+          break ;
+        }
 	    }
 	}
       for (auto &it : this->_listenTunnels) {
