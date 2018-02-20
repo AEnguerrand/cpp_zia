@@ -54,6 +54,25 @@ zia::api::http::Version	nz::HttpParser::GetVersionFromString(const std::string &
 	return zia::api::http::Version::unknown;
 }
 
+std::string		nz::HttpParser::GetStringFromVersion(const zia::api::http::Version & input)
+{
+	const std::map<std::string, zia::api::http::Version> link =
+	{
+		{ "HTTP/0.9", zia::api::http::Version::http_0_9 },
+	{ "HTTP/1.0", zia::api::http::Version::http_1_0 },
+	{ "HTTP/1.1", zia::api::http::Version::http_1_1 },
+	{ "HTTP/2.0", zia::api::http::Version::http_2_0 }
+	};
+
+	for (auto it : link)
+	{
+		if (it.second == input)
+			return it.first;
+	}
+	throw nz::HttpParserException("Unknown Version");
+	return "Unknown";
+}
+
 zia::api::HttpRequest nz::HttpParser::GetRequest(const std::vector<std::string> & input)
 {
 	size_t pos = 0;
@@ -129,10 +148,26 @@ zia::api::HttpResponse	nz::HttpParser::GetResponse(const zia::api::Net::Raw & in
 
 zia::api::HttpResponse	nz::HttpParser::GetResponse(const std::string & input)
 {
-	std::vector<std::string> row = transform::Split(transform::EpurStr(input, "\r\n"), CRLF);
+	std::vector<std::string> row = transform::Split(transform::EpurStr(input, CRLF), CRLF);
 	return GetResponse(row);
 }
 
+zia::api::Net::Raw		nz::HttpParser::ResponseToRaw(const zia ::api::HttpResponse &input)
+{
+	zia::api::Net::Raw	output;
+	std::string			tmp;
+
+	tmp += GetStringFromVersion(input.version) + SP;
+	tmp += std::to_string(input.status) + SP;
+	tmp += input.reason + CRLF;
+	for (auto it : input.headers)
+		tmp += it.first + ":" + SP + it.second + CRLF;
+	tmp += CRLF;
+	tmp += transform::RawToString(input.body);
+
+	output = transform::StringToRaw(tmp);
+	return output;
+}
 
 zia::api::HttpResponse nz::HttpParser::GetResponse(const std::vector<std::string> & input)
 {
@@ -205,7 +240,7 @@ zia::api::HttpDuplex	nz::HttpParser::Parse(const zia::api::Net::Raw & raw)
 {
 	zia::api::HttpDuplex back;
 	std::string request = transform::RawToString(raw);
-	std::vector<std::string> row = transform::Split(transform::EpurStr(request, "\r\n"), CRLF);
+	std::vector<std::string> row = transform::Split(transform::EpurStr(request, CRLF), CRLF);
 
 	back.raw_req = raw;
 	back.req = GetRequest(row);

@@ -37,6 +37,8 @@ namespace nzm {
 
     bool isServer() const;
 
+    bool isInit() const;
+
 
     int initServer(short port);
     int initClient(Socket & socketServer);
