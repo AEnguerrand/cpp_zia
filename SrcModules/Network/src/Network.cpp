@@ -18,7 +18,7 @@ bool nzm::Network::run(zia::api::Net::Callback cb)
 {
   auto funcRunSelect = std::bind(&nzm::Network::runSelect, this, std::placeholders::_1, std::placeholders::_2);
 
-  this->_thListen.insert(std::pair<short, std::shared_ptr<std::thread>>(7000, std::make_shared<std::thread>(funcRunSelect, 7000, cb)));
+  this->_select = std::make_shared<std::thread>(funcRunSelect, 7000, cb);
 
   return false;
 }
@@ -26,10 +26,8 @@ bool nzm::Network::run(zia::api::Net::Callback cb)
 bool nzm::Network::send(zia::api::ImplSocket *sock, const zia::api::Net::Raw &resp)
 {
   // Todo: use buffer for write
-  nz::Log::debug("SEND");
   auto socket = reinterpret_cast<Socket *>(sock);
   socket->getBufferOut().pushRaw(resp);
-  std::cout << "DATA W S:" << socket->getBufferOut().getHttpResponse().data() << std::endl;
   return true;
 }
 
@@ -55,7 +53,7 @@ void nzm::Network::runSelect(short port, zia::api::Net::Callback cb)
 
   socketServer->initServer(port);
   select.addListenTunnels(socketServer);
-  while (1) {
+  while (true) {
       select.run();
     }
 }
