@@ -66,5 +66,4 @@ build
 
 # Visual Studio generation
 .vs
-.vscode/c_cpp_properties.json
-.vscode/settings.json
+.vscode/
