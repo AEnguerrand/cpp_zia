@@ -5,12 +5,12 @@ nz::ParserJson::ParserJson(const std::string& path)
   std::ifstream   file(path);
   nlohmann::json  json;
 
-  std::cerr << "Test 1" << std::endl;
   try {
     file >> json;
   }
   catch (nlohmann::detail::parse_error) {
     this->_fileInvalid = true;
+    file.close();
     return;
   }
   this->_json = json;
