@@ -36,7 +36,7 @@ void nzm::Select::run()
 		  break ;
 		}
 	    }
-	  if (FD_ISSET(it->getFd(), &this->_fdsWrite)) {
+	  else if (FD_ISSET(it->getFd(), &this->_fdsWrite)) {
 	      try {
 		  it->checkWrite();
 		}
@@ -51,6 +51,8 @@ void nzm::Select::run()
 	      this->addTunnel(it);
 	    }
 	}
+      //Todo: Remove and fix error "server disconnect user"
+      this->printTunnels();
     }
 }
 
@@ -67,6 +69,8 @@ void nzm::Select::removeTunnel(std::shared_ptr<Socket> socket)
 {
   for (unsigned int i = 0 ; i < this->_tunnels.size() ; i++) {
       if (this->_tunnels.at(i) == socket) {
+	  FD_CLR(this->_tunnels.at(i)->getFd(), &this->_fdsRead);
+	  FD_CLR(this->_tunnels.at(i)->getFd(), &this->_fdsWrite);
 	  this->_tunnels.erase(this->_tunnels.begin() + i);
 	  break ;
 	}
