@@ -19,6 +19,7 @@ void nz::ModuleLoader::loadAll()
 	{
 	  if (std::experimental::filesystem::path(p).filename() != "cpp_zia_module_network.so") {
 	      this->_dlLoader.addLib(std::experimental::filesystem::path(p));
+	      this->_dlLoader.getInstance(std::experimental::filesystem::path(p));
 	    }
 	}
     }

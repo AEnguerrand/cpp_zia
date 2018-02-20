@@ -3,7 +3,7 @@
 
 using namespace nzm;
 
-extern "C" zia::api::Module* Module::create(){
+extern "C" Module* create(){
     return new Module();
 }
 

@@ -22,8 +22,6 @@ namespace nzm
         * \return true on success, otherwise false.
         */
         bool exec(zia::api::HttpDuplex& http);
-
-        zia::api::Module* create();
     };
 }
 
