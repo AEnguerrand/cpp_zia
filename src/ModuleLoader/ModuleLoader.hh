@@ -9,7 +9,7 @@
 
 
 #include "api.h"
-#ifndef WIN32
+#ifndef _WIN32
 #include "DLLoader.hh"
 #else
 #include "DLLoader_Win.hh"

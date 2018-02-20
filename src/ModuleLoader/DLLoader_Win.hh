@@ -1,7 +1,7 @@
 #ifndef CPP_ZIA_DLLOADER_HH
 #define CPP_ZIA_DLLOADER_HH
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #include <string>
 #include <memory>

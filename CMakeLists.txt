@@ -16,19 +16,17 @@ include_directories(includes api lib)
 
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
-if (UNIX AND NOT APPLE AND NOT FSLIB_STATIC)
+if (UNIX)
   set(FSLIB_STATIC "/usr/lib/gcc/x86_64-linux-gnu/7/libstdc++fs.a")
 endif()
   ### LIBCSTD++FS (UNIX)
-if (UNIX AND NOT APPLE)
+if (UNIX)
   add_library(stdc++fs UNKNOWN IMPORTED)
   set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION ${FSLIB_STATIC})
   target_link_libraries(cpp_zia stdc++fs)
   target_link_libraries(cpp_zia ${CMAKE_DL_LIBS})
+  find_package (Threads)
 endif()
-
-find_package (Threads)
-
 
 add_executable(cpp_zia ${SOURCE_FILES})
 
@@ -54,6 +52,7 @@ if (BUILD_TESTS)
     endif (APPLE)
 
     file(COPY CMakeLists.txt.in DESTINATION .)
+
     configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
     execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
@@ -76,12 +75,22 @@ if (BUILD_TESTS)
     set(CMAKE_CXX_FLAGS "-g --coverage -O0 -Wall -fprofile-arcs -ftest-coverage")
     set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 
+    if(MSVC)
+    	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+    endif(MSVC)
+
     add_executable(runUnitTests ${TEST_SOURCE_FILES} ${T_SOURCE_FILES})
 
-    target_link_libraries(runUnitTests stdc++fs)
-    target_link_libraries(runUnitTests ${CMAKE_DL_LIBS})
+    if (UNIX AND NOT APPLE)
+    	target_link_libraries(runUnitTests stdc++fs)
+    	target_link_libraries(runUnitTests ${CMAKE_DL_LIBS})
+    endif()
 
+if (UNIX)
     target_link_libraries(runUnitTests gtest gtest_main pthread)
+elif (MSVC)
+    target_link_libraries(runUnitTests gtest gtest_main)
+endif()
 
     enable_testing()
     add_test(NAME runUnitTests COMMAND runUnitTests)
