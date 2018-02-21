@@ -27,7 +27,6 @@ script:
   - cmake --build .
   - GTEST_COLOR=1 ctest
   - mv ../get_code_cov.sh . && bash get_code_cov.sh
-after_success:
   - bash <(curl -s https://codecov.io/bash)
 notifications:
   slack:
