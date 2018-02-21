@@ -31,7 +31,8 @@ zia::api::Net::Raw nzm::Buffer::getHttpRequest()
   for (auto i : this->_buffer) {
       ret.push_back(i);
     }
-
+  // Todo: Clean buffer in
+  this->_buffer.clear();
   return ret;
 }
 
@@ -46,9 +47,12 @@ zia::api::Net::Raw nzm::Buffer::getHttpResponse()
 {
   zia::api::Net::Raw ret;
 
+  // Todo: Get only one and first reponse
   for (auto i : this->_buffer) {
       ret.push_back(i);
     }
+  // Todo: Clean only request get
+  this->_buffer.clear();
   return ret;
 }
 
