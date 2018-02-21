@@ -42,7 +42,7 @@ bool nzm::Router::isDirectory(std::string uri) const
 
 std::string nzm::Router::getTypeFile(std::string uri) const
 {
-  return std::string();
+  return std::string("text/html");
 }
 
 void nzm::Router::display404(zia::api::HttpDuplex &httpDuplex)
@@ -160,7 +160,7 @@ void nzm::Router::displayFile(zia::api::HttpDuplex &httpDuplex)
     }
 
   // Headers values
-  httpDuplex.resp.headers["Content-Type"] = "text/html";
+  // Todo: Check is all navigator work good (if has no Content-Type header)
   httpDuplex.resp.headers["Content-Length"] = std::to_string(httpDuplex.resp.body.size());
 }
 
