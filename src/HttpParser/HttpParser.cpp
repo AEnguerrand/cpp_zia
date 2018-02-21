@@ -26,6 +26,8 @@ zia::api::http::Method	nz::HttpParser::GetMethodFromString(const std::string & i
 	{ "CONNECT", zia::api::http::Method::connect }
 	};
 
+	std::cout << "METHOD: " << input << std::endl;
+
 	for (auto it : link)
 	{
 		if (it.first == input)
@@ -44,6 +46,8 @@ zia::api::http::Version	nz::HttpParser::GetVersionFromString(const std::string &
 	{ "HTTP/1.1", zia::api::http::Version::http_1_1 },
 	{ "HTTP/2.0", zia::api::http::Version::http_2_0 }
 	};
+
+	std::cout << "VERSION: " << input << std::endl;
 
 	for (auto it : link)
 	{
