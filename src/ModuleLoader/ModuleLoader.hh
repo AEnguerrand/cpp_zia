@@ -9,7 +9,7 @@
 #include "api.h"
 #include "DLLoader.hh"
 
-// Todo: Order modules of defined in config went is getModules() is call
+// TODO: Order modules of defined in config went is getModules() is call
 
 namespace nz {
   class ModuleLoader

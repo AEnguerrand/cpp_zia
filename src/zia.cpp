@@ -36,7 +36,7 @@ void nz::zia::start()
 						     std::placeholders::_2);
   this->_net->run(funcCallback);
 
-  // Todo: Remove it by run of console
+  // TODO: Remove it by run of console
   for (std::string line; std::getline(std::cin, line);) {
       std::cout << line << std::endl;
     }

@@ -10,13 +10,13 @@ void nzm::Buffer::push(char data)
 
 char nzm::Buffer::pop()
 {
-  //Todo: Fix this function and remove char for all
+  //TODO: Fix this function and remove char for all
   //char data = this->_buffer.front();
   //this->_buffer.pop_front();
   return 0;
 }
 
-// Todo: change the way of check this
+// TODO: change the way of check this
 bool nzm::Buffer::hasHTTPRequest() const
 {
   if (this->_buffer.empty())
@@ -31,7 +31,7 @@ zia::api::Net::Raw nzm::Buffer::getHttpRequest()
   for (auto i : this->_buffer) {
       ret.push_back(i);
     }
-  // Todo: Clean buffer in
+  // TODO: Clean buffer in
   this->_buffer.clear();
   return ret;
 }
@@ -47,11 +47,11 @@ zia::api::Net::Raw nzm::Buffer::getHttpResponse()
 {
   zia::api::Net::Raw ret;
 
-  // Todo: Get only one and first reponse
+  // TODO: Get only one and first reponse
   for (auto i : this->_buffer) {
       ret.push_back(i);
     }
-  // Todo: Clean only request get
+  // TODO: Clean only request get
   this->_buffer.clear();
   return ret;
 }
