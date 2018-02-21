@@ -31,5 +31,4 @@ jobs:
         - cmake --build .
         - ./cpp_zia &
         - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost:7000
-        - screen -S zia
         - exit && exit
