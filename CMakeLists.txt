@@ -17,26 +17,25 @@ include_directories(includes api lib)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 if (UNIX)
-  set(FSLIB_STATIC "/usr/lib/gcc/x86_64-linux-gnu/7/libstdc++fs.a")
-endif()
-  ### LIBCSTD++FS (UNIX)
-if (UNIX)
-  add_library(stdc++fs UNKNOWN IMPORTED)
-  set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION ${FSLIB_STATIC})
-  target_link_libraries(cpp_zia stdc++fs)
-  target_link_libraries(cpp_zia ${CMAKE_DL_LIBS})
-  find_package (Threads)
+    add_library(stdc++fs UNKNOWN IMPORTED)
+    set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-linux-gnu/7/libstdc++fs.a")
+
+    find_package (Threads)
 endif()
 
 add_executable(cpp_zia ${SOURCE_FILES})
+
+if (UNIX)
+    target_link_libraries(cpp_zia stdc++fs)
+    target_link_libraries(cpp_zia ${CMAKE_DL_LIBS})
+endif()
 
 target_link_libraries (cpp_zia ${CMAKE_THREAD_LIBS_INIT})
 
 ################################
 # Build Modules
 ################################
-
-#add_subdirectory(SrcModules/Network)
+add_subdirectory(SrcModules/Network)
 add_subdirectory(SrcModules/Php)
 add_subdirectory(SrcModules/Router)
 
@@ -91,7 +90,7 @@ if (BUILD_TESTS)
 
 if (UNIX)
     target_link_libraries(runUnitTests gtest gtest_main pthread)
-elif (MSVC)
+elseif (MSVC)
     target_link_libraries(runUnitTests gtest gtest_main)
 endif()
 
