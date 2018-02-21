@@ -67,3 +67,5 @@ build
 # Visual Studio generation
 .vs
 .vscode/
+
+build.py
