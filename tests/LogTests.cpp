@@ -9,3 +9,7 @@ TEST(Log, LogError) {
 TEST(Log, LogInform) {
     nz::Log::inform("An informing message");
 }
+
+TEST(Log, LogWarning) {
+    nz::Log::warning("An warning message", "SOME_WARNING_TYPE");
+}

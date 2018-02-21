@@ -2,12 +2,12 @@
 
 #include "../src/Parser/Parser.hh"
 #include "../src/Parser/ParserJson.hh"
-#include "../src/Parser/ParserJsonException.hpp"
 #include "../src/ModuleLoader/ModuleLoader.hh"
 #include "../src/Process/Process.hh"
 
 TEST(Parser, Parser) {
-    nz::ModuleLoader    moduleLoader;
+    std::vector<std::string> v;
+    nz::ModuleLoader    moduleLoader(v, v);
     moduleLoader.loadAll();
 
     nz::Process         process(moduleLoader);
@@ -18,29 +18,18 @@ TEST(Parser, Parser) {
 
     netInfo.sock = nullptr;
 
-    parser.callbackRequestReceived(raw, netInfo);
+    // Fix incoming..
+    // parser.callbackRequestReceived(raw, netInfo);
 }
 
 TEST(Parser, ParserJson) {
     //Wrong file
-    try
-    {
-        nz::ParserJson parserJson("../conf/config.azdqsd");
-    }
-    catch (nz::ParserJsonException e)
-    {
-
-    }
+    nz::ParserJson parseWrongJson("../conf/config.azdqsd");
+    parseWrongJson.getConfig();
+    parseWrongJson.dump();
 
     //Correct file
     nz::ParserJson parserJson("../tests/conf/config.json");
-
     parserJson.getConfig();
     parserJson.dump();
-}
-
-TEST(Parser, ParserJsonException) {
-    nz::ParserJsonException e("Test construction for the ParserJsonException class");
-
-    std::cout << e.what() << std::endl;
 }
