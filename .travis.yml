@@ -25,11 +25,8 @@ notifications:
 
 jobs:
   include:
-    - stage: zia
-      script: ./cpp_zia &
-
     - stage: siege
-      script: docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost
-
-    - stage: kill zia
-      script: pkill -P
+      script:
+        - ./cpp_zia &
+        - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost
+        - pkill -P
