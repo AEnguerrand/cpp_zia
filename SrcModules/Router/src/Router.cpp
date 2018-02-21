@@ -42,7 +42,7 @@ bool nzm::Router::isDirectory(std::string uri) const
 
 std::string nzm::Router::getTypeFile(std::string uri) const
 {
-  return std::string();
+  return std::string("text/html");
 }
 
 void nzm::Router::display404(zia::api::HttpDuplex &httpDuplex)
@@ -94,11 +94,26 @@ void nzm::Router::displayBrowsing(zia::api::HttpDuplex & httpDuplex)
   content += "<table cellspacing=\"10\">"
 	  "<tbody><tr><th>Name</th><th>Last modified</th><th>Size</th></tr>";
 
+  if (httpDuplex.req.uri != "/")
+    {
+      content += "<tr>";
+      // Name
+      content += "<td><a href=\"..\">..</a></td>";
+      // Last modified
+      content += "<td>-</td>";
+      // Size
+      content += "<td>-</td>";
+      content += "</tr>";
+    }
   for (auto& p: std::experimental::filesystem::directory_iterator("." + httpDuplex.req.uri))
     {
       content += "<tr>";
       // Name
-      content += "<td><a href=\""+ httpDuplex.req.uri + "/" + std::experimental::filesystem::path(p).filename().string() + "\">" + std::experimental::filesystem::path(p).filename().string() + "</a></td>";
+      content += "<td><a href=\""+ httpDuplex.req.uri;
+      if (httpDuplex.req.uri.length() > 1) {
+	  content += "/";
+	}
+      content += std::experimental::filesystem::path(p).filename().string() + "\">" + std::experimental::filesystem::path(p).filename().string() + "</a></td>";
       // Last modified
       auto ftime = std::experimental::filesystem::last_write_time(p);
       std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime); // assuming system_clock
@@ -145,7 +160,7 @@ void nzm::Router::displayFile(zia::api::HttpDuplex &httpDuplex)
     }
 
   // Headers values
-  httpDuplex.resp.headers["Content-Type"] = "text/html";
+  // Todo: Check is all navigator work good (if has no Content-Type header)
   httpDuplex.resp.headers["Content-Length"] = std::to_string(httpDuplex.resp.body.size());
 }
 
