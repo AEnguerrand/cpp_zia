@@ -7,7 +7,6 @@ addons:
     - gcc-7
     - g++-7
     - lcov
-    - screen
 before_install:
   - export CC=/usr/bin/gcc-7
   - export CXX=/usr/bin/g++-7
@@ -30,7 +29,7 @@ jobs:
       script:
         - cd build && cmake ..
         - cmake --build .
-        - screen -S zia ./cpp_zia &
+        - ./cpp_zia &
         - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost
         - screen -S zia
         - exit && exit

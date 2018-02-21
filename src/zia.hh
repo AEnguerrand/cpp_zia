@@ -2,6 +2,8 @@
 #define CPP_ZIA_ZIA_HH
 
 #include <map>
+#include <chrono>
+#include <thread>
 
 #include "api.h"
 

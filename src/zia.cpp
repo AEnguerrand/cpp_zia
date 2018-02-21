@@ -37,9 +37,13 @@ void nz::zia::start()
   this->_net->run(funcCallback);
 
   // Todo: Remove it by run of console
-  for (std::string line; std::getline(std::cin, line);) {
-      std::cout << line << std::endl;
-    }
+  // for (std::string line; std::getline(std::cin, line);) {
+  //     std::cout << line << std::endl;
+  //   }
+  std::chrono::seconds d(60);
+  while (true) {
+    std::this_thread::sleep_for(d);
+  }
 }
 void nz::zia::stop()
 {
