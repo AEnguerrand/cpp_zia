@@ -54,7 +54,7 @@ void nzm::Select::run()
 	    }
 	}
       //Todo: Remove and fix error "server disconnect user"
-      this->printTunnels();
+      //this->printTunnels();
     }
 }
 
