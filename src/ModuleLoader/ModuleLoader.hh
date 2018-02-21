@@ -21,18 +21,24 @@ namespace nz {
   {
    private:
     DLLoader<::zia::api::Module>	_dlLoader;
+    std::unordered_map<std::string, std::string> _modules; 
+    std::vector<std::string>& _modulesName;
+    std::vector<std::string>& _modulesPath;
 
    public:
-    ModuleLoader();
+    ModuleLoader(std::vector<std::string>& modulesName, std::vector<std::string>& modulesPath);
     virtual ~ModuleLoader();
 
     void loadAll();
-    void unloadAll();
+    bool unloadAll();
 
     const DLLoader<zia::api::Module> &getDlLoader() const;
     DLLoader<zia::api::Module> &getDlLoader();
-
     std::unordered_map<std::string, ::zia::api::Module *> getModules();
+ 
+    public:
+      void addModule(const std::string& moduleName);
+      bool deleteModuleByName(const std::string& moduleName);
   };
 }
 
