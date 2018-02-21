@@ -18,7 +18,7 @@ bool nzm::Network::run(zia::api::Net::Callback cb)
 {
   auto funcRunSelect = std::bind(&nzm::Network::runSelect, this, std::placeholders::_1, std::placeholders::_2);
 
-  this->_select = std::make_shared<std::thread>(funcRunSelect, 7000, cb);
+  this->_select = std::make_shared<std::thread>(funcRunSelect, 80, cb);
 
   return false;
 }

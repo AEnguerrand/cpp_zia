@@ -26,4 +26,4 @@ notifications:
 jobs:
   include:
     - stage: siege
-      script: docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost:7000
+      script: docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost
