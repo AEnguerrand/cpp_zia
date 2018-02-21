@@ -83,6 +83,7 @@ int nzm::Socket::read()
   if (len <= 0) {
       throw ModuleNetworkException("Socket is close");
     }
+
   for (auto i = 0; i < len ; i++) {
       this->_bufferIn.push(buf[i]);
     }

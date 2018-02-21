@@ -25,7 +25,7 @@ bool nzm::Network::run(zia::api::Net::Callback cb)
 
 bool nzm::Network::send(zia::api::ImplSocket *sock, const zia::api::Net::Raw &resp)
 {
-  // Todo: use buffer for write
+  // TODO: use buffer for write
   auto socket = reinterpret_cast<Socket *>(sock);
   socket->getBufferOut().pushRaw(resp);
   return true;

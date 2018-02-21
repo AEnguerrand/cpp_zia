@@ -24,7 +24,7 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
     this->_net->send(netInfo.sock, httpDuplex.raw_resp);
   }, cRaw, cNetInfo));
 
-  // Todo: List for queue of async (because now wait end of async, is useless now)
+  // TODO: List for queue of async (because now wait end of async, is useless now)
   processStart.get();
 }
 
