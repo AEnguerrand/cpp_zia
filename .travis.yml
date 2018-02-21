@@ -27,5 +27,8 @@ jobs:
   include:
     - stage: siege
       script:
-        - ls -l
+        - cd build
+        - cmake ..
+        - cmake --build .
+        - ./cpp_zia &
         - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost
