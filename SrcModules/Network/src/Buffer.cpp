@@ -8,32 +8,36 @@ void nzm::Buffer::push(char data)
   this->_buffer.push_back(std::byte(data));
 }
 
-char nzm::Buffer::pop()
-{
-  //TODO: Fix this function and remove char for all
-  //char data = this->_buffer.front();
-  //this->_buffer.pop_front();
-  return 0;
-}
-
 // TODO: change the way of check this
 bool nzm::Buffer::hasHTTPRequest() const
 {
-  if (this->_buffer.empty())
-      return false;
+  zia::api::Net::Raw ret;
+
+  for (auto i : this->_buffer) {
+      ret.push_back(i);
+  }
+
+  nz::HttpParser parser;
+
+  try {
+    parser.Parse(ret);
+  } catch(...) {
+    return false;
+  }
   return true;
 }
 
 zia::api::Net::Raw nzm::Buffer::getHttpRequest()
 {
     zia::api::Net::Raw ret;
-
-  for (auto i : this->_buffer) {
-      ret.push_back(i);
+	
+	for (auto i : this->_buffer) {
+    	ret.push_back(i);
     }
-  // TODO: Clean buffer in
-  this->_buffer.clear();
-  return ret;
+
+	// TODO: Clean buffer in
+	this->_buffer.clear();
+	return ret;
 }
 
 bool nzm::Buffer::hasHTTPResponse() const
@@ -47,10 +51,10 @@ zia::api::Net::Raw nzm::Buffer::getHttpResponse()
 {
   zia::api::Net::Raw ret;
 
-  // TODO: Get only one and first reponse
   for (auto i : this->_buffer) {
       ret.push_back(i);
-    }
+  }
+
   // TODO: Clean only request get
   this->_buffer.clear();
   return ret;
