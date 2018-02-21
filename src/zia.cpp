@@ -1,6 +1,7 @@
 #include "zia.hh"
 
 nz::zia::zia():
+  _modulesLoader(_modules, _modulesPath),
 	_process(_modulesLoader),
 	_parser(_process, nullptr),
 	_dlLoaderNet("moduleNet", true)
