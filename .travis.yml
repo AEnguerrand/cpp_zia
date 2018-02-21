@@ -30,5 +30,9 @@ jobs:
         - cd build
         - cmake ..
         - cmake --build .
-        - ./cpp_zia &
+        - mkfifo /tmp/zia_input
+        - cat > /tmp/zia_input &
+        - echo $! > /tmp/zia_input_pid
+        - cat /tmp/szia_input | ./cpp_zia &
         - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost
+        - kill $(cat /tmp/zia_input_pid)
