@@ -22,9 +22,18 @@ void nz::zia::start()
   this->_modulesLoader.loadAll();
   // Load config of each module
   // Load network
-  this->_dlLoaderNet.addLib("./Modules/cpp_zia_module_network.so");
+
+  std::string moduleName = "./Modules/cpp_zia_module_network";;
+
+#if defined (_WIN32) || defined (_WIN64)
+  moduleName += ".dll";
+#elif defined (__linux__) || defined (__APPLE__)
+  moduleName += ".so";
+#endif
+
+  this->_dlLoaderNet.addLib(moduleName);
   this->_dlLoaderNet.dump();
-  this->_net = this->_dlLoaderNet.getInstance("./Modules/cpp_zia_module_network.so");
+  this->_net = this->_dlLoaderNet.getInstance(moduleName);
   if (this->_net == nullptr) {
       nz::Log::error("Fail load net module", "Zia Core", 1);
     }
