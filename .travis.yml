@@ -7,6 +7,7 @@ addons:
     - gcc-7
     - g++-7
     - lcov
+    - screen
 before_install:
   - export CC=/usr/bin/gcc-7
   - export CXX=/usr/bin/g++-7
@@ -27,12 +28,11 @@ jobs:
   include:
     - stage: siege
       script:
-        - cd build
-        - cmake ..
+        - cd build && cmake ..
         - cmake --build .
-        - mkfifo /tmp/zia_input
-        - cat > /tmp/zia_input &
-        - echo $! > /tmp/zia_input_pid
-        - cat /tmp/zia_input | ./cpp_zia &
+        - screen -S zia
+        - ./cpp_zia &
+        - screen -d zia
         - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost
-        - kill $(cat /tmp/zia_input_pid)
+        - screen -r zia
+        - exit && exit
