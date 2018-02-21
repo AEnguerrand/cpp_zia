@@ -14,14 +14,7 @@ before_install:
 
 jobs:
   include:
-    - stage: siege
-      script:
-        - cd build && cmake ..
-        - cmake --build .
-        - ./cpp_zia &
-        - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 http://localhost:7000
-
-    - stage: build and test
+    - stage: Build & Test
       script:
         - cd build
         - cmake -DBUILD_TESTS=ON ..
@@ -29,6 +22,12 @@ jobs:
         - GTEST_COLOR=1 ctest
         - mv ../get_code_cov.sh . && bash get_code_cov.sh
         - bash <(curl -s https://codecov.io/bash)
+    - stage: Siege
+      script:
+        - cd build && cmake ..
+        - cmake --build .
+        - ./cpp_zia &
+        - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 http://localhost:7000
 
 notifications:
   slack:
