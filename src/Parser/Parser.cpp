@@ -21,7 +21,9 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
     httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
 
     // Send network
-    this->_net->send(netInfo.sock, httpDuplex.raw_resp);
+    if (netInfo.sock) {
+      this->_net->send(netInfo.sock, httpDuplex.raw_resp);
+    }
   }, cRaw, cNetInfo));
 
   // Todo: List for queue of async (because now wait end of async, is useless now)
