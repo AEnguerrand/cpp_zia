@@ -1,9 +1,8 @@
 {
     "port": 80,
     "port_ssl": 443,
-    "module_net": "network_with_ssh",
-    "modules": ["cgibin", "gzip", "logger"],
-    "modules_path": [".", "modules"],
+    "module_net": "cpp_zia_module_network",
+    "modules": ["cpp_zia_module_router"],
     "debug": false,
-    "log_level": 2
+    "log_level": 1
 }

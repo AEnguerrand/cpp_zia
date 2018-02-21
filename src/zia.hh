@@ -10,6 +10,7 @@
 #include "ModuleLoader/ModuleLoader.hh"
 #include "Process/Process.hh"
 #include "Parser/Parser.hh"
+#include "Parser/ParserJson.hh"
 
 namespace nz {
   class zia
@@ -20,6 +21,14 @@ namespace nz {
     ModuleLoader	_modulesLoader;
     Process		_process;
     Parser		_parser;
+
+    long long _port;
+    long long _portSsl;
+    std::string _moduleNet;
+    std::vector<std::string>  _modules;
+    std::vector<std::string>  _modulesPath;
+    bool  _debug;
+    long long _logLevel;
 
     // Module Net
     DLLoader<::zia::api::Net>		_dlLoaderNet;
@@ -34,6 +43,7 @@ namespace nz {
 
    private:
     void loadAll();
+    void  loadConf();
   };
 }
 
