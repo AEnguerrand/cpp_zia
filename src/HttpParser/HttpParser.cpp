@@ -14,7 +14,7 @@ nz::HttpParser::~HttpParser()
 
 zia::api::http::Method	nz::HttpParser::GetMethodFromString(const std::string & input)
 {
-	const std::map<std::string, zia::api::http::Method> link =
+	static const std::map<std::string, zia::api::http::Method> link =
 	{
 		{ "OPTIONS", zia::api::http::Method::options },
 	{ "GET", zia::api::http::Method::get },
@@ -37,7 +37,7 @@ zia::api::http::Method	nz::HttpParser::GetMethodFromString(const std::string & i
 
 zia::api::http::Version	nz::HttpParser::GetVersionFromString(const std::string & input)
 {
-	const std::map<std::string, zia::api::http::Version> link =
+	static const std::map<std::string, zia::api::http::Version> link =
 	{
 		{ "HTTP/0.9", zia::api::http::Version::http_0_9 },
 	{ "HTTP/1.0", zia::api::http::Version::http_1_0 },
@@ -56,7 +56,7 @@ zia::api::http::Version	nz::HttpParser::GetVersionFromString(const std::string &
 
 std::string		nz::HttpParser::GetStringFromVersion(const zia::api::http::Version & input)
 {
-	const std::map<std::string, zia::api::http::Version> link =
+	static const std::map<std::string, zia::api::http::Version> link =
 	{
 		{ "HTTP/0.9", zia::api::http::Version::http_0_9 },
 	{ "HTTP/1.0", zia::api::http::Version::http_1_0 },
@@ -157,6 +157,8 @@ zia::api::Net::Raw		nz::HttpParser::ResponseToRaw(const zia ::api::HttpResponse 
 	zia::api::Net::Raw	output;
 	std::string			tmp;
 
+	CheckResponseValidity(input);
+
 	tmp += GetStringFromVersion(input.version) + SP;
 	tmp += std::to_string(input.status) + SP;
 	tmp += input.reason + CRLF;
@@ -245,12 +247,12 @@ zia::api::HttpDuplex	nz::HttpParser::Parse(const zia::api::Net::Raw & raw)
 	back.raw_req = raw;
 	back.req = GetRequest(row);
 
-	CheckValidity(back.req);
+	CheckRequestValidity(back.req);
 
 	return back;
 }
 
-void					nz::HttpParser::CheckValidity(zia::api::HttpRequest data)
+void					nz::HttpParser::CheckRequestValidity(zia::api::HttpRequest data)
 {
 	// Check Method
 	if (data.method == zia::api::http::Method::unknown)
@@ -281,4 +283,19 @@ void					nz::HttpParser::CheckValidity(zia::api::HttpRequest data)
 			|| data.method == zia::api::http::Method::connect)
 			throw HttpParserException("This method require a body");
 	}
+}
+
+void					nz::HttpParser::CheckResponseValidity(zia::api::HttpResponse data)
+{
+	// Check Status
+	if (data.status == zia::api::http::common_status::unknown)
+		throw HttpParserException("Unknow Status");
+
+	// Check Version
+	if (data.version == zia::api::http::Version::unknown)
+		throw HttpParserException("Unknow Version");
+
+	// Check Headers
+
+	// Check Body
 }

@@ -28,9 +28,9 @@ void nz::ModuleLoader::addModule(const std::string& moduleName)
       if (std::experimental::filesystem::is_regular_file(p)
         && std::experimental::filesystem::path(p).filename() == moduleName)
       {
-        this->_dlLoader.addLib(std::experimental::filesystem::path(p));
-        this->_dlLoader.getInstance(std::experimental::filesystem::path(p));
-        this->_modules[moduleName] = std::experimental::filesystem::path(p);
+        this->_dlLoader.addLib(std::experimental::filesystem::path(p).string());
+        this->_dlLoader.getInstance(std::experimental::filesystem::path(p).string());
+        this->_modules[moduleName] = std::experimental::filesystem::path(p).string();
         this->_dlLoader.dump();
         return;
       }
