@@ -5,6 +5,9 @@
 #include <vector>
 #include <cstddef>
 
+#include "HttpParser/HttpParser.hh"
+#include "HttpParser/Transform.hpp"
+
 #include "api.h"
 
 namespace nzm {
@@ -15,6 +18,7 @@ namespace nzm {
     std::list<std::byte>	_buffer;
    public:
     Buffer();
+  // TODO: Get only one and first reponse
 
     void push(char data);
     char pop();
