@@ -90,7 +90,7 @@ if (BUILD_TESTS)
 
 if (UNIX)
     target_link_libraries(runUnitTests gtest gtest_main pthread)
-elif (MSVC)
+elseif (MSVC)
     target_link_libraries(runUnitTests gtest gtest_main)
 endif()
 
