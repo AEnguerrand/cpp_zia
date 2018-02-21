@@ -7,13 +7,13 @@
 
 #include "api.h"
 #include "json.hpp"
-#include "ParserJsonException.hpp"
 
 namespace nz {
   class ParserJson
   {
     private:
       nlohmann::json  _json;
+      bool            _fileInvalid;
       
     public:
       ParserJson(const std::string&);

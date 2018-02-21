@@ -16,8 +16,11 @@ char nzm::Buffer::pop()
   return 0;
 }
 
+// Todo: change the way of check this
 bool nzm::Buffer::hasHTTPRequest() const
 {
+  if (this->_buffer.empty())
+      return false;
   return true;
 }
 
@@ -28,12 +31,15 @@ zia::api::Net::Raw nzm::Buffer::getHttpRequest()
   for (auto i : this->_buffer) {
       ret.push_back(i);
     }
-
+  // Todo: Clean buffer in
+  this->_buffer.clear();
   return ret;
 }
 
 bool nzm::Buffer::hasHTTPResponse() const
 {
+  if (this->_buffer.empty())
+      return false;
   return true;
 }
 
@@ -41,9 +47,12 @@ zia::api::Net::Raw nzm::Buffer::getHttpResponse()
 {
   zia::api::Net::Raw ret;
 
+  // Todo: Get only one and first reponse
   for (auto i : this->_buffer) {
       ret.push_back(i);
     }
+  // Todo: Clean only request get
+  this->_buffer.clear();
   return ret;
 }
 
