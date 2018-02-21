@@ -41,7 +41,7 @@ zia::api::Conf nz::ParserJson::getConfig(void)
         for (auto& value : it.value()) {
           array.push_back(zia::api::ConfValue());
           if (value.is_string())
-            array[i].v = value.get<std::string>();
+			array[i].v = value.get<std::string>();
           if (value.is_number())
             array[i].v = value.get<long long>();
           i++;
