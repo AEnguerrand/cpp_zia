@@ -4,13 +4,14 @@ nzm::Socket::Socket():
 	_isInit(false),
 	_fd(-1)
 {
+	mp::__initSocket();
 }
 
 nzm::Socket::~Socket()
 {
   this->_isInit = false;
-  shutdown(this->getFd(), SHUT_RDWR);
-  close(this->getFd());
+  mp::__shutdown(this->getFd());
+  mp::__closeSocket(this->getFd());
 }
 
 int nzm::Socket::getFd() const
@@ -26,7 +27,6 @@ bool nzm::Socket::isInit() const
 int nzm::Socket::initServer(short port)
 {
   struct sockaddr_in 	sin;
-  int 			i;
 
   if (this->_isInit)
     throw ModuleNetworkException("Socket already init");
@@ -39,8 +39,8 @@ int nzm::Socket::initServer(short port)
   sin.sin_family = AF_INET;
   sin.sin_port = htons(port);
   sin.sin_addr.s_addr = INADDR_ANY;
-  i = 1;
-  if (setsockopt(this->_fd, SOL_SOCKET, SO_REUSEPORT, &i, sizeof(int)) < 0)
+  auto i = mp::__cast<MP_TYPE>(1);
+  if (setsockopt(this->_fd, SOL_SOCKET, MP_REUSE_PORT_FLAG, &i, sizeof(int)) < 0)
     throw ModuleNetworkException("Socket fail set options");
   if (bind(this->_fd, (struct sockaddr*)&sin, sizeof(sin)) < 0 || listen(this->_fd, 100) < 0)
     throw ModuleNetworkException("Fail bind and listen");
@@ -83,6 +83,7 @@ int nzm::Socket::read()
   if (len <= 0) {
       throw ModuleNetworkException("Socket is close");
     }
+
   for (auto i = 0; i < len ; i++) {
       this->_bufferIn.push(buf[i]);
     }
@@ -91,10 +92,12 @@ int nzm::Socket::read()
 
 int nzm::Socket::write(zia::api::Net::Raw raw)
 {
-  int len = send(this->getFd(), raw.data(), raw.size(), 0);
-  if (len <= 0) {
-      throw ModuleNetworkException("Socket is close");
-    }
+	std::string data;
+	for (auto & i : raw)
+		data.push_back(static_cast<char>(i));
+	int len = send(this->getFd(), data.data(), raw.size(), 0);
+	if (len <= 0)
+		throw ModuleNetworkException("Socket is close");
   return 0;
 }
 

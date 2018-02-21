@@ -32,7 +32,6 @@ namespace nz {
     bool  _debug;
     long long _logLevel;
 
-
     // Module Net
     DLLoader<::zia::api::Net>		_dlLoaderNet;
     ::zia::api::Net 			*_net;
