@@ -36,6 +36,8 @@ target_link_libraries (cpp_zia ${CMAKE_THREAD_LIBS_INIT})
 # Build Modules
 ################################
 add_subdirectory(SrcModules/Network)
+add_subdirectory(SrcModules/Php)
+add_subdirectory(SrcModules/Router)
 
 ################################
 # Copy Modules
