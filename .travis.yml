@@ -30,9 +30,7 @@ jobs:
       script:
         - cd build && cmake ..
         - cmake --build .
-        - screen -S zia
-        - ./cpp_zia &
-        - screen -d zia
+        - screen -S zia ./cpp_zia &
         - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 localhost
-        - screen -r zia
+        - screen -S zia
         - exit && exit
