@@ -5,9 +5,15 @@
 #include <fstream>
 #include <iostream>
 #include <experimental/filesystem>
+#include <filesystem>
+
 
 #include "api.h"
+#ifndef _WIN32
 #include "DLLoader.hh"
+#else
+#include "DLLoader_Win.hh"
+#endif
 
 // Todo: Order modules of defined in config went is getModules() is call
 
