@@ -37,10 +37,14 @@ void nz::zia::start()
 						     std::placeholders::_2);
   this->_net->run(funcCallback);
 
-  // TODO: Remove it by run of console
-  for (std::string line; std::getline(std::cin, line);) {
-      std::cout << line << std::endl;
-    }
+  // Todo: Remove it by run of console
+  // for (std::string line; std::getline(std::cin, line);) {
+  //     std::cout << line << std::endl;
+  //   }
+  std::chrono::seconds d(60);
+  while (true) {
+    std::this_thread::sleep_for(d);
+  }
 }
 void nz::zia::stop()
 {
