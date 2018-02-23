@@ -18,7 +18,13 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
     this->_process.startProcess(httpDuplex);
 
     // Convert http response into raw
-    httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
+    try {
+	httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
+      }
+    catch (nz::HttpParserException &e) {
+	this->sendErrorServer(httpDuplex);
+	httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
+      }
 
     // Send network
     this->_net->send(netInfo.sock, httpDuplex.raw_resp);
@@ -31,4 +37,34 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
 void nz::Parser::setNet(zia::api::Net *net)
 {
   this->_net = net;
+}
+
+void nz::Parser::sendErrorServer(zia::api::HttpDuplex &httpDuplex) const
+{
+  // Settings base
+  httpDuplex.resp.version = zia::api::http::Version::http_1_1;
+  httpDuplex.resp.status = zia::api::http::common_status::internal_server_error;
+  httpDuplex.resp.reason = "Internal Server Error";
+
+  // Body
+  std::string content =
+	  "<html>"
+		  "<head>"
+		  "<title>Index of " + httpDuplex.req.uri +  "</title>"
+		  "</head>"
+		  "<body>"
+		  "<h1>Not found " + httpDuplex.req.uri + "</h1>";
+
+  content += "Internal Error (not response is generate)";
+
+  content += "</body></html>";
+
+
+  for (char i : content) {
+      httpDuplex.resp.body.push_back(std::byte(i));
+    }
+
+  // Headers values
+  httpDuplex.resp.headers["Content-Type"] = "text/html";
+  httpDuplex.resp.headers["Content-Length"] = std::to_string(httpDuplex.resp.body.size());
 }

@@ -24,6 +24,9 @@ namespace nz {
     void callbackRequestReceived(::zia::api::Net::Raw raw, ::zia::api::NetInfo netInfo);
 
     void setNet(zia::api::Net *net);
+
+   private:
+    void sendErrorServer(zia::api::HttpDuplex &httpDuplex) const;
   };
 }
 
