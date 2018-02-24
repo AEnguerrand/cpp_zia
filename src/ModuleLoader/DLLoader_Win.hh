@@ -220,11 +220,12 @@ namespace nz
 			if ((symbol = reinterpret_cast<T*(*)(T*)>(GetProcAddress(handler, "DObject"))) == nullptr)
 			{
 				std::cerr << "Error when loading DObject from dll file " << path.c_str() << " : " << GetLastErrorAsString() << std::endl;
+				this->instances.erase(this->instances.find(path));
 				return;
 			}
 
 			symbol(this->instances[path]);
-			this->instances[path] = nullptr;
+	  		this->instances.erase(this->instances.find(path));
 
 			if (noise)
 				std::cerr << "_> instance of [" << path << "] successfully destroyed" << std::endl;

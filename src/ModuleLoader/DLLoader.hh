@@ -213,11 +213,12 @@ namespace nz
       if ((symbol = (T *(*)(T *))dlsym(handler, "DObject")) == nullptr)
 	{
 	  std::cerr << dlerror() << std::endl;
+	  this->instances.erase(this->instances.find(path));
 	  return;
 	}
 
       symbol(this->instances[path]);
-      this->instances[path] = nullptr;
+      this->instances.erase(this->instances.find(path));
 
       if (noise)
 	{
