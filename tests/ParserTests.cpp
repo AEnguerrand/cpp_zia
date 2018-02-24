@@ -7,8 +7,10 @@
 
 TEST(Parser, Parser) {
     std::vector<std::string> v;
-    nz::ModuleLoader    moduleLoader(v, v);
+    ::zia::api::Conf conf;
+    nz::ModuleLoader    moduleLoader(v, v, conf);
     moduleLoader.loadAll();
+    ASSERT_EQ(moduleLoader.getModules().size(), 0);
 
     nz::Process         process(moduleLoader);
     nz::Parser          parser(process, nullptr);
@@ -17,19 +19,32 @@ TEST(Parser, Parser) {
     ::zia::api::NetInfo netInfo;
 
     netInfo.sock = nullptr;
+    ASSERT_EQ(netInfo.sock, nullptr);
 
-    // Fix incoming..
-    // parser.callbackRequestReceived(raw, netInfo);
+    parser.setNet(nullptr);
+    parser.callbackRequestReceived(raw, netInfo);
 }
 
-TEST(Parser, ParserJson) {
+TEST(Parser, ParserJsonIncorrectFile) {
+    std::string output;
+
     //Wrong file
     nz::ParserJson parseWrongJson("../conf/config.azdqsd");
     parseWrongJson.getConfig();
+    testing::internal::CaptureStdout();
     parseWrongJson.dump();
+    output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "Configuration file is empty\n");
+}
+
+TEST(Parser, ParserJsonCorrectFile) {
+    std::string output;
 
     //Correct file
     nz::ParserJson parserJson("../tests/conf/config.json");
     parserJson.getConfig();
+    testing::internal::CaptureStdout();
     parserJson.dump();
+    output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "{\n    \"debug\": false,\n    \"log_level\": 2,\n    \"module_net\": \"network_with_ssh\",\n    \"modules\": [\n        \"cgibin\",\n        \"gzip\",\n        \"logger\"\n    ],\n    \"modules_path\": [\n        \".\",\n        \"modules\",\n        3\n    ],\n    \"port\": 80,\n    \"port_ssl\": 443\n}\n");
 }

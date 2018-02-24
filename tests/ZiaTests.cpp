@@ -7,4 +7,5 @@ TEST(Zia, Zia) {
 
     // Zia.start();
     Zia.reload();
+    // Zia.stop();
 }
