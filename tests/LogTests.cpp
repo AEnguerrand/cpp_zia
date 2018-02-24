@@ -3,13 +3,22 @@
 #include "../includes/Log.hpp"
 
 TEST(Log, LogError) {
+    testing::internal::CaptureStdout();
     nz::Log::error("Not really an error", "SOME_ERROR_TYPE", 42);
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "[ERROR 42] - SOME_ERROR_TYPE: Not really an error\n");
 }
 
 TEST(Log, LogInform) {
-    nz::Log::inform("An informing message");
+    testing::internal::CaptureStdout();
+    nz::Log::inform("An informative message");
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "[INFO]: An informative message\n");
 }
 
 TEST(Log, LogWarning) {
-    nz::Log::warning("An warning message", "SOME_WARNING_TYPE");
+    testing::internal::CaptureStdout();
+    nz::Log::warning("A warning message", "SOME_WARNING_TYPE");
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "[WARNING] - SOME_WARNING_TYPE: A warning message\n");
 }
