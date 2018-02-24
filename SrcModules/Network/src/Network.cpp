@@ -11,8 +11,8 @@ extern "C" zia::api::Net * create()
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
   try { this->_port = std::get<long long>(conf.at("port").v); }
-  catch (std::exception&) {
-      nz::Log::warning("port not found or must be a number, default port set to '80'", "Module Network", 100);
+  catch (...) {
+      nz::Log::warning("port not found or must be a number, default port set to '80'", "Module Network");
       this->_port = 80;
     }
   return true;
@@ -57,8 +57,6 @@ void nzm::Network::runSelect(short port, zia::api::Net::Callback cb)
 {
   std::shared_ptr<Socket> socketServer = std::make_shared<Socket>();
   Select select(cb, *this);
-
-  std::cout << "PORT: " << port << std::endl;
 
   socketServer->initServer(port);
   select.addListenTunnels(socketServer);

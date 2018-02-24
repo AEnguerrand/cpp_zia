@@ -44,8 +44,8 @@ void  nz::zia::loadConf()
 
   // Get module_net (string) from config file
   try { this->_moduleNet = std::get<std::string>(this->_conf.at("module_net").v); }
-  catch (std::exception&) {
-    nz::Log::warning("module_net not found or must be a string, default module network set to 'cpp_zia_module_network'", "Zia Core", 100);
+  catch (...) {
+    nz::Log::warning("module_net not found or must be a string, default module network set to 'cpp_zia_module_network'", "Zia Core");
     this->_moduleNet = "cpp_zia_module_network";
   }
 
@@ -56,8 +56,8 @@ void  nz::zia::loadConf()
       this->_modules.push_back(std::get<std::string>(module.v));
     }
   }
-  catch (std::exception&) {
-    nz::Log::warning("modules not found or must be an array, default modules set to 'cpp_zia_module_router'", "Zia Core", 100);
+  catch (...) {
+    nz::Log::warning("modules not found or must be an array, default modules set to 'cpp_zia_module_router'", "Zia Core");
     this->_modules.push_back("cpp_zia_module_router");
   }
 
@@ -68,22 +68,22 @@ void  nz::zia::loadConf()
       this->_modulesPath.push_back(std::get<std::string>(modulePath.v));
     }
   }
-  catch (std::exception&) {
-    nz::Log::warning("modules_path not found or must be an array, default modules paths set to './Modules'", "Zia Core", 100);
+  catch (...) {
+    nz::Log::warning("modules_path not found or must be an array, default modules paths set to './Modules'", "Zia Core");
     this->_modulesPath.push_back("./Modules");
   }
 
   // Get module_net (string) from config file
   try { this->_debug = std::get<bool>(this->_conf.at("debug").v); }
-  catch (std::exception&) {
-    nz::Log::warning("debug not found or must be a boolean, default debug mode set to 'false'", "Zia Core", 100);
+  catch (...) {
+    nz::Log::warning("debug not found or must be a boolean, default debug mode set to 'false'", "Zia Core");
     this->_debug = false;
   }
 
   // Get module_net (string) from config file
   try { this->_logLevel = std::get<long long>(this->_conf.at("log_level").v); }
-  catch (std::exception&) {
-    nz::Log::warning("log_level not found or must be a number, default log level set to '1'", "Zia Core", 100);
+  catch (...) {
+    nz::Log::warning("log_level not found or must be a number, default log level set to '1'", "Zia Core");
     this->_logLevel = 1;
   }
 }
