@@ -33,6 +33,9 @@ void nz::Console::runCmd(std::string & cmd)
 	  std::cout << "start : Start Zia" << std::endl;
 	  std::cout << "stop : Stop Zia" << std::endl;
 	  std::cout << "reload : Reload Zia" << std::endl;
+	  std::cout << "modules add <module name> : Add module to Zia" << std::endl;
+	  std::cout << "modules remove <module name> : Remove module to Zia" << std::endl;
+	  std::cout << "modules list : List module of Zia" << std::endl;
 	  std::cout << "---------------------------------" << std::endl;
 	}
       else if (args.size() == 1 && args.at(0) == "start")
