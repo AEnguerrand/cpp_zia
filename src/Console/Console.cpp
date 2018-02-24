@@ -20,7 +20,14 @@ void nz::Console::run()
 
 void nz::Console::runCmd(std::string & cmd)
 {
-  if (cmd == "start")
+  if (cmd == "help")
+    {
+      std::cout << "List of command in Zia:" << std::endl;
+      std::cout << "start : Start Zia" << std::endl;
+      std::cout << "stop : Stop Zia" << std::endl;
+      std::cout << "reload : Reload Zia" << std::endl;
+    }
+  else if (cmd == "start")
     {
       this->_zia.start();
     }
