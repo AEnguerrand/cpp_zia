@@ -27,10 +27,10 @@ namespace nz
     std::vector<std::string> &				_modulesName;
     std::vector<std::string> &				_modulesPath;
 
-    ::zia::api::Conf &					_conf;
+    const ::zia::api::Conf &				_conf;
 
    public:
-    ModuleLoader(std::vector<std::string> &modulesName, std::vector<std::string> &modulesPath, ::zia::api::Conf &conf);
+    ModuleLoader(std::vector<std::string> &modulesName, std::vector<std::string> &modulesPath, const ::zia::api::Conf &conf);
 
     virtual ~ModuleLoader();
 

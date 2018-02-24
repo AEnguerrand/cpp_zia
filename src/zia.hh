@@ -4,6 +4,7 @@
 #include <map>
 #include <chrono>
 #include <thread>
+#include <exception>
 
 #include "api.h"
 
