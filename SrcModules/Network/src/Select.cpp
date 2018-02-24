@@ -38,7 +38,7 @@ void nzm::Select::run()
 		      this->_callback(it->getBufferIn().getHttpRequest(), netInfo);
 		    }
 		}
-	      catch (ModuleNetworkException &e)
+	      catch (ModuleNetworkException e)
 		{
 		  this->removeTunnel(it);
 		  break;
@@ -50,7 +50,7 @@ void nzm::Select::run()
 		{
 		  it->checkWrite();
 		}
-	      catch (ModuleNetworkException &e)
+	      catch (ModuleNetworkException e)
 		{
 		  this->removeTunnel(it);
 		  break;

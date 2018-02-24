@@ -17,7 +17,6 @@ void nz::zia::start()
 {
   Log::inform("Server booting ...");
   this->loadModules();
-
   // Run network
   ::zia::api::Net::Callback funcCallback = std::bind(&nz::Parser::callbackRequestReceived, this->_parser, std::placeholders::_1,
 						     std::placeholders::_2);

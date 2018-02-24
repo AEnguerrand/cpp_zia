@@ -3,9 +3,27 @@
 
 using namespace nzm;
 
-extern "C" Module* create(){
-    return new Module();
+#if defined(_MSC_VER)
+
+extern "C"
+{
+	__declspec(dllexport) Module *create()
+	{
+		return new Module();
+	}
 }
+
+#elif defined(__GNUC__) || defined(__GNUG__)
+
+extern "C"
+{
+	Module *create()
+	{
+		return new Module();
+	}
+}
+
+#endif
 
 Module::Module() {}
 
