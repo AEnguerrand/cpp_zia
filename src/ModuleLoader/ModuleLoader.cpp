@@ -10,23 +10,19 @@ nz::ModuleLoader::~ModuleLoader() {}
 void nz::ModuleLoader::loadAll()
 {
   for (auto moduleName : _modulesName){
-    #if defined (_WIN32) || defined (_WIN64)
-      moduleName += ".dll";
-    #elif defined (__linux__) || defined (__APPLE__)
-      moduleName += ".so";
-    #endif
     addModule(moduleName);
   }
 }
 
 void nz::ModuleLoader::addModule(const std::string& moduleName)
 {
+  std::string moduleFilename = this->convertToFilename(moduleName);
   for (auto path : _modulesPath)
   {
     for (auto& p : std::experimental::filesystem::directory_iterator(path))
     {
       if (std::experimental::filesystem::is_regular_file(p)
-        && std::experimental::filesystem::path(p).filename() == moduleName)
+        && std::experimental::filesystem::path(p).filename() == moduleFilename)
       {
         this->_dlLoader.addLib(std::experimental::filesystem::path(p).string());
         this->_dlLoader.getInstance(std::experimental::filesystem::path(p).string());
@@ -76,4 +72,16 @@ nz::DLLoader<zia::api::Module> &nz::ModuleLoader::getDlLoader()
 std::unordered_map<std::string, ::zia::api::Module *> nz::ModuleLoader::getModules()
 {
   return this->_dlLoader.getInstances();
+}
+
+const std::string nz::ModuleLoader::convertToFilename(const std::string &moduleName) const
+{
+  std::string filename = moduleName;
+
+#if defined (_WIN32) || defined (_WIN64)
+  filename += ".dll";
+#elif defined (__linux__) || defined (__APPLE__)
+  filename += ".so";
+#endif
+  return filename;
 }
