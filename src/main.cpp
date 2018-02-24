@@ -9,10 +9,13 @@
 */
 
 #include "zia.hh"
+#include "Console/Console.hh"
 
 int main(int, char **) {
   nz::zia	zia;
+  nz::Console	console(zia);
 
   zia.start();
+  console.run();
   return (0);
 }

@@ -37,7 +37,6 @@ namespace nz {
     DLLoader<::zia::api::Net>	_dlLoaderNet;
     std::string 		_moduleNetPath;
     ::zia::api::Net 		*_net;
-
    public:
     zia();
     virtual ~zia();

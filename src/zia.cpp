@@ -21,16 +21,8 @@ void nz::zia::start()
   // Run network
   ::zia::api::Net::Callback funcCallback = std::bind(&nz::Parser::callbackRequestReceived, this->_parser, std::placeholders::_1,
 						     std::placeholders::_2);
+  Log::inform("Server is run");
   this->_net->run(funcCallback);
-
-  // Todo: Remove it by run of console
-  // for (std::string line; std::getline(std::cin, line);) {
-  //     std::cout << line << std::endl;
-  //   }
-  std::chrono::seconds d(60);
-  while (true) {
-    std::this_thread::sleep_for(d);
-  }
 }
 void nz::zia::stop()
 {
@@ -112,12 +104,12 @@ void  nz::zia::loadConf()
 
 void nz::zia::loadModules()
 {
-  nz::Log::inform("Configuration loading ...");
+  Log::inform("Configuration loading ...");
   this->loadConf();
-  nz::Log::inform("Modules loading ...");
+  Log::inform("Modules loading ...");
   this->_modulesLoader.loadAll();
 
-  nz::Log::inform("Network loading ...");
+  Log::inform("Network loading ...");
   this->loadNetwork();
 }
 
