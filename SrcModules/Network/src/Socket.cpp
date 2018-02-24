@@ -127,3 +127,13 @@ nzm::Buffer &nzm::Socket::getBufferOut()
 {
   return this->_bufferOut;
 }
+
+void nzm::Socket::fillNetinfo(zia::api::NetInfo & netInfo) const
+{
+  netInfo.port = 0;
+  netInfo.ip.i = 0;
+  netInfo.ip.str = "127.0.0.1";
+  netInfo.start = std::chrono::steady_clock::now();
+  netInfo.time = std::chrono::system_clock::now();
+  netInfo.sock = nullptr;
+}
