@@ -158,3 +158,8 @@ void nz::zia::loadNetwork()
   this->_parser.setNet(this->_net);
   this->_net->config(this->_conf);
 }
+
+nz::ModuleLoader &nz::zia::getModulesLoader()
+{
+  return this->_modulesLoader;
+}

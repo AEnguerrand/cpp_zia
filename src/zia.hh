@@ -46,6 +46,7 @@ namespace nz {
     void 	stop();
     void 	reload();
 
+    ModuleLoader &	getModulesLoader();
    private:
     void  	loadConf();
     void	loadModules();

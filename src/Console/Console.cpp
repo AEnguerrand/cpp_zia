@@ -20,24 +20,59 @@ void nz::Console::run()
 
 void nz::Console::runCmd(std::string & cmd)
 {
-  if (cmd == "help")
+  std::vector<std::string> args;
+  std::istringstream iss(cmd);
+  for(std::string s; iss >> s; )
+    args.push_back(s);
+
+  try
     {
-      std::cout << "List of command in Zia:" << std::endl;
-      std::cout << "start : Start Zia" << std::endl;
-      std::cout << "stop : Stop Zia" << std::endl;
-      std::cout << "reload : Reload Zia" << std::endl;
+      if (args.size() == 1 && args.at(0) == "help")
+	{
+	  std::cout << "List of command in Zia:" << std::endl;
+	  std::cout << "start : Start Zia" << std::endl;
+	  std::cout << "stop : Stop Zia" << std::endl;
+	  std::cout << "reload : Reload Zia" << std::endl;
+	  std::cout << "---------------------------------" << std::endl;
+	}
+      else if (args.size() == 1 && args.at(0) == "start")
+	{
+	  this->_zia.start();
+	}
+      else if (args.size() == 1 && args.at(0) == "stop")
+	{
+	  this->_zia.stop();
+	}
+      else if (args.size() == 1 && args.at(0) == "reload")
+	{
+	  this->_zia.reload();
+	}
+      else if (args.size() == 3 && args.at(0) == "modules" && args.at(1) == "add")
+	{
+	  this->_zia.getModulesLoader().addModule(args.at(2));
+	}
+      else if (args.size() == 3 && args.at(0) == "modules" && args.at(1) == "remove")
+	{
+	  this->_zia.getModulesLoader().deleteModuleByName(args.at(2));
+	}
+      else if (args.size() == 2 && args.at(0) == "modules" && args.at(1) == "list")
+	{
+	  auto Modules = this->_zia.getModulesLoader().getModules();
+	  std::cout << "List of modules load:" << std::endl;
+	  for (auto module : Modules)
+	    {
+	      std::cout << module.first << std::endl;
+	    }
+	  std::cout << "---------------------------------" << std::endl;
+	}
+      else
+	{
+	  std::cout << "Command is invalid / not define in Zia" << std::endl;
+	}
     }
-  else if (cmd == "start")
+  catch (...)
     {
-      this->_zia.start();
-    }
-  else if (cmd == "stop")
-    {
-      this->_zia.stop();
-    }
-  else if (cmd == "reload")
-    {
-      this->_zia.reload();
+      Log::error("Console send cmd", "Zia Console", 101);
     }
 }
 
