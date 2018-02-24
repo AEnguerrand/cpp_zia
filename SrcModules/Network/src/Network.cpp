@@ -42,8 +42,8 @@ bool nzm::Network::config(const zia::api::Conf &conf)
 {
   try { this->_port = std::get<long long>(conf.at("port").v); }
   catch (...) {
-      nz::Log::warning("port not found or must be a number, default port set to '80'", "Module Network");
-      this->_port = 80;
+      nz::Log::warning("port not found or must be a number, default port set to '7000'", "Module Network");
+      this->_port = 7000;
     }
   return true;
 }
