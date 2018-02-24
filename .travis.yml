@@ -25,7 +25,8 @@ jobs:
       script:
         - cd build && cmake ..
         - cmake --build .
-        - ./cpp_zia &
+        - mkfifo /tmp/srv-input
+        - tail -f /tmp/srv-input | ./cpp_zia &
         - docker run --rm -t --net=host jstarcher/siege -d1 -r10 -c25 http://localhost:7000
 
 notifications:
