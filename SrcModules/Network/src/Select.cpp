@@ -22,7 +22,12 @@ void nzm::Select::run()
       FD_SET(it->getFd(), &this->_fdsRead);
       FD_SET(it->getFd(), &this->_fdsWrite);
     }
-  if (select(this->getMaxFd() + 1, &this->_fdsRead, &this->_fdsWrite, NULL, NULL) > 0)
+  struct timeval tv;
+
+  tv.tv_sec = 5;
+  tv.tv_usec = 0;
+
+  if (select(this->getMaxFd() + 1, &this->_fdsRead, &this->_fdsWrite, NULL, &tv) > 0)
     {
       for (auto &it : this->_tunnels)
 	{
@@ -64,8 +69,6 @@ void nzm::Select::run()
 	      this->addTunnel(it);
 	    }
 	}
-      //TODO: Remove and fix error "server disconnect user"
-      //this->printTunnels();
     }
 }
 

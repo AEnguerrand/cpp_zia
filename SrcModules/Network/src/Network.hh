@@ -21,6 +21,7 @@ namespace nzm {
     std::shared_ptr<std::thread>	_select;
     long long				_port;
 
+    bool				_isRun;
     std::atomic<bool>			_stop;
    public:
     Network();
