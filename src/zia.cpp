@@ -23,7 +23,7 @@ void nz::zia::start()
   // Load config of each module
   // Load network
 
-  std::string moduleName = "./Modules/cpp_zia_module_network";;
+  std::string moduleName = ".\\Modules\\cpp_zia_module_network";;
 
 #if defined (_WIN32) || defined (_WIN64)
   moduleName += ".dll";
@@ -76,21 +76,21 @@ void  nz::zia::loadConf()
   // Get port (number) from config file
   try { this->_port = std::get<long long>(config["port"].v); }
   catch (std::bad_variant_access&) {
-    nz::Log::warning("port not found or must be a number, default port set to '80'", "Zia Core", 100);
+    nz::Log::warning("port not found or must be a number, default port set to '80'", "Zia Core");
     this->_port = 80;
   }
 
   // Get port_ssl (number) from config file
   try { this->_portSsl = std::get<long long>(config["port_ssl"].v); }
   catch (std::bad_variant_access&) {
-    nz::Log::warning("port_ssl not found or must be a number, default ssl port set to '443'", "Zia Core", 100);
+    nz::Log::warning("port_ssl not found or must be a number, default ssl port set to '443'", "Zia Core");
     this->_port = 443;
   }
 
   // Get module_net (string) from config file
   try { this->_moduleNet = std::get<std::string>(config["module_net"].v); }
   catch (std::bad_variant_access&) {
-    nz::Log::warning("module_net not found or must be a string, default module network set to 'cpp_zia_module_network'", "Zia Core", 100);
+    nz::Log::warning("module_net not found or must be a string, default module network set to 'cpp_zia_module_network'", "Zia Core");
     this->_moduleNet = "cpp_zia_module_network";
   }
 
@@ -102,7 +102,7 @@ void  nz::zia::loadConf()
     }
   }
   catch (std::bad_variant_access&) {
-    nz::Log::warning("modules not found or must be an array, default modules set to 'cpp_zia_module_router'", "Zia Core", 100);
+    nz::Log::warning("modules not found or must be an array, default modules set to 'cpp_zia_module_router'", "Zia Core");
     this->_modules.push_back("cpp_zia_module_router");
   }
 
@@ -114,21 +114,21 @@ void  nz::zia::loadConf()
     }
   }
   catch (std::bad_variant_access&) {
-    nz::Log::warning("modules_path not found or must be an array, default modules paths set to './Modules'", "Zia Core", 100);
+    nz::Log::warning("modules_path not found or must be an array, default modules paths set to './Modules'", "Zia Core");
     this->_modulesPath.push_back("./Modules");
   }
 
   // Get module_net (string) from config file
   try { this->_debug = std::get<bool>(config["debug"].v); }
   catch (std::bad_variant_access&) {
-    nz::Log::warning("debug not found or must be a boolean, default debug mode set to 'false'", "Zia Core", 100);
+    nz::Log::warning("debug not found or must be a boolean, default debug mode set to 'false'", "Zia Core");
     this->_debug = false;
   }
 
   // Get module_net (string) from config file
   try { this->_logLevel = std::get<long long>(config["log_level"].v); }
   catch (std::bad_variant_access&) {
-    nz::Log::warning("log_level not found or must be a number, default log level set to '1'", "Zia Core", 100);
+    nz::Log::warning("log_level not found or must be a number, default log level set to '1'", "Zia Core");
     this->_logLevel = 1;
   }
 }

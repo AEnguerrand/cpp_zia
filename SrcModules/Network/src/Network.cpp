@@ -3,10 +3,28 @@
 
 // Create instance
 
-extern "C" zia::api::Net * create()
+#if defined(_MSC_VER)
+
+extern "C"
 {
-  return new(nzm::Network);
+	__declspec(dllexport) zia::api::Net * create()
+	{
+		return new(nzm::Network);
+	}
 }
+
+#elif defined(__GNUC__) || defined(__GNUG__)
+
+extern "C"
+{
+	zia::api::Net * create()
+	{
+		return new(nzm::Network);
+	}
+}
+
+#endif
+
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
