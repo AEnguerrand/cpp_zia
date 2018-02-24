@@ -31,8 +31,7 @@ namespace nz
 		zia::api::http::Method	GetMethodFromString(const std::string & input);
 		zia::api::http::Version GetVersionFromString(const std::string & input);
 		std::string				GetStringFromVersion(const zia::api::http::Version & input);
-		void					CheckRequestValidity(zia::api::HttpRequest);
-		void					CheckResponseValidity(zia::api::HttpResponse);
+		void					CheckValidity(zia::api::HttpRequest);
 
 	public:
 		zia::api::HttpDuplex	Parse(const zia::api::Net::Raw & request);
