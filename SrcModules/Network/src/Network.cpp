@@ -25,6 +25,18 @@ extern "C"
 
 #endif
 
+nzm::Network::Network()
+{
+  this->_isRun = false;
+  this->_stop.store(false);
+  nz::Log::inform("[Module Network]: Start");
+}
+
+nzm::Network::~Network()
+{
+  this->stop();
+  nz::Log::inform("[Module Network]: Stop");
+}
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
@@ -38,7 +50,15 @@ bool nzm::Network::config(const zia::api::Conf &conf)
 
 bool nzm::Network::run(zia::api::Net::Callback cb)
 {
+  if (this->_isRun)
+    {
+      std::cerr << "Network is already run" << std::endl;
+      return false;
+    }
+
   auto funcRunSelect = std::bind(&nzm::Network::runSelect, this, std::placeholders::_1, std::placeholders::_2);
+
+  this->_isRun = true;
 
   this->_select = std::make_shared<std::thread>(funcRunSelect, this->_port, cb);
 
@@ -47,7 +67,6 @@ bool nzm::Network::run(zia::api::Net::Callback cb)
 
 bool nzm::Network::send(zia::api::ImplSocket *sock, const zia::api::Net::Raw &resp)
 {
-  // TODO: use buffer for write
   auto socket = reinterpret_cast<Socket *>(sock);
   socket->getBufferOut().pushRaw(resp);
   return true;
@@ -55,20 +74,14 @@ bool nzm::Network::send(zia::api::ImplSocket *sock, const zia::api::Net::Raw &re
 
 bool nzm::Network::stop()
 {
+  if (!this->_isRun)
+    {
+      std::cerr << "Network is not run" << std::endl;
+    }
   this->_stop.store(true);
+  this->_select->join();
+  this->_isRun = false;
   return true;
-}
-
-nzm::Network::Network()
-{
-  this->_stop.store(false);
-  nz::Log::inform("[Module Network]: Start");
-}
-
-nzm::Network::~Network()
-{
-  this->_stop.store(true);
-  nz::Log::inform("[Module Network]: Stop");
 }
 
 void nzm::Network::runSelect(short port, zia::api::Net::Callback cb)

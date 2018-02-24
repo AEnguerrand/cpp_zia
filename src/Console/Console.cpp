@@ -14,7 +14,23 @@ void nz::Console::run()
   Log::inform("Console is avaible");
   for (std::string line; std::getline(std::cin, line);)
     {
-      std::cout << line << std::endl;
+      this->runCmd(line);
+    }
+}
+
+void nz::Console::runCmd(std::string & cmd)
+{
+  if (cmd == "start")
+    {
+      this->_zia.start();
+    }
+  else if (cmd == "stop")
+    {
+      this->_zia.stop();
+    }
+  else if (cmd == "reload")
+    {
+      this->_zia.reload();
     }
 }
 

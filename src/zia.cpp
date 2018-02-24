@@ -6,6 +6,7 @@ nz::zia::zia():
   _modulesLoader(_modules, _modulesPath, this->_conf),
   _dlLoaderNet("moduleNet", true)
 {
+  this->_isStart = false;
 }
 
 nz::zia::~zia()
@@ -15,6 +16,11 @@ nz::zia::~zia()
 
 void nz::zia::start()
 {
+  if (this->_isStart)
+    {
+      Log::error("Server is already start, please stop it before", "Zia Core", 2);
+      return ;
+    }
   Log::inform("Server booting ...");
   this->loadModules();
   // Run network
@@ -22,18 +28,42 @@ void nz::zia::start()
 						     std::placeholders::_2);
   Log::inform("Server is run");
   this->_net->run(funcCallback);
+
+  this->_isStart = true;
 }
 void nz::zia::stop()
 {
+  if (!this->_isStart)
+    {
+      Log::error("Server is not start", "Zia Core", 1);
+      return ;
+    }
   Log::inform("Server halt ...");
   this->_modulesLoader.unloadAll();
+
+  this->_net->stop();
+  this->_dlLoaderNet.destroyLib(this->_moduleNetPath);
+
+  this->_conf.clear();
+  this->_modules.clear();
+  this->_modulesPath.clear();
+  this->_net = nullptr;
+  this->_moduleNet.clear();
+  this->_moduleNetPath.clear();
+
+  this->_isStart = false;
 }
 
 void nz::zia::reload()
 {
+  if (!this->_isStart)
+    {
+      Log::error("Server is not start", "Zia Core", 1);
+      return ;
+    }
   Log::inform("Server reload ...");
-  this->_modulesLoader.unloadAll();
-  this->_modulesLoader.loadAll();
+  this->stop();
+  this->start();
 }
 
 void  nz::zia::loadConf()
@@ -123,7 +153,7 @@ void nz::zia::loadNetwork()
 	}
     }
   if (this->_net == nullptr) {
-      nz::Log::error("Fail load net module", "Zia Core", 1);
+      nz::Log::error("Fail load net module", "Zia Core", 3);
     }
   this->_parser.setNet(this->_net);
   this->_net->config(this->_conf);
