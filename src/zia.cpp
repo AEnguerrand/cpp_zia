@@ -42,13 +42,6 @@ void  nz::zia::loadConf()
   ParserJson        parser("../conf/config.json");
   this->_conf = parser.getConfig();
 
-  // Get port_ssl (number) from config file
-  /*try { this->_portSsl = std::get<long long>(config["port_ssl"].v); }
-  catch (std::bad_variant_access&) {
-    nz::Log::warning("port_ssl not found or must be a number, default ssl port set to '443'", "Zia Core", 100);
-    this->_port = 443;
-  }*/
-
   // Get module_net (string) from config file
   try { this->_moduleNet = std::get<std::string>(this->_conf.at("module_net").v); }
   catch (std::exception&) {
