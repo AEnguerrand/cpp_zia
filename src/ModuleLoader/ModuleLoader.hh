@@ -22,13 +22,15 @@ namespace nz
   class ModuleLoader
   {
    private:
-    DLLoader<::zia::api::Module> _dlLoader;
-    std::unordered_map<std::string, std::string> _modules;
-    std::vector<std::string> &_modulesName;
-    std::vector<std::string> &_modulesPath;
+    DLLoader<::zia::api::Module>		 	_dlLoader;
+    std::unordered_map<std::string, std::string> 	_modules;
+    std::vector<std::string> &				_modulesName;
+    std::vector<std::string> &				_modulesPath;
+
+    ::zia::api::Conf &					_conf;
 
    public:
-    ModuleLoader(std::vector<std::string> &modulesName, std::vector<std::string> &modulesPath);
+    ModuleLoader(std::vector<std::string> &modulesName, std::vector<std::string> &modulesPath, ::zia::api::Conf &conf);
 
     virtual ~ModuleLoader();
 

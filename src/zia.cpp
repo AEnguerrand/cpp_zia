@@ -3,7 +3,7 @@
 nz::zia::zia():
   _process(_modulesLoader),
   _parser(_process, nullptr),
-  _modulesLoader(_modules, _modulesPath),
+  _modulesLoader(_modules, _modulesPath, this->_conf),
   _dlLoaderNet("moduleNet", true)
 {
 }

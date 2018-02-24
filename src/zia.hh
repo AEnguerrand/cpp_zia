@@ -18,9 +18,9 @@ namespace nz {
   class zia
   {
    private:
-    bool 		_isStart;
-    Process		_process;
-    Parser		_parser;
+    bool 			_isStart;
+    Process			_process;
+    Parser			_parser;
 
     // Configuration
     ::zia::api::Conf		_conf;
@@ -32,7 +32,7 @@ namespace nz {
     long long 			_logLevel;
 
     // Modules
-    ModuleLoader	_modulesLoader;
+    ModuleLoader		_modulesLoader;
     // Network
     DLLoader<::zia::api::Net>	_dlLoaderNet;
     std::string 		_moduleNetPath;
@@ -42,9 +42,10 @@ namespace nz {
     zia();
     virtual ~zia();
 
-    void start();
-    void stop();
-    void reload();
+   public:
+    void 	start();
+    void 	stop();
+    void 	reload();
 
    private:
     void  	loadConf();
