@@ -21,7 +21,7 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
     try {
 	httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
       }
-    catch (nz::HttpParserException &e) {
+    catch (nz::HttpParserException e) {
 	this->sendErrorServer(httpDuplex);
 	httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
       }

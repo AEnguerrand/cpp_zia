@@ -1,7 +1,7 @@
 #include "ModuleLoader.hh"
 
 nz::ModuleLoader::ModuleLoader(std::vector<std::string> &modulesName, std::vector<std::string> &modulesPath,
-			       ::zia::api::Conf &conf) :
+			       const ::zia::api::Conf &conf) :
 	_modulesName(modulesName),
 	_modulesPath(modulesPath),
 	_conf(conf),
