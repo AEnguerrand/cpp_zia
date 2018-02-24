@@ -18,34 +18,39 @@ namespace nz {
   class zia
   {
    private:
-    bool 				_isStart;
+    bool 			_isStart;
+    Process			_process;
+    Parser			_parser;
 
-    ModuleLoader	_modulesLoader;
-    Process		_process;
-    Parser		_parser;
+    // Configuration
+    ::zia::api::Conf		_conf;
+    std::string 		_moduleNet;
+    std::vector<std::string>  	_modules;
+    std::vector<std::string>  	_modulesPath;
 
-    long long _port;
-    long long _portSsl;
-    std::string _moduleNet;
-    std::vector<std::string>  _modules;
-    std::vector<std::string>  _modulesPath;
-    bool  _debug;
-    long long _logLevel;
+    bool 			_debug;
+    long long 			_logLevel;
 
-    // Module Net
-    DLLoader<::zia::api::Net>		_dlLoaderNet;
-    ::zia::api::Net 			*_net;
+    // Modules
+    ModuleLoader		_modulesLoader;
+    // Network
+    DLLoader<::zia::api::Net>	_dlLoaderNet;
+    std::string 		_moduleNetPath;
+    ::zia::api::Net 		*_net;
    public:
     zia();
     virtual ~zia();
 
-    void start();
-    void stop();
-    void reload();
+   public:
+    void 	start();
+    void 	stop();
+    void 	reload();
 
    private:
-    void loadAll();
-    void  loadConf();
+    void  	loadConf();
+    void	loadModules();
+
+    void 	loadNetwork();
   };
 }
 
