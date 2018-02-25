@@ -10,7 +10,13 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
   std::future<void> processStart(std::async([&](::zia::api::Net::Raw raw, ::zia::api::NetInfo netInfo) {
     // Async process HTTP
     // Parser
-    zia::api::HttpDuplex httpDuplex = _httpParser.Parse(raw);
+    zia::api::HttpDuplex httpDuplex;
+    try {
+	httpDuplex = _httpParser.Parse(raw);
+    }
+    catch (nz::HttpParserException e) {
+	return ;
+      }
 
     httpDuplex.info = netInfo;
 
@@ -32,7 +38,6 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
     }
   }, cRaw, cNetInfo));
 
-  // TODO: List for queue of async (because now wait end of async, is useless now)
   processStart.get();
 }
 

@@ -159,7 +159,6 @@ void nzm::Router::displayFile(zia::api::HttpDuplex &httpDuplex)
     }
 
   // Headers values
-  // Todo: Check is all navigator work good (if has no Content-Type header)
   httpDuplex.resp.headers["Content-Length"] = std::to_string(httpDuplex.resp.body.size());
 }
 
