@@ -29,9 +29,9 @@ nz::Console::Console(nz::zia & zia):
 		{
 			3,
 			{
-				{{"modules", "add", "<arg>"}, [&](auto& args){ _zia.getModulesLoader().addModule(args.at(2)); }},
-				{{"modules", "remove", "<arg>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }},
-				{{"network", "set", "<arg>"}, [&](auto& args){ _zia.setModuleNetwork(args.at(2)); }}
+				{{"modules", "add", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().addModule(args.at(2)); }},
+				{{"modules", "remove", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }},
+				{{"network", "set", "<module name>"}, [&](auto& args){ _zia.setModuleNetwork(args.at(2)); }}
 			}
 		},
 	};
@@ -80,9 +80,10 @@ void nz::Console::dispatchCommand(const std::vector<std::string>& args)
 	for (auto& commandInfos : commands)
 	{
 		bool same = true;
+		std::vector<std::string> cmd = commandInfos.first;
 		for (uint32_t i = 0; i < size; ++i)
 		{
-			if (commandInfos.first.at(i) != "<arg>" && args.at(i) != commandInfos.first.at(i))
+			if ((cmd.at(i).front() != '<' && cmd.at(i).back() != '>') && args.at(i) != cmd.at(i))
 				same = false;
 		}
 		if (same)
