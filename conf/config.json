@@ -1,5 +1,5 @@
 {
-    "port": 80,
+    "port": 7000,
     "port_ssl": 443,
     "module_net": "cpp_zia_module_network",
     "modules": ["cpp_zia_module_router"],
