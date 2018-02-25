@@ -13,7 +13,6 @@ void nzm::Router::execRouting(zia::api::HttpDuplex & httpDuplex)
   // Pre routing / rewrite
   // Not now ...
   // Route to URI physical
-  std::cout << "URI: " << httpDuplex.req.uri << std::endl;
   if (!uriFound("." + httpDuplex.req.uri)) {
       display404(httpDuplex);
     }
