@@ -62,10 +62,9 @@ Temporary Items
 
 .idea
 /cmake-build-debug/
-build
+build/*
+Modules/*
 
 # Visual Studio generation
 .vs
 .vscode/
-
-build.py
