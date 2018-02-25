@@ -27,40 +27,40 @@ extern "C"
 
 nzm::Network::Network()
 {
-  this->_isRun = false;
-  this->_stop.store(false);
+  _isRun = false;
+  _stop.store(false);
   nz::Log::inform("[Module Network]: Start");
 }
 
 nzm::Network::~Network()
 {
-  this->stop();
-  nz::Log::inform("[Module Network]: Stop");
+  stop();
+  nz::Log::inform("[Network Module]: Stop");
 }
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
-  try { this->_port = std::get<long long>(conf.at("port").v); }
+  try { _port = std::get<long long>(conf.at("port").v); }
   catch (...) {
-      nz::Log::warning("port not found or must be a number, default port set to '80'", "Module Network");
-      this->_port = 80;
+      nz::Log::warning("port not found or must be a number, the default port has been set to '7000'", "Network Module");
+      _port = 7000;
     }
   return true;
 }
 
 bool nzm::Network::run(zia::api::Net::Callback cb)
 {
-  if (this->_isRun)
+  if (_isRun)
     {
-      std::cerr << "Network is already run" << std::endl;
+      std::cerr << "Network is already running" << std::endl;
       return false;
     }
 
   auto funcRunSelect = std::bind(&nzm::Network::runSelect, this, std::placeholders::_1, std::placeholders::_2);
 
-  this->_isRun = true;
+  _isRun = true;
 
-  this->_select = std::make_shared<std::thread>(funcRunSelect, this->_port, cb);
+  _select = std::make_shared<std::thread>(funcRunSelect, _port, cb);
 
   return false;
 }
@@ -74,13 +74,13 @@ bool nzm::Network::send(zia::api::ImplSocket *sock, const zia::api::Net::Raw &re
 
 bool nzm::Network::stop()
 {
-  if (!this->_isRun)
+  if (!_isRun)
     {
       std::cerr << "Network is not run" << std::endl;
     }
-  this->_stop.store(true);
-  this->_select->join();
-  this->_isRun = false;
+  _stop.store(true);
+  _select->join();
+  _isRun = false;
   return true;
 }
 
@@ -91,7 +91,7 @@ void nzm::Network::runSelect(short port, zia::api::Net::Callback cb)
 
   socketServer->initServer(port);
   select.addListenTunnels(socketServer);
-  while (!this->_stop.load()) {
+  while (!_stop.load()) {
       select.run();
     }
 }

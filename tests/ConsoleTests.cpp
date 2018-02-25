@@ -2,15 +2,16 @@
 
 #include "../src/Console/Console.hh"
 
-TEST(Console, ConsoleHelp) {
-    nz::zia Zia;
-    nz::Console console(Zia);
-    std::string cmd("help");
+TEST(Console, ConsoleHelp)
+{
+  nz::zia Zia;
+  nz::Console console(Zia);
+  std::string cmd("help");
 
-    testing::internal::CaptureStdout();
-    console.runCmd(cmd);
-    std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_STREQ(output.c_str(), "List of command in Zia:\nstart : Start Zia\nstop : Stop Zia\nreload : Reload Zia\nmodules add <module name> : Add module to Zia\nmodules remove <module name> : Remove module to Zia\nmodules list : List module of Zia\n---------------------------------\n");
+  testing::internal::CaptureStdout();
+  console.runCmd(cmd);
+  std::string output = testing::internal::GetCapturedStdout();
+  ASSERT_STREQ(output.c_str(), "List of available commands:\n\tmodules add <module name>\n\tmodules remove <module name>\n\tnetwork set <module name>\n\tmodules list\n\tnetwork reload\n\thelp\n\tstart\n\tstop\n\treload\n");
 }
 
 TEST(Console, ConsoleStart) {
@@ -62,16 +63,5 @@ TEST(Console, ConsoleModulesList) {
     console.runCmd(cmd);
     std::string output = testing::internal::GetCapturedStdout();
     //Why no modules ?
-    ASSERT_STREQ(output.c_str(), "List of modules load:\n---------------------------------\n");
-}
-
-TEST(Console, ConsoleWrongCmd) {
-    nz::zia Zia;
-    nz::Console console(Zia);
-    std::string cmd("modules list a_module");
-
-    testing::internal::CaptureStdout();
-    console.runCmd(cmd);
-    std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_STREQ(output.c_str(), "Command is invalid / not define in Zia\n");
+    ASSERT_STREQ(output.c_str(), "List of loaded modules\n");
 }

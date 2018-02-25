@@ -47,11 +47,18 @@ namespace nz {
     void 	reload();
 
     ModuleLoader &	getModulesLoader();
+    const ModuleLoader &	getModulesLoader() const;
+
    private:
     void  	loadConf();
     void	loadModules();
 
     void 	loadNetwork();
+    void 	unloadNetwork();
+
+   public:
+    void 	setModuleNetwork(const std::string &);
+    void 	reloadNetwork();
   };
 }
 

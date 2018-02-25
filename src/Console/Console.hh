@@ -20,6 +20,12 @@ namespace nz {
 
     void	run();
     void	runCmd(std::string &);
+    void displayHelp();
+    void dispatchCommand(const std::vector<std::string>&);
+    void invalidCommand();
+    void displayModulesList();
+
+    std::string join(std::vector<std::string> v, std::string j = "");
   };
 }
 

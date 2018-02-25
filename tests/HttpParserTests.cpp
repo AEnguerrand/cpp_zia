@@ -29,7 +29,7 @@ TEST(HttpParser, Request) {
     ASSERT_STREQ(duplex.req.uri.c_str(), "/index.html");
 
     zia::api::HttpResponse response = parser.GetResponse(responseSample);
-    zia::api::Net::Raw responseRaw = parser.ResponseToRaw(response);
+    zia::api::Net::Raw responseRaw = parser.ResponseToRaw(response, zia::api::http::Method::get);
     std::string responseStr = transform::RawToString(responseRaw);
 
     ASSERT_STREQ(responseStr.c_str(), "HTTP/1.1 200 OK\r\nCache - Control: no - cache, no - store, must - revalidate, max - age = 0, proxy - revalidate, no - transform, private\r\nConnection: close\r\nContent - Type: text / xml\r\nDate: Wed, 13 May 2009 16 : 26 : 47 GMT\r\nETag: \"4A0AF4C7-08E1-37C7F492\"\r\nExpires: Tue, 12 May 2009 16 : 26 : 47 GMT\r\nLast - Modified: Thu, 14 May 2009 16 : 26 : 47 GMT\r\nP3P: policyref = \"/w3c/p3p.xml\", CP = \"NOI DSP COR NID PSA OUR IND COM NAV STA\"\r\nPragma: no - cache\r\nVary: *\r\nX - C: ms - 3.7.2\r\nxserver: www79\r\n\r\n< ? xml version = \"1.0\" encoding = \"UTF-8\" ? > <status>SUCCESS< / status>");

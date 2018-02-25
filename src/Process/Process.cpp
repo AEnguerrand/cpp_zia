@@ -12,9 +12,9 @@ nz::Process::Process(nz::ModuleLoader &moduleLoader):
  */
 void nz::Process::startProcess(zia::api::HttpDuplex & duplex)
 {
-  auto Modules = this->_moduleLoader.getModules();
+  auto Modules = _moduleLoader.getModules();
 
-  for (auto it : Modules) {
+  for (auto& it : Modules) {
       it.second->exec(duplex);
     }
 

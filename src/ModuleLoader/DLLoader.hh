@@ -163,7 +163,7 @@ namespace nz
       if (this->noise)
 	std::cerr << "_> Creating new instance of [" << path << "] in (" << this->name << ")..." << std::endl;
 
-      if ((symbol = (T *(*)())dlsym(handler, "create")) == nullptr)
+      if ((symbol = reinterpret_cast<T *(*)()>(dlsym(handler, "create"))) == nullptr)
 	{
 	  this->handlers.erase(path);
 	  std::cerr << dlerror() << std::endl;
@@ -210,7 +210,7 @@ namespace nz
 	  return;
 	}
 
-      if ((symbol = (T *(*)(T *))dlsym(handler, "DObject")) == nullptr)
+      if ((symbol = reinterpret_cast<T *(*)(T *)>(dlsym(handler, "DObject"))) == nullptr)
 	{
 	  std::cerr << dlerror() << std::endl;
 	  this->instances.erase(this->instances.find(path));

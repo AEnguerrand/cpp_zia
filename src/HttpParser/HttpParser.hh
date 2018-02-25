@@ -32,13 +32,13 @@ namespace nz
 		zia::api::http::Version GetVersionFromString(const std::string & input);
 		std::string				GetStringFromVersion(const zia::api::http::Version & input);
 		void					CheckRequestValidity(zia::api::HttpRequest);
-		void					CheckResponseValidity(zia::api::HttpResponse);
+		void					CheckResponseValidity(zia::api::HttpResponse, const zia::api::http::Method &method);
 
 	public:
 		zia::api::HttpDuplex	Parse(const zia::api::Net::Raw & request);
 		zia::api::HttpResponse	GetResponse(const std::string & input);
 		zia::api::HttpResponse	GetResponse(const zia::api::Net::Raw & input);
-		zia::api::Net::Raw		ResponseToRaw(const zia::api::HttpResponse &input);
+		zia::api::Net::Raw		ResponseToRaw(const zia::api::HttpResponse &input, const zia::api::http::Method &method);
 	};
 }
 

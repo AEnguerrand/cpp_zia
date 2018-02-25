@@ -13,20 +13,19 @@ void nzm::Router::execRouting(zia::api::HttpDuplex & httpDuplex)
   // Pre routing / rewrite
   // Not now ...
   // Route to URI physical
-  std::cout << "URI: " << httpDuplex.req.uri << std::endl;
-  if (!this->uriFound("." + httpDuplex.req.uri)) {
-      this->display404(httpDuplex);
+  if (!uriFound("." + httpDuplex.req.uri)) {
+      display404(httpDuplex);
     }
-  else if (this->isDirectory("." + httpDuplex.req.uri))
+  else if (isDirectory("." + httpDuplex.req.uri))
     {
       // Check index file
       // File directory
-      this->displayBrowsing(httpDuplex);
+      displayBrowsing(httpDuplex);
     }
   else
     {
       // Get data into file and put inside body
-      this->displayFile(httpDuplex);
+      displayFile(httpDuplex);
     }
 }
 
