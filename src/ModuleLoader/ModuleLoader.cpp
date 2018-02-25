@@ -57,11 +57,8 @@ bool nz::ModuleLoader::deleteModuleByName(const std::string &moduleName)
 
 bool nz::ModuleLoader::unloadAll()
 {
-  std::for_each(
-    _dlLoader.getInstances().begin(),
-    _dlLoader.getInstances().end(),
-    [&](auto module) { _dlLoader.destroyLib(module.first); }
-  );
+	for (auto &it : _dlLoader.getInstances())
+		_dlLoader.destroyLib(it.first);
   return false;
 }
 
