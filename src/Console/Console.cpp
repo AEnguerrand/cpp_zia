@@ -28,8 +28,8 @@ nz::Console::Console(nz::zia & zia):
 		{
 			3, 
 			{
-				{{"modules", "add", "<arg>"}, [&](auto& args){ _zia.getModulesLoader().addModule(args.at(2)); }},
-				{{"modules", "remove", "<arg>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }}
+				{{"modules", "add", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().addModule(args.at(2)); }},
+				{{"modules", "remove", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }}
 			}
 		},
 	};
