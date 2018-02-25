@@ -68,5 +68,3 @@ Modules
 # Visual Studio generation
 .vs
 .vscode/
-
-build.py
