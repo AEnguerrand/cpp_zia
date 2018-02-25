@@ -143,8 +143,10 @@ void nz::zia::loadNetwork()
 	    }
 	}
     }
-  if (this->_net == nullptr) {
+  if (this->_net == nullptr)
+    {
       nz::Log::error("Fail load net module", "Zia Core", 3);
+      return ;
     }
   this->_parser.setNet(this->_net);
   this->_net->config(this->_conf);
@@ -162,15 +164,37 @@ nz::ModuleLoader &nz::zia::getModulesLoader()
 
 void nz::zia::unloadNetwork()
 {
-  this->_net->stop();
-  this->_dlLoaderNet.destroyLib(this->_moduleNetPath);
+  if (this->_net == nullptr)
+    {
+      nz::Log::error("No module net is load", "Zia Core", 4);
+      if (!this->_moduleNetPath.empty())
+	{
+	  this->_dlLoaderNet.destroyLib(this->_moduleNetPath);
+	}
+      this->_moduleNet.clear();
+    }
+  else
+    {
+      this->_net->stop();
+      this->_dlLoaderNet.destroyLib(this->_moduleNetPath);
 
-  this->_net = nullptr;
-  this->_moduleNet.clear();
-  this->_moduleNetPath.clear();
+      this->_net = nullptr;
+      this->_moduleNet.clear();
+      this->_moduleNetPath.clear();
+    }
 }
 
-void nz::zia::setModuleNetwork(std::string moduleNet)
+void nz::zia::setModuleNetwork(std::string & moduleNet)
 {
+  this->unloadNetwork();
   this->_moduleNet = moduleNet;
+  this->loadNetwork();
+}
+
+void nz::zia::reloadNetwork()
+{
+  auto tmp = this->_moduleNet;
+  this->unloadNetwork();
+  this->_moduleNet = tmp;
+  this->loadNetwork();
 }
