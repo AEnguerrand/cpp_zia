@@ -36,6 +36,8 @@ void nz::Console::runCmd(std::string & cmd)
 	  std::cout << "modules add <module name> : Add module to Zia" << std::endl;
 	  std::cout << "modules remove <module name> : Remove module to Zia" << std::endl;
 	  std::cout << "modules list : List module of Zia" << std::endl;
+	  std::cout << "network set <module name> : Set module for network and reload network of Zia" << std::endl;
+	  std::cout << "network reload : Reload network of Zia" << std::endl;
 	  std::cout << "---------------------------------" << std::endl;
 	}
       else if (args.size() == 1 && args.at(0) == "start")
@@ -67,6 +69,14 @@ void nz::Console::runCmd(std::string & cmd)
 	      std::cout << module.first << std::endl;
 	    }
 	  std::cout << "---------------------------------" << std::endl;
+	}
+      else if (args.size() == 3 && args.at(0) == "network" && args.at(1) == "set")
+	{
+	  this->_zia.setModuleNetwork(args.at(2));
+	}
+      else if (args.size() == 2 && args.at(0) == "network" && args.at(1) == "reload")
+	{
+	  this->_zia.reloadNetwork();
 	}
       else
 	{
