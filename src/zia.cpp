@@ -23,11 +23,6 @@ void nz::zia::start()
     }
   Log::inform("Server booting ...");
   this->loadModules();
-  // Run network
-  ::zia::api::Net::Callback funcCallback = std::bind(&nz::Parser::callbackRequestReceived, this->_parser, std::placeholders::_1,
-						     std::placeholders::_2);
-  Log::inform("Server is run");
-  this->_net->run(funcCallback);
 
   this->_isStart = true;
 }
@@ -41,15 +36,11 @@ void nz::zia::stop()
   Log::inform("Server halt ...");
   this->_modulesLoader.unloadAll();
 
-  this->_net->stop();
-  this->_dlLoaderNet.destroyLib(this->_moduleNetPath);
+  this->unloadNetwork();
 
   this->_conf.clear();
   this->_modules.clear();
   this->_modulesPath.clear();
-  this->_net = nullptr;
-  this->_moduleNet.clear();
-  this->_moduleNetPath.clear();
 
   this->_isStart = false;
 }
@@ -157,9 +148,29 @@ void nz::zia::loadNetwork()
     }
   this->_parser.setNet(this->_net);
   this->_net->config(this->_conf);
+
+  ::zia::api::Net::Callback funcCallback = std::bind(&nz::Parser::callbackRequestReceived, this->_parser, std::placeholders::_1,
+						     std::placeholders::_2);
+  this->_net->run(funcCallback);
+  Log::inform("Network is run");
 }
 
 nz::ModuleLoader &nz::zia::getModulesLoader()
 {
   return this->_modulesLoader;
+}
+
+void nz::zia::unloadNetwork()
+{
+  this->_net->stop();
+  this->_dlLoaderNet.destroyLib(this->_moduleNetPath);
+
+  this->_net = nullptr;
+  this->_moduleNet.clear();
+  this->_moduleNetPath.clear();
+}
+
+void nz::zia::setModuleNetwork(std::string moduleNet)
+{
+  this->_moduleNet = moduleNet;
 }
