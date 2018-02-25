@@ -74,7 +74,7 @@ namespace transform
 	{
 		std::string output;
 
-		for (auto it : input)
+		for (auto& it : input)
 			output += it + ' ';
 
 		return output.substr(0, output.size() - 1);
