@@ -111,11 +111,20 @@ void nz::zia::loadModules()
 {
   Log::inform("Configuration loading ...");
   loadConf();
+
   Log::inform("Modules loading ...");
-  _modulesLoader.loadAll();
+  try { _modulesLoader.loadAll(); }
+  catch (...) {
+	  Log::inform("Modules loading failed.");
+  }
+  Log::inform("Modules loaded successfully.");
 
   Log::inform("Network loading ...");
-  loadNetwork();
+  try { loadNetwork(); }
+  catch (...) {
+	  Log::inform("Network loading failed.");
+  }
+  Log::inform("Network loaded successfully.");
 }
 
 void nz::zia::loadNetwork()
@@ -127,6 +136,7 @@ void nz::zia::loadNetwork()
   filename += ".so";
 #endif
 
+  _net = nullptr;
   for (auto& path : _modulesPath)
     {
       for (auto& p : std::experimental::filesystem::directory_iterator(path))
