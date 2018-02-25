@@ -48,6 +48,8 @@ namespace nzm {
     Buffer &getBufferOut();
 
     bool operator==(const Socket & rhs) const;
+
+    void fillNetinfo(zia::api::NetInfo &) const;
   };
 }
 

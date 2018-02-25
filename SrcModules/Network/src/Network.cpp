@@ -25,25 +25,48 @@ extern "C"
 
 #endif
 
+nzm::Network::Network()
+{
+  this->_isRun = false;
+  this->_stop.store(false);
+  nz::Log::inform("[Module Network]: Start");
+}
+
+nzm::Network::~Network()
+{
+  this->stop();
+  nz::Log::inform("[Module Network]: Stop");
+}
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
-  nz::Log::debug("CONFIG NETWORK LOADING");
-  return false;
+  try { this->_port = std::get<long long>(conf.at("port").v); }
+  catch (...) {
+      nz::Log::warning("port not found or must be a number, default port set to '7000'", "Module Network");
+      this->_port = 7000;
+    }
+  return true;
 }
 
 bool nzm::Network::run(zia::api::Net::Callback cb)
 {
+  if (this->_isRun)
+    {
+      std::cerr << "Network is already run" << std::endl;
+      return false;
+    }
+
   auto funcRunSelect = std::bind(&nzm::Network::runSelect, this, std::placeholders::_1, std::placeholders::_2);
 
-  this->_select = std::make_shared<std::thread>(funcRunSelect, 7000, cb);
+  this->_isRun = true;
+
+  this->_select = std::make_shared<std::thread>(funcRunSelect, this->_port, cb);
 
   return false;
 }
 
 bool nzm::Network::send(zia::api::ImplSocket *sock, const zia::api::Net::Raw &resp)
 {
-  // TODO: use buffer for write
   auto socket = reinterpret_cast<Socket *>(sock);
   socket->getBufferOut().pushRaw(resp);
   return true;
@@ -51,17 +74,14 @@ bool nzm::Network::send(zia::api::ImplSocket *sock, const zia::api::Net::Raw &re
 
 bool nzm::Network::stop()
 {
-  return false;
-}
-
-nzm::Network::Network()
-{
-  nz::Log::inform("[Module Network]: Run");
-}
-
-nzm::Network::~Network()
-{
-  nz::Log::inform("[Module Network]: Stop");
+  if (!this->_isRun)
+    {
+      std::cerr << "Network is not run" << std::endl;
+    }
+  this->_stop.store(true);
+  this->_select->join();
+  this->_isRun = false;
+  return true;
 }
 
 void nzm::Network::runSelect(short port, zia::api::Net::Callback cb)
@@ -71,7 +91,7 @@ void nzm::Network::runSelect(short port, zia::api::Net::Callback cb)
 
   socketServer->initServer(port);
   select.addListenTunnels(socketServer);
-  while (true) {
+  while (!this->_stop.load()) {
       select.run();
     }
 }

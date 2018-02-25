@@ -18,7 +18,8 @@ namespace nz {
 
     virtual ~Console();
 
-    void run();
+    void	run();
+    void	runCmd(std::string &);
   };
 }
 

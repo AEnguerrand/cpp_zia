@@ -1,7 +1,7 @@
 #include "ModuleLoader.hh"
 
 nz::ModuleLoader::ModuleLoader(std::vector<std::string> &modulesName, std::vector<std::string> &modulesPath,
-			       ::zia::api::Conf &conf) :
+			       const ::zia::api::Conf &conf) :
 	_modulesName(modulesName),
 	_modulesPath(modulesPath),
 	_conf(conf),
@@ -46,24 +46,23 @@ bool nz::ModuleLoader::deleteModuleByName(const std::string &moduleName)
 {
   try
     {
-      this->_dlLoader.resetLib(this->_modules.at(moduleName));
+      this->_dlLoader.destroyLib(this->_modules.at(moduleName));
       this->_modules.erase(this->_modules.find(moduleName));
       this->_modulesName.erase(std::find(this->_modulesName.begin(), this->_modulesName.end(), moduleName));
     }
   catch (std::exception e)
     {
       std::cerr << "Error: " << e.what() << std::endl;
-      return true;
+      return false;
     }
-  return false;
+  return true;
 }
 
 bool nz::ModuleLoader::unloadAll()
 {
-  while (!_modulesName.empty())
+  for (auto module : this->_dlLoader.getInstances())
     {
-      if (deleteModuleByName(this->_modulesName.at(0)))
-	return true;
+      this->_dlLoader.destroyLib(module.first);
     }
   return false;
 }
