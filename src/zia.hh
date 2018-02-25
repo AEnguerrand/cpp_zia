@@ -47,6 +47,8 @@ namespace nz {
     void 	reload();
 
     ModuleLoader &	getModulesLoader();
+    const ModuleLoader &	getModulesLoader() const;
+
    private:
     void  	loadConf();
     void	loadModules();
@@ -55,7 +57,7 @@ namespace nz {
     void 	unloadNetwork();
 
    public:
-    void 	setModuleNetwork(std::string &);
+    void 	setModuleNetwork(const std::string &);
     void 	reloadNetwork();
   };
 }

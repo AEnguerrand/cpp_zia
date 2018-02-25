@@ -31,10 +31,10 @@ TEST(Parser, ParserJsonIncorrectFile) {
     //Wrong file
     nz::ParserJson parseWrongJson("../conf/config.azdqsd");
     parseWrongJson.getConfig();
-    testing::internal::CaptureStdout();
+    testing::internal::CaptureStderr();
     parseWrongJson.dump();
-    output = testing::internal::GetCapturedStdout();
-    ASSERT_STREQ(output.c_str(), "Configuration file is empty\n");
+    output = testing::internal::GetCapturedStderr();
+    ASSERT_STREQ(output.c_str(), "[WARNING] - INVALID_CONF: Configuration file's empty\n");
 }
 
 TEST(Parser, ParserJsonCorrectFile) {
@@ -43,8 +43,8 @@ TEST(Parser, ParserJsonCorrectFile) {
     //Correct file
     nz::ParserJson parserJson("../tests/conf/config.json");
     parserJson.getConfig();
-    testing::internal::CaptureStdout();
+    testing::internal::CaptureStderr();
     parserJson.dump();
-    output = testing::internal::GetCapturedStdout();
+    output = testing::internal::GetCapturedStderr();
     ASSERT_STREQ(output.c_str(), "{\n    \"debug\": false,\n    \"log_level\": 2,\n    \"module_net\": \"network_with_ssh\",\n    \"modules\": [\n        \"cgibin\",\n        \"gzip\",\n        \"logger\"\n    ],\n    \"modules_path\": [\n        \".\",\n        \"modules\",\n        3\n    ],\n    \"port\": 80,\n    \"port_ssl\": 443\n}\n");
 }
