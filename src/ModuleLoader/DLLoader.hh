@@ -140,10 +140,6 @@ namespace nz
 	  for (int i = 0; i < paddingVarName + 17; i++) std::cerr << "-";
 	  std::cerr << "|" << std::endl;
 	}
-      else
-	{
-	  std::cerr << "Please activate the verbose mode in order to dump context" << std::endl;
-	}
     }
 
     T *getInstance(const std::string &path)
@@ -212,7 +208,6 @@ namespace nz
 
       if ((symbol = reinterpret_cast<T *(*)(T *)>(dlsym(handler, "DObject"))) == nullptr)
 	{
-	  std::cerr << dlerror() << std::endl;
 	  this->instances.erase(this->instances.find(path));
 	  return;
 	}
