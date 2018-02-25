@@ -26,8 +26,6 @@ zia::api::http::Method	nz::HttpParser::GetMethodFromString(const std::string & i
 	{ "CONNECT", zia::api::http::Method::connect }
 	};
 
-	std::cout << "METHOD: " << input << std::endl;
-
 	for (auto it : link)
 	{
 		if (it.first == input)
@@ -47,7 +45,6 @@ zia::api::http::Version	nz::HttpParser::GetVersionFromString(const std::string &
 	{ "HTTP/2.0", zia::api::http::Version::http_2_0 }
 	};
 
-	std::cout << "VERSION: " << input << std::endl;
 
 	for (auto it : link)
 	{
@@ -246,7 +243,6 @@ zia::api::HttpDuplex	nz::HttpParser::Parse(const zia::api::Net::Raw & raw)
 {
 	zia::api::HttpDuplex back;
 	std::string request = transform::RawToString(raw);
-	std::cout << "REQUEST : [" << request << "]" << std::endl;
 	std::vector<std::string> row = transform::Split(transform::EpurStr(request, CRLF), CRLF);
 
 	back.raw_req = raw;

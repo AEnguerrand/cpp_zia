@@ -15,15 +15,12 @@ nz::ModuleLoader::~ModuleLoader()
 
 void nz::ModuleLoader::loadAll()
 {
-  for (auto moduleName : _modulesName)
-    {
-      addModule(moduleName);
-    }
+  std::for_each(_modulesName.begin(), _modulesName.end(), [&](std::string& name){ addModule(name);  });
 }
 
 void nz::ModuleLoader::addModule(const std::string &moduleName)
 {
-  std::string moduleFilename = this->convertToFilename(moduleName);
+  std::string moduleFilename = convertToFilename(moduleName);
   for (auto path : _modulesPath)
     {
       for (auto &p : std::experimental::filesystem::directory_iterator(path))
@@ -31,11 +28,11 @@ void nz::ModuleLoader::addModule(const std::string &moduleName)
 	  if (std::experimental::filesystem::is_regular_file(p)
 	      && std::experimental::filesystem::path(p).filename() == moduleFilename)
 	    {
-	      this->_dlLoader.addLib(std::experimental::filesystem::path(p).string());
-	      auto tmp = this->_dlLoader.getInstance(std::experimental::filesystem::path(p).string());
-	      tmp->config(this->_conf);
-	      this->_modules[moduleName] = std::experimental::filesystem::path(p).string();
-	      this->_dlLoader.dump();
+        _modules[moduleName] = std::experimental::filesystem::path(p).string(); 
+	      _dlLoader.addLib(_modules[moduleName]);
+	      auto tmp = _dlLoader.getInstance(_modules[moduleName]);
+	      tmp->config(_conf);
+	      _dlLoader.dump();
 	      return;
 	    }
 	}
@@ -46,13 +43,13 @@ bool nz::ModuleLoader::deleteModuleByName(const std::string &moduleName)
 {
   try
     {
-      this->_dlLoader.destroyLib(this->_modules.at(moduleName));
-      this->_modules.erase(this->_modules.find(moduleName));
-      this->_modulesName.erase(std::find(this->_modulesName.begin(), this->_modulesName.end(), moduleName));
+      _dlLoader.destroyLib(_modules.at(moduleName));
+      _modules.erase(_modules.find(moduleName));
+      _modulesName.erase(std::find(_modulesName.begin(), _modulesName.end(), moduleName));
     }
   catch (std::exception e)
     {
-      std::cerr << "Error: " << e.what() << std::endl;
+      nz::Log::error(e.what(), "MODULE LOADER", 7);
       return false;
     }
   return true;
@@ -60,10 +57,11 @@ bool nz::ModuleLoader::deleteModuleByName(const std::string &moduleName)
 
 bool nz::ModuleLoader::unloadAll()
 {
-  for (auto module : this->_dlLoader.getInstances())
-    {
-      this->_dlLoader.destroyLib(module.first);
-    }
+  std::for_each(
+    _dlLoader.getInstances().begin(),
+    _dlLoader.getInstances().end(),
+    [&](auto module) { _dlLoader.destroyLib(module.first); }
+  );
   return false;
 }
 
@@ -79,7 +77,7 @@ nz::DLLoader<zia::api::Module> &nz::ModuleLoader::getDlLoader()
 
 std::unordered_map<std::string, ::zia::api::Module *> nz::ModuleLoader::getModules()
 {
-  return this->_dlLoader.getInstances();
+  return _dlLoader.getInstances();
 }
 
 const std::string nz::ModuleLoader::convertToFilename(const std::string &moduleName) const

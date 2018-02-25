@@ -15,7 +15,7 @@ namespace nzm {
 
     virtual ~ModuleNetworkException () throw () {}
 
-    virtual const char* what() const throw () { return std::string("ModuleNetworkException: " + this->_msg).c_str(); }
+    virtual const char* what() const throw () { return std::string("ModuleNetworkException: " + _msg).c_str(); }
   };
 }
 
