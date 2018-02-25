@@ -24,8 +24,8 @@ This project has been developed in C++ and is comptatible on Linux and Windows.
 
 ### Linux
 ```bash
-git clone https://github.com/Nexus-Software/NexusZiaApi.git
-cd NexusZiaApi
+git clone https://github.com/AEnguerrand/cpp_zia.git
+cd cpp_zia
 python build.py
 cd build
 ./cpp_zia
@@ -33,8 +33,8 @@ cd build
 
 ### Windows
 ```bash
-git clone https://github.com/Nexus-Software/NexusZiaApi.git
-cd NexusZiaApi
+git clone https://github.com/AEnguerrand/cpp_zia.git
+cd cpp_zia
 python build.py
 cd build
 ./cpp_zia.exe
