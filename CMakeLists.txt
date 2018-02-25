@@ -43,7 +43,11 @@ add_subdirectory(SrcModules/Router)
 # Copy Modules
 ################################
 
-file(COPY Modules DESTINATION .)
+if (MSVC)
+	file(COPY Modules/Debug/ DESTINATION "${CMAKE_BINARY_DIR}/Debug/Modules")
+else()
+	file(COPY Modules DESTINATION .)
+endif()
 
 ################################
 # Testing

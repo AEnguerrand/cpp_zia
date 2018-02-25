@@ -63,6 +63,7 @@ Temporary Items
 .idea
 /cmake-build-debug/
 build
+Modules
 
 # Visual Studio generation
 .vs
