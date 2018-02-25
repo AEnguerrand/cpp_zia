@@ -43,7 +43,7 @@ TEST(Console, ConsoleNetworkReload) {
     nz::Console console(Zia);
     std::string cmd("network reload");
 
-    // console.runCmd(cmd); // << SigSegv
+    console.runCmd(cmd);
 }
 
 TEST(Console, ConsoleModulesAdd) {

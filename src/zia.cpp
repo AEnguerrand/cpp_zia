@@ -192,6 +192,11 @@ void nz::zia::setModuleNetwork(const std::string & moduleNet)
 
 void nz::zia::reloadNetwork()
 {
+  if (_moduleNet.empty())
+    {
+      nz::Log::error("No module net is load", "Zia Core", 4);
+      return ;
+    }
   auto tmp = _moduleNet;
   unloadNetwork();
   _moduleNet = tmp;
