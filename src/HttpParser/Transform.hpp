@@ -25,9 +25,8 @@ namespace transform
 	static std::string RawToString(zia::api::Net::Raw input)
 	{
 		std::string output;
-	  	for (auto & i : input) {
-		    output.push_back(static_cast<char>(i));
-		  }
+		std::transform(input.begin(), input.end(), std::back_inserter(output),
+			[](std::byte c) -> unsigned char { return static_cast<unsigned char>(c); });
 		return output;
 	}
 
