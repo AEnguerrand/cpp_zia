@@ -58,5 +58,5 @@ void  nz::ParserJson::dump(void)
   if (_invalidFile)
     nz::Log::warning("Configuration file's empty", "INVALID_CONF");
   else
-    nz::Log::debug(_json);
+    std::cerr << std::setw(4) << this->_json << std::endl;
 }
