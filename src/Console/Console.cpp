@@ -22,14 +22,16 @@ nz::Console::Console(nz::zia & zia):
 		{
 			2,
 			{
-				{{"modules", "list"}, [&](auto&){ displayModulesList(); }}
+				{{"modules", "list"}, [&](auto&){ displayModulesList(); }},
+				{{"network", "reload"}, [&](auto&){ _zia.reloadNetwork(); }},
 			}
 		},
 		{
 			3,
 			{
 				{{"modules", "add", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().addModule(args.at(2)); }},
-				{{"modules", "remove", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }}
+				{{"modules", "remove", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }},
+				{{"network", "set", "<module name>"}, [&](auto& args){ _zia.setModuleNetwork(args.at(2)); }}
 			}
 		},
 	};
