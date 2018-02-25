@@ -26,8 +26,6 @@ zia::api::http::Method	nz::HttpParser::GetMethodFromString(const std::string & i
 	{ "CONNECT", zia::api::http::Method::connect }
 	};
 
-	std::cout << "METHOD: " << input << std::endl;
-
 	for (auto it : link)
 	{
 		if (it.first == input)
@@ -47,7 +45,6 @@ zia::api::http::Version	nz::HttpParser::GetVersionFromString(const std::string &
 	{ "HTTP/2.0", zia::api::http::Version::http_2_0 }
 	};
 
-	std::cout << "VERSION: " << input << std::endl;
 
 	for (auto it : link)
 	{
@@ -156,12 +153,12 @@ zia::api::HttpResponse	nz::HttpParser::GetResponse(const std::string & input)
 	return GetResponse(row);
 }
 
-zia::api::Net::Raw		nz::HttpParser::ResponseToRaw(const zia ::api::HttpResponse &input)
+zia::api::Net::Raw		nz::HttpParser::ResponseToRaw(const zia ::api::HttpResponse &input, const zia::api::http::Method &method)
 {
 	zia::api::Net::Raw	output;
 	std::string			tmp;
 
-	CheckResponseValidity(input);
+	CheckResponseValidity(input, method);
 
 	tmp += GetStringFromVersion(input.version) + SP;
 	tmp += std::to_string(input.status) + SP;
@@ -289,7 +286,7 @@ void					nz::HttpParser::CheckRequestValidity(zia::api::HttpRequest data)
 	}
 }
 
-void					nz::HttpParser::CheckResponseValidity(zia::api::HttpResponse data)
+void					nz::HttpParser::CheckResponseValidity(zia::api::HttpResponse data, const zia::api::http::Method &method)
 {
 	// Check Status
 	if (data.status == zia::api::http::common_status::unknown)
@@ -302,4 +299,14 @@ void					nz::HttpParser::CheckResponseValidity(zia::api::HttpResponse data)
 	// Check Headers
 
 	// Check Body
+	if (!data.body.empty())
+	{
+		if (method == zia::api::http::Method::head)
+			data.body.clear();
+	}
+	else
+	{
+		if (method != zia::api::http::Method::head)
+			throw HttpParserException("This response require a body");
+	}
 }

@@ -6,13 +6,14 @@
 
 #include "api.h"
 #include "json.hpp"
+#include "Log.hpp"
 
 namespace nz {
   class ParserJson
   {
     private:
       nlohmann::json  _json;
-      bool            _fileInvalid;
+      bool            _invalidFile;
       
     public:
       ParserJson(const std::string&);

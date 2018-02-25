@@ -10,25 +10,25 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
   std::future<void> processStart(std::async([&](::zia::api::Net::Raw raw, ::zia::api::NetInfo netInfo) {
     // Async process HTTP
     // Parser
-    zia::api::HttpDuplex httpDuplex = this->_httpParser.Parse(raw);
+    zia::api::HttpDuplex httpDuplex = _httpParser.Parse(raw);
 
     httpDuplex.info = netInfo;
 
     // Order to send parser ZIA HTTP and at end network module
-    this->_process.startProcess(httpDuplex);
+    _process.startProcess(httpDuplex);
 
     // Convert http response into raw
     try {
-	httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
+	httpDuplex.raw_resp = _httpParser.ResponseToRaw(httpDuplex.resp, httpDuplex.req.method);
       }
     catch (nz::HttpParserException e) {
-	this->sendErrorServer(httpDuplex);
-	httpDuplex.raw_resp = this->_httpParser.ResponseToRaw(httpDuplex.resp);
+	sendErrorServer(httpDuplex);
+	httpDuplex.raw_resp = _httpParser.ResponseToRaw(httpDuplex.resp, httpDuplex.req.method);
       }
 
     // Send network
     if (netInfo.sock) {
-      this->_net->send(netInfo.sock, httpDuplex.raw_resp);
+      _net->send(netInfo.sock, httpDuplex.raw_resp);
     }
   }, cRaw, cNetInfo));
 
@@ -38,7 +38,7 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
 
 void nz::Parser::setNet(zia::api::Net *net)
 {
-  this->_net = net;
+  _net = net;
 }
 
 void nz::Parser::sendErrorServer(zia::api::HttpDuplex &httpDuplex) const

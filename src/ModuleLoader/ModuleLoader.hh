@@ -8,6 +8,7 @@
 
 
 #include "api.h"
+#include "Log.hpp"
 
 #ifndef _WIN32
 
