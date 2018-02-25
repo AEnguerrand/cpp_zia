@@ -10,7 +10,16 @@ TEST(Console, ConsoleHelp) {
     testing::internal::CaptureStdout();
     console.runCmd(cmd);
     std::string output = testing::internal::GetCapturedStdout();
-    ASSERT_STREQ(output.c_str(), "List of command in Zia:\nstart : Start Zia\nstop : Stop Zia\nreload : Reload Zia\nmodules add <module name> : Add module to Zia\nmodules remove <module name> : Remove module to Zia\nmodules list : List module of Zia\n---------------------------------\n");
+    ASSERT_STREQ(output.c_str(), "List of command in Zia:\n"
+	    "start : Start Zia\n"
+	    "stop : Stop Zia\n"
+	    "reload : Reload Zia\n"
+	    "modules add <module name> : Add module to Zia\n"
+	    "modules remove <module name> : Remove module to Zia\n"
+	    "modules list : List module of Zia\n"
+	    "network set <module name> : Set module for network and reload network of Zia\n"
+	    "network reload : Reload network of Zia\n"
+	    "---------------------------------\n");
 }
 
 TEST(Console, ConsoleStart) {
