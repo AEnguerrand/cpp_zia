@@ -5,7 +5,7 @@ nz::zia::zia():
   _process(_modulesLoader),
   _parser(_process, nullptr),
   _modulesLoader(_modules, _modulesPath, _conf),
-  _dlLoaderNet("moduleNet", true)
+  _dlLoaderNet("moduleNet", false)
 {
 }
 

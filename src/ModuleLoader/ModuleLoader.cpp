@@ -5,7 +5,7 @@ nz::ModuleLoader::ModuleLoader(std::vector<std::string> &modulesName, std::vecto
 	_modulesName(modulesName),
 	_modulesPath(modulesPath),
 	_conf(conf),
-	_dlLoader("modulesZia", true)
+	_dlLoader("modulesZia", false)
 {
 }
 
