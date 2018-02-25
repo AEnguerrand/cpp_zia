@@ -1,12 +1,12 @@
 #include "zia.hh"
 
 nz::zia::zia():
+  _isStart(false),
   _process(_modulesLoader),
   _parser(_process, nullptr),
   _modulesLoader(_modules, _modulesPath, _conf),
   _dlLoaderNet("moduleNet", true)
 {
-  _isStart = false;
 }
 
 nz::zia::~zia()
