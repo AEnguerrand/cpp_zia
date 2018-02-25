@@ -35,7 +35,7 @@ TEST(Zia, ZiaBadNetworkModule) {
     testing::internal::CaptureStderr();
     Zia.setModuleNetwork("moduleNet");
     std::string output = testing::internal::GetCapturedStderr();
-    ASSERT_STREQ(output.c_str(), "_> About to delete instance of [./Modules/cpp_zia_module_network.so]\n./Modules/cpp_zia_module_network.so: undefined symbol: DObject\n[ERROR 3] - Zia Core: Fail load net module\n");
+    ASSERT_STREQ(output.c_str(), "[ERROR 3] - Zia Core: Fail load net module\n");
 }
 
 TEST(Zia, ZiaNormalBehaviour) {
