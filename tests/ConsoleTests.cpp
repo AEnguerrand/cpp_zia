@@ -19,7 +19,7 @@ TEST(Console, ConsoleStart) {
     nz::Console console(Zia);
     std::string cmd("start");
 
-    // console.runCmd(cmd); // exception thrown ?
+    console.runCmd(cmd);
 }
 
 TEST(Console, ConsoleStop) {
@@ -38,23 +38,59 @@ TEST(Console, ConsoleReload) {
     console.runCmd(cmd);
 }
 
-TEST(Console, ConsoleModulesAdd) {
+TEST(Console, ConsoleNetworkReloadNoModulesNetLoaded) {
     nz::zia Zia;
     nz::Console console(Zia);
-    std::string cmd("modules add a_module");
+    std::string cmd("network reload");
 
     console.runCmd(cmd);
 }
 
-TEST(Console, ConsoleModulesRemove) {
+TEST(Console, ConsoleModulesAddRemoveWithZiaStarted) {
     nz::zia Zia;
     nz::Console console(Zia);
-    std::string cmd("modules remove a_module");
+    std::string cmd("modules list");
+    std::string output;
 
+    Zia.start();
+
+    testing::internal::CaptureStdout();
     console.runCmd(cmd);
+    output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "List of loaded modules\n./Modules/cpp_zia_module_router.so\n");
+
+    cmd = "modules add cpp_zia_module_php";
+    console.runCmd(cmd);
+
+    testing::internal::CaptureStdout();
+    cmd = "modules list";
+    console.runCmd(cmd);
+    output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "List of loaded modules\n./Modules/cpp_zia_module_php.so\n./Modules/cpp_zia_module_router.so\n");
+
+    cmd = "modules remove cpp_zia_module_router";
+    console.runCmd(cmd);
+    testing::internal::CaptureStdout();
+    cmd = "modules list";
+    console.runCmd(cmd);
+    output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "List of loaded modules\n./Modules/cpp_zia_module_php.so\n");
 }
 
-TEST(Console, ConsoleModulesList) {
+TEST(Console, ConsoleNetworkSet) {
+    nz::zia Zia;
+    nz::Console console(Zia);
+    std::string cmd("network set cpp_zia_module_network");
+
+    Zia.start();
+
+    testing::internal::CaptureStdout();
+    console.runCmd(cmd);
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "[INFO]: [Module Network]: Start\n[INFO]: Network is run\n");
+}
+
+TEST(Console, ConsoleModulesListEmpty) {
     nz::zia Zia;
     nz::Console console(Zia);
     std::string cmd("modules list");
@@ -62,6 +98,40 @@ TEST(Console, ConsoleModulesList) {
     testing::internal::CaptureStdout();
     console.runCmd(cmd);
     std::string output = testing::internal::GetCapturedStdout();
-    //Why no modules ?
     ASSERT_STREQ(output.c_str(), "List of loaded modules\n");
+}
+
+TEST(Console, ConsoleModulesListLoaded) {
+    nz::zia Zia;
+    nz::Console console(Zia);
+    std::string cmd("start");
+
+    console.runCmd(cmd);
+    cmd = "modules list";
+    testing::internal::CaptureStdout();
+    console.runCmd(cmd);
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "List of loaded modules\n./Modules/cpp_zia_module_router.so\n");
+}
+
+TEST(Console, ConsoleBadCmdName) {
+    nz::zia Zia;
+    nz::Console console(Zia);
+    std::string cmd("yes42man");
+
+    testing::internal::CaptureStdout();
+    console.runCmd(cmd);
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "Invalid command\n");
+}
+
+TEST(Console, ConsoleBadCmdNbArgs) {
+    nz::zia Zia;
+    nz::Console console(Zia);
+    std::string cmd("yes42man yes42man yes42man yes42man yes42man yes42man yes42man");
+
+    testing::internal::CaptureStdout();
+    console.runCmd(cmd);
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "Invalid command\n");
 }
