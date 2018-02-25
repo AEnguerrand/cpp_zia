@@ -1,16 +1,38 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
 
 ################################
-# Build Zia Core
+# Init of project
 ################################
 project(cpp_zia)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+################################
+# Build Modules
+################################
+add_subdirectory(SrcModules/Network)
+add_subdirectory(SrcModules/Php)
+add_subdirectory(SrcModules/Router)
+
+################################
+# Copy Modules
+################################
+
+file(COPY Modules DESTINATION .)
+
+################################
+# Build Zia Core
+################################
+
 if(MSVC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif(MSVC)
+
+if (MSVC)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}")
+endif()
 
 include_directories(includes api lib)
 
@@ -31,23 +53,6 @@ if (UNIX)
 endif()
 
 target_link_libraries (cpp_zia ${CMAKE_THREAD_LIBS_INIT})
-
-################################
-# Build Modules
-################################
-add_subdirectory(SrcModules/Network)
-add_subdirectory(SrcModules/Php)
-add_subdirectory(SrcModules/Router)
-
-################################
-# Copy Modules
-################################
-
-if (MSVC)
-	file(COPY Modules/Debug/ DESTINATION "${CMAKE_BINARY_DIR}/Debug/Modules")
-else()
-	file(COPY Modules DESTINATION .)
-endif()
 
 ################################
 # Testing

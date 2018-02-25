@@ -5,9 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (MSVC)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../Modules")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/../Modules")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/../Modules")
 else()
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../../Modules)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../../Modules)
 endif()
 
 include_directories(../../includes ../../api)
