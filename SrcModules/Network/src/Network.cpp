@@ -35,15 +35,15 @@ nzm::Network::Network()
 nzm::Network::~Network()
 {
   stop();
-  nz::Log::inform("[Module Network]: Stop");
+  nz::Log::inform("[Network Module]: Stop");
 }
 
 bool nzm::Network::config(const zia::api::Conf &conf)
 {
   try { _port = std::get<long long>(conf.at("port").v); }
   catch (...) {
-      nz::Log::warning("port not found or must be a number, default port set to '80'", "Module Network");
-      _port = 80;
+      nz::Log::warning("port not found or must be a number, the default port has been set to '7000'", "Network Module");
+      _port = 7000;
     }
   return true;
 }
@@ -52,7 +52,7 @@ bool nzm::Network::run(zia::api::Net::Callback cb)
 {
   if (_isRun)
     {
-      std::cerr << "Network is already run" << std::endl;
+      std::cerr << "Network is already running" << std::endl;
       return false;
     }
 

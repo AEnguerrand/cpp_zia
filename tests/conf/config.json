@@ -1,0 +1,9 @@
+{
+    "port": 80,
+    "port_ssl": 443,
+    "module_net": "network_with_ssh",
+    "modules": ["cgibin", "gzip", "logger"],
+    "modules_path": [".", "modules", 3],
+    "debug": false,
+    "log_level": 2
+}
