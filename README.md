@@ -8,17 +8,44 @@
 [![codecov](https://codecov.io/gh/AEnguerrand/cpp_zia/branch/master/graph/badge.svg)](https://codecov.io/gh/AEnguerrand/cpp_zia)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-:exclamation: **The project is under development**
+:mortar_board: **The project was realized in the 3rd year at Epitech**
 
-Welcome to the Github project of Zia by Nexus-Software.
-This repository is provided with documentation intended to describe the operation of the Zia project.
+Welcome to the Zia project Github, made  by Nexus-Software with :heart:.
+This repository is provided with documentation intended to describe the operations of the Zia project.
 
-This project has been developed in C++ and is comptatible on Linux, MacOS and Windows.
+This project has been developed in C++ and is comptatible on Linux and Windows.
 
 ## Dependencies
 
 - C++ 17 Compiler
 - CMake
+
+## Build and run
+
+### Linux
+```bash
+git clone https://github.com/Nexus-Software/NexusZiaApi.git
+cd NexusZiaApi
+python build.py
+cd build
+./cpp_zia
+```
+
+### Windows
+```bash
+git clone https://github.com/Nexus-Software/NexusZiaApi.git
+cd NexusZiaApi
+python build.py
+cd build
+./cpp_zia.exe
+```
+## Console
+
+This project has a CLI. To discover all the available commands, type :
+```
+help
+```
+
 
 ## Contributing
 
