@@ -5,7 +5,6 @@
 #include <iomanip>
 
 #include "../zia.hh"
-#include "../HttpParser/Transform.hpp"
 #include "Log.hpp"
 
 namespace nz {
@@ -25,6 +24,8 @@ namespace nz {
     void dispatchCommand(const std::vector<std::string>&);
     void invalidCommand();
     void displayModulesList();
+
+    std::string join(std::vector<std::string> v, std::string j = "");
   };
 }
 
