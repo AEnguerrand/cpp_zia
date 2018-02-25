@@ -11,7 +11,7 @@ TEST(Console, ConsoleHelp)
   testing::internal::CaptureStdout();
   console.runCmd(cmd);
   std::string output = testing::internal::GetCapturedStdout();
-  //   ASSERT_STREQ(output.c_str(), "List of available commands:\n\tmodules add <module name>\n\tmodules remove <module name>\n\tnetwork set <module name>\n\tmodules list\n\tnetwork reload\n\thelp\n\tstart\n\tstop\n\treload\n");
+  ASSERT_STREQ(output.c_str(), "List of available commands:\n\tmodules add <module name>\n\tmodules remove <module name>\n\tnetwork set <module name>\n\tmodules list\n\tnetwork reload\n\thelp\n\tstart\n\tstop\n\treload\n");
 }
 
 TEST(Console, ConsoleStart) {
