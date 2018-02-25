@@ -156,12 +156,12 @@ zia::api::HttpResponse	nz::HttpParser::GetResponse(const std::string & input)
 	return GetResponse(row);
 }
 
-zia::api::Net::Raw		nz::HttpParser::ResponseToRaw(const zia ::api::HttpResponse &input)
+zia::api::Net::Raw		nz::HttpParser::ResponseToRaw(const zia ::api::HttpResponse &input, const zia::api::http::Method &method)
 {
 	zia::api::Net::Raw	output;
 	std::string			tmp;
 
-	CheckResponseValidity(input);
+	CheckResponseValidity(input, method);
 
 	tmp += GetStringFromVersion(input.version) + SP;
 	tmp += std::to_string(input.status) + SP;
@@ -246,6 +246,7 @@ zia::api::HttpDuplex	nz::HttpParser::Parse(const zia::api::Net::Raw & raw)
 {
 	zia::api::HttpDuplex back;
 	std::string request = transform::RawToString(raw);
+	std::cout << "REQUEST : [" << request << "]" << std::endl;
 	std::vector<std::string> row = transform::Split(transform::EpurStr(request, CRLF), CRLF);
 
 	back.raw_req = raw;
@@ -289,7 +290,7 @@ void					nz::HttpParser::CheckRequestValidity(zia::api::HttpRequest data)
 	}
 }
 
-void					nz::HttpParser::CheckResponseValidity(zia::api::HttpResponse data)
+void					nz::HttpParser::CheckResponseValidity(zia::api::HttpResponse data, const zia::api::http::Method &method)
 {
 	// Check Status
 	if (data.status == zia::api::http::common_status::unknown)
@@ -302,4 +303,14 @@ void					nz::HttpParser::CheckResponseValidity(zia::api::HttpResponse data)
 	// Check Headers
 
 	// Check Body
+	if (!data.body.empty())
+	{
+		if (method == zia::api::http::Method::head)
+			data.body.clear();
+	}
+	else
+	{
+		if (method != zia::api::http::Method::head)
+			throw HttpParserException("This response require a body");
+	}
 }
