@@ -8,6 +8,10 @@ project(cpp_zia)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+endif(MSVC)
+
 ################################
 # Build Modules
 ################################
@@ -16,18 +20,8 @@ add_subdirectory(SrcModules/Php)
 add_subdirectory(SrcModules/Router)
 
 ################################
-# Copy Modules
-################################
-
-file(COPY Modules DESTINATION .)
-
-################################
 # Build Zia Core
 ################################
-
-if(MSVC)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
-endif(MSVC)
 
 if (MSVC)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}")
