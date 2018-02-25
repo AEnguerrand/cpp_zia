@@ -46,32 +46,35 @@ TEST(Console, ConsoleNetworkReloadNoModulesNetLoaded) {
     console.runCmd(cmd);
 }
 
-TEST(Console, ConsoleModulesAdd) {
+TEST(Console, ConsoleModulesAddRemoveWithZiaStarted) {
     nz::zia Zia;
     nz::Console console(Zia);
-    std::string cmd("modules add cpp_zia_module_php");
+    std::string cmd("modules list");
+    std::string output;
 
+    Zia.start();
+
+    testing::internal::CaptureStdout();
+    console.runCmd(cmd);
+    output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "List of loaded modules\n./Modules/cpp_zia_module_router.so\n");
+
+    cmd = "modules add cpp_zia_module_php";
     console.runCmd(cmd);
 
-    // testing::internal::CaptureStdout();
-    // cmd = "modules list";
-    // console.runCmd(cmd);
-    // std::string output = testing::internal::GetCapturedStdout();
-    // ASSERT_STREQ(output.c_str(), "List of loaded modules \n");
-}
-
-TEST(Console, ConsoleModulesRemove) {
-    nz::zia Zia;
-    nz::Console console(Zia);
-    std::string cmd("modules remove cpp_zia_module_php");
-
+    testing::internal::CaptureStdout();
+    cmd = "modules list";
     console.runCmd(cmd);
+    output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "List of loaded modules\n./Modules/cpp_zia_module_php.so\n./Modules/cpp_zia_module_router.so\n");
 
-    // testing::internal::CaptureStdout();
-    // cmd = "modules list";
-    // console.runCmd(cmd);
-    // std::string output = testing::internal::GetCapturedStdout();
-    // ASSERT_STREQ(output.c_str(), "List of loaded modules \n");
+    cmd = "modules remove cpp_zia_module_router";
+    console.runCmd(cmd);
+    testing::internal::CaptureStdout();
+    cmd = "modules list";
+    console.runCmd(cmd);
+    output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "List of loaded modules\n./Modules/cpp_zia_module_php.so\n");
 }
 
 TEST(Console, ConsoleNetworkSet) {
@@ -79,7 +82,12 @@ TEST(Console, ConsoleNetworkSet) {
     nz::Console console(Zia);
     std::string cmd("network set cpp_zia_module_network");
 
-    // console.runCmd(cmd);
+    Zia.start();
+
+    testing::internal::CaptureStdout();
+    console.runCmd(cmd);
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "[INFO]: [Module Network]: Start\n[INFO]: Network is run\n");
 }
 
 TEST(Console, ConsoleModulesListEmpty) {
