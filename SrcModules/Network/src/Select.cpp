@@ -39,6 +39,7 @@ void nzm::Select::run()
 		  if (it->getBufferIn().hasHTTPRequest())
 		    {
 		      zia::api::NetInfo netInfo;
+		      it->fillNetinfo(netInfo);
 		      netInfo.sock = reinterpret_cast<zia::api::ImplSocket *>(it.get());
 		      this->_callback(it->getBufferIn().getHttpRequest(), netInfo);
 		    }
