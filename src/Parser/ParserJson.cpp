@@ -1,6 +1,8 @@
 #include "ParserJson.hh"
 
 nz::ParserJson::ParserJson(const std::string& path)
+:
+  _invalidFile(false)
 {
   std::ifstream   file(path);
   nlohmann::json  json;
@@ -9,12 +11,11 @@ nz::ParserJson::ParserJson(const std::string& path)
     file >> json;
   }
   catch (nlohmann::detail::parse_error) {
-    this->_fileInvalid = true;
+    this->_invalidFile = true;
     file.close();
     return;
   }
   this->_json = json;
-  this->_fileInvalid = false;
   file.close();
 }
 
@@ -24,7 +25,7 @@ zia::api::Conf nz::ParserJson::getConfig(void)
 {
   zia::api::Conf  config;
 
-  if (this->_fileInvalid)
+  if (this->_invalidFile)
     return (config);
   for (auto it = this->_json.begin(); it != this->_json.end(); ++it) {
     if (it.value().is_string())
@@ -54,10 +55,8 @@ zia::api::Conf nz::ParserJson::getConfig(void)
 
 void  nz::ParserJson::dump(void)
 {
-  if (this->_fileInvalid) {
-    std::cout << "Configuration file is empty" << std::endl;
-  }
-  else {
-    std::cout << std::setw(4) << this->_json << std::endl;
-  }
+  if (this->_invalidFile)
+    nz::Log::warning("Configuration file's empty", "INVALID_CONF");
+  else
+    nz::Log::debug(this->_json);
 }
