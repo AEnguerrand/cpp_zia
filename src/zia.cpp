@@ -61,7 +61,7 @@ void nz::zia::reload()
       Log::error("The server isn't started yet", "Zia Core", 1);
       return ;
     }
-  Log::inform("The server's rebooting, please wait...");
+  Log::inform("The server's reloading, please wait...");
   stop();
   start();
 }
