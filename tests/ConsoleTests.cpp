@@ -43,10 +43,14 @@ TEST(Console, ConsoleNetworkReloadNoModulesNetLoaded) {
     nz::Console console(Zia);
     std::string cmd("network reload");
 
+<<<<<<< HEAD
     // testing::internal::CaptureStdout();
     // console.runCmd(cmd); // << SigSegv
     // std::string output = testing::internal::GetCapturedStdout();
     // ASSERT_STREQ(output.c_str(), "[ERROR 4] - Zia Core: No module net is load");
+=======
+    console.runCmd(cmd);
+>>>>>>> 71730086155b103380b0a470c182eecddcaef4d2
 }
 
 TEST(Console, ConsoleModulesAdd) {
