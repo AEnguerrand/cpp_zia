@@ -38,6 +38,14 @@ TEST(Console, ConsoleReload) {
     console.runCmd(cmd);
 }
 
+TEST(Console, ConsoleNetworkReload) {
+    nz::zia Zia;
+    nz::Console console(Zia);
+    std::string cmd("network reload");
+
+    // console.runCmd(cmd); // << SigSegv
+}
+
 TEST(Console, ConsoleModulesAdd) {
     nz::zia Zia;
     nz::Console console(Zia);
@@ -64,4 +72,26 @@ TEST(Console, ConsoleModulesList) {
     std::string output = testing::internal::GetCapturedStdout();
     //Why no modules ?
     ASSERT_STREQ(output.c_str(), "List of loaded modules\n");
+}
+
+TEST(Console, ConsoleBadCmdName) {
+    nz::zia Zia;
+    nz::Console console(Zia);
+    std::string cmd("yes42man");
+
+    testing::internal::CaptureStdout();
+    console.runCmd(cmd);
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "Invalid command\n");
+}
+
+TEST(Console, ConsoleBadCmdNbArgs) {
+    nz::zia Zia;
+    nz::Console console(Zia);
+    std::string cmd("yes42man yes42man yes42man yes42man yes42man yes42man yes42man");
+
+    testing::internal::CaptureStdout();
+    console.runCmd(cmd);
+    std::string output = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(output.c_str(), "Invalid command\n");
 }

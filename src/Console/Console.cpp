@@ -77,6 +77,7 @@ void nz::Console::dispatchCommand(const std::vector<std::string>& args)
 
 	commands_infos_t& commands = commands_sg[size];
 
+	bool found = false;
 	for (auto& commandInfos : commands)
 	{
 		bool same = true;
@@ -86,8 +87,13 @@ void nz::Console::dispatchCommand(const std::vector<std::string>& args)
 				same = false;
 		}
 		if (same)
+		{
 			commandInfos.second(args);
+			found = true;
+		}
 	}
+	if (!found)
+		invalidCommand();
 }
 
 void nz::Console::invalidCommand()

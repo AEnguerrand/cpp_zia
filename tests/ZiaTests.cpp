@@ -18,8 +18,24 @@ TEST(Zia, ZiaNotYetStarted) {
     ASSERT_STREQ(output.c_str(), "[ERROR 1] - Zia Core: The server isn't started yet\n");
 }
 
-TEST(Zia, ZiaNormalBehaviour) {
+TEST(Zia, ZiaAlreadyStarted) {
     nz::zia Zia;
 
-    // Zia.start();
+    Zia.start();
+    testing::internal::CaptureStderr();
+    Zia.start();
+    std::string output = testing::internal::GetCapturedStderr();
+    ASSERT_STREQ(output.c_str(), "[ERROR 2] - Zia Core: The server's already started, please consider stopping it before trying again\n");
+}
+
+TEST(Zia, ZiaNormalBehaviour) {
+    nz::zia Zia;
+    std::string output;
+
+    Zia.start();
+    Zia.reload();
+
+    nz::ModuleLoader const& moduleLoader = Zia.getModulesLoader();
+
+    Zia.reloadNetwork();
 }
