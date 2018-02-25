@@ -29,9 +29,9 @@ nz::Console::Console(nz::zia & zia):
 		{
 			3,
 			{
-				{{"modules", "add", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().addModule(args.at(2)); }},
-				{{"modules", "remove", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }},
-				{{"network", "set", "<module name>"}, [&](auto& args){ _zia.setModuleNetwork(args.at(2)); }}
+				{{"modules", "add", "<arg>"}, [&](auto& args){ _zia.getModulesLoader().addModule(args.at(2)); }},
+				{{"modules", "remove", "<arg>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }},
+				{{"network", "set", "<arg>"}, [&](auto& args){ _zia.setModuleNetwork(args.at(2)); }}
 			}
 		},
 	};
