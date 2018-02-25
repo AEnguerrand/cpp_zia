@@ -17,7 +17,7 @@ namespace nz {
 		explicit  HttpParserException(const std::string& msg) : _msg(msg) {}
 		virtual   ~HttpParserException(void) throw() {}
 
-		virtual const char* what() const throw() { return this->_msg.c_str(); }
+		virtual const char* what() const throw() { return _msg.c_str(); }
 	};
 }
 

@@ -14,7 +14,7 @@ void nz::Console::run()
   Log::inform("Console is avaible");
   for (std::string line; std::getline(std::cin, line);)
     {
-      this->runCmd(line);
+      runCmd(line);
     }
 }
 
@@ -40,27 +40,27 @@ void nz::Console::runCmd(std::string & cmd)
 	}
       else if (args.size() == 1 && args.at(0) == "start")
 	{
-	  this->_zia.start();
+	  _zia.start();
 	}
       else if (args.size() == 1 && args.at(0) == "stop")
 	{
-	  this->_zia.stop();
+	  _zia.stop();
 	}
       else if (args.size() == 1 && args.at(0) == "reload")
 	{
-	  this->_zia.reload();
+	  _zia.reload();
 	}
       else if (args.size() == 3 && args.at(0) == "modules" && args.at(1) == "add")
 	{
-	  this->_zia.getModulesLoader().addModule(args.at(2));
+	  _zia.getModulesLoader().addModule(args.at(2));
 	}
       else if (args.size() == 3 && args.at(0) == "modules" && args.at(1) == "remove")
 	{
-	  this->_zia.getModulesLoader().deleteModuleByName(args.at(2));
+	  _zia.getModulesLoader().deleteModuleByName(args.at(2));
 	}
       else if (args.size() == 2 && args.at(0) == "modules" && args.at(1) == "list")
 	{
-	  auto Modules = this->_zia.getModulesLoader().getModules();
+	  auto Modules = _zia.getModulesLoader().getModules();
 	  std::cout << "List of modules load:" << std::endl;
 	  for (auto module : Modules)
 	    {
