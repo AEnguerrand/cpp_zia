@@ -54,6 +54,11 @@ namespace nz {
     void	loadModules();
 
     void 	loadNetwork();
+    void 	unloadNetwork();
+
+   public:
+    void 	setModuleNetwork(std::string &);
+    void 	reloadNetwork();
   };
 }
 

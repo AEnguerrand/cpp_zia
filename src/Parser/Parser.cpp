@@ -19,11 +19,11 @@ void nz::Parser::callbackRequestReceived(::zia::api::Net::Raw cRaw, ::zia::api::
 
     // Convert http response into raw
     try {
-	httpDuplex.raw_resp = _httpParser.ResponseToRaw(httpDuplex.resp);
+	httpDuplex.raw_resp = _httpParser.ResponseToRaw(httpDuplex.resp, httpDuplex.req.method);
       }
     catch (nz::HttpParserException e) {
 	sendErrorServer(httpDuplex);
-	httpDuplex.raw_resp = _httpParser.ResponseToRaw(httpDuplex.resp);
+	httpDuplex.raw_resp = _httpParser.ResponseToRaw(httpDuplex.resp, httpDuplex.req.method);
       }
 
     // Send network

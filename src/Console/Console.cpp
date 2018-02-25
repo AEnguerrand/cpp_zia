@@ -8,10 +8,10 @@ static cli_router_t commands_sg;
 nz::Console::Console(nz::zia & zia):
 	_zia(zia)
 {
-	commands_sg = 
+	commands_sg =
 	{
 		{
-			1, 
+			1,
 			{
 				{{"help"}, [&](auto&){ displayHelp(); }},
 				{{"start"}, [&](auto&){ _zia.start(); }},
@@ -20,13 +20,13 @@ nz::Console::Console(nz::zia & zia):
 			}
 		},
 		{
-			2, 
+			2,
 			{
 				{{"modules", "list"}, [&](auto&){ displayModulesList(); }}
 			}
 		},
 		{
-			3, 
+			3,
 			{
 				{{"modules", "add", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().addModule(args.at(2)); }},
 				{{"modules", "remove", "<module name>"}, [&](auto& args){ _zia.getModulesLoader().deleteModuleByName(args.at(2)); }}
@@ -72,7 +72,7 @@ void nz::Console::dispatchCommand(const std::vector<std::string>& args)
 		if (size) invalidCommand();
 		return;
 	}
-	
+
 	commands_infos_t& commands = commands_sg[size];
 
 	for (auto& commandInfos : commands)
