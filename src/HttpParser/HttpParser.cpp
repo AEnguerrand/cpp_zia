@@ -272,6 +272,15 @@ void					nz::HttpParser::CheckRequestValidity(zia::api::HttpRequest data)
 		throw HttpParserException("Unknow Version");
 
 	// Check Headers
+	if (data.method == zia::api::http::Method::options)
+	{
+		if (!data.body.empty() || data.headers.find("Content-Length") != data.headers.end() || data.headers.find("Transfer-Encoding") != data.headers.end())
+		{
+			if (data.headers.find("Content-Type") != data.headers.end())
+				throw HttpParserException("This method require a 'Content-type' in header because it contains a body");
+		}
+	}
+
 
 	// Check Body
 	if (!data.body.empty())
