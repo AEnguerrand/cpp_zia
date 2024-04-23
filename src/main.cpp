@@ -8,12 +8,12 @@
 ** Last update Wed Oct 04 17:01:02 2017 Enguerrand Allamel
 */
 
-#include "zia.hh"
 #include "Console/Console.hh"
+#include "zia.hh"
 
 int main(int, char **) {
-  nz::zia	zia;
-  nz::Console	console(zia);
+  nz::zia zia;
+  nz::Console console(zia);
 
   zia.start();
   console.run();
