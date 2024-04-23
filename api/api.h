@@ -6,4 +6,4 @@
 #include "module.h"
 #include "net.h"
 
-#endif //CPP_ZIA_API_H
+#endif // CPP_ZIA_API_H

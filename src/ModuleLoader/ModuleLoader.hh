@@ -4,8 +4,7 @@
 #include "unordered_map"
 #include <fstream>
 #include <iostream>
-#include <experimental/filesystem>
-
+#include <filesystem>
 
 #include "api.h"
 #include "Log.hpp"
@@ -22,15 +21,15 @@ namespace nz
 {
   class ModuleLoader
   {
-   private:
-    DLLoader<::zia::api::Module>		 	_dlLoader;
-    std::unordered_map<std::string, std::string> 	_modules;
-    std::vector<std::string> &				_modulesName;
-    std::vector<std::string> &				_modulesPath;
+  private:
+    DLLoader<::zia::api::Module> _dlLoader;
+    std::unordered_map<std::string, std::string> _modules;
+    std::vector<std::string> &_modulesName;
+    std::vector<std::string> &_modulesPath;
 
-    const ::zia::api::Conf &				_conf;
+    const ::zia::api::Conf &_conf;
 
-   public:
+  public:
     ModuleLoader(std::vector<std::string> &modulesName, std::vector<std::string> &modulesPath, const ::zia::api::Conf &conf);
 
     virtual ~ModuleLoader();
@@ -45,15 +44,14 @@ namespace nz
 
     std::unordered_map<std::string, ::zia::api::Module *> getModules();
 
-   public:
+  public:
     void addModule(const std::string &moduleName);
 
     bool deleteModuleByName(const std::string &moduleName);
 
-   private:
+  private:
     const std::string convertToFilename(const std::string &moduleName) const;
-   };
+  };
 }
 
-
-#endif //CPP_ZIA_MODULELOADER_HH
+#endif // CPP_ZIA_MODULELOADER_HH
